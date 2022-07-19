@@ -1,0 +1,157 @@
+import java.util.regex.Matcher
+
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+def GROUP_ID = 'io.github.forevermgg'
+def ARTIFACT_ID = 'CheckEnv'
+def VERSION_NAME = '1.0.6'
+def DESCRIPTION = 'Check Android Running Environment'
+def GIT_LOCATION = 'github.com:forevermgg/EnvironmentCheck'
+def GIT_LOCATION_URL = 'https://'+GIT_LOCATION
+
+//仓库地址
+def MAVEN_URL = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def nexusUsername = properties.getProperty("sonatypeCentralUsername")
+def nexusPassword = properties.getProperty("sonatypeCentralPassword")
+def signingKeyId = properties.getProperty("signing.keyId")
+def signingPassword = properties.getProperty("signing.password")
+def signingSecretKeyRingFile = properties.getProperty("signing.secretKeyRingFile")
+println "nexusUsername:" + nexusUsername
+println "nexusPassword:" + nexusPassword
+println "signingKeyId:" + signingKeyId
+println "signingPassword:" + signingPassword
+
+task sourceJar(type: Jar) {
+    if (hasAndroidPlugin()) {
+        println "======> Android"
+        from android.sourceSets.main.java.srcDirs
+        //noinspection GroovyAccessibility
+        archiveClassifier = 'sources'
+    } else if (hasJavaPlugin()) {
+        println "======> Java"
+        from sourceSets.main.allSource
+        //noinspection GroovyAccessibility
+        archiveClassifier = 'sources'
+    }
+}
+
+def hasJavaPlugin() {
+    if (plugins.hasPlugin("java-library")) {
+        return true
+    }
+    return false
+}
+
+def hasAndroidPlugin() {
+    if (plugins.hasPlugin("com.android.library")) {
+        return true
+    }
+    return false
+}
+
+publishing {
+    println "======> ${project.name}"
+    println "====> the aar path is " + "$buildDir/outputs/aar/${project.name}-release.aar"
+    println "====>" + MAVEN_URL
+    println "====>" + VERSION_NAME
+    publications {
+        release(MavenPublication) {
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID
+            version VERSION_NAME
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
+            signing {
+                useInMemoryPgpKeys(
+                        signingKeyId,
+                        signingSecretKeyRingFile,
+                        signingPassword
+                )
+            }
+            pom {
+                packaging 'aar'
+                name = ARTIFACT_ID
+                description = DESCRIPTION
+                url = GIT_LOCATION_URL
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'forevermgg'
+                        name = 'forevermgg'
+                        email = 'centforever@163.com'
+                        url = 'https://github.com/forevermgg/EnvironmentCheck'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:'+GIT_LOCATION+'.git'
+                    developerConnection = 'scm:git:ssh://'+GIT_LOCATION+'.git'
+                    url = GIT_LOCATION_URL
+                }
+            }
+            pom.withXml {
+                //asNode().appendNode('测试').appendNode('自定义key', '自定义value')
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.each {
+                    if (it.version != "unspecified") { // 过滤项目内library引用
+                        println "=====>" + it.properties
+                        println "=====>" + it.group + "  " + it.name + it.version
+                        if (it.group == null || it.name == null || it.version == null) return
+                        if (it.group == group) return
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+
+                        if (it.excludeRules.size() > 0) {
+                            def exclusionsNode = dependencyNode.appendNode('exclusions')
+                            it.excludeRules.each { rule ->
+                                def exclusionNode = exclusionsNode.appendNode('exclusion')
+                                exclusionNode.appendNode('groupId', rule.group)
+                                exclusionNode.appendNode('artifactId', rule.module)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url MAVEN_URL
+            allowInsecureProtocol true
+            credentials {
+                username = nexusUsername
+                password = nexusPassword
+            }
+        }
+    }
+}
+
+tasks.register('stuffZip', Zip) {
+    archiveBaseName = 'stuff'
+    from 'src/stuff'
+}
+
+signing {
+    def signingKeyExt = findProperty("signing.keyId")
+    def signingPasswordExt = findProperty("signing.password")
+    println "signingKeyExt:" + signingKeyExt
+    println "signingPasswordExt:" + signingPasswordExt
+    useInMemoryPgpKeys(signingKeyId, signingPassword)
+    sign stuffZip
+    useGpgCmd()
+    sign configurations.archives
+    sign(publishing.publications["release"])
+}

@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 32
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 32
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    /*def ktor_version = "1.6.3"
+    api("io.ktor:ktor-client-apache:$ktor_version")
+    api("io.ktor:ktor-client-java:$ktor_version")
+    api("io.ktor:ktor-client-jetty:$ktor_version")
+    api("io.ktor:ktor-client-cio:$ktor_version")
+    api("io.ktor:ktor-client-android:$ktor_version")
+    api("io.ktor:ktor-client-okhttp:$ktor_version")
+    api("io.ktor:ktor-client-js:$ktor_version")*/
+    api 'com.jonathanfinerty.once:once:1.3.1'
+    api "com.github.skydoves:whatif:1.1.1"
+    api 'com.jakewharton:process-phoenix:2.1.2'
+    api 'com.jakewharton.timber:timber:5.0.1'
+    api "com.github.skydoves:sandwich:1.2.5"
+    api 'androidx.appcompat:appcompat:1.4.1'
+    api 'com.google.android.material:material:1.6.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

@@ -1,0 +1,8 @@
+namespace com.fbs.app;
+
+table ToastParams {
+  content:string;
+  duration: int;
+}
+
+root_type ToastParams;

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mContent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/sample_text"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Hello World!"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/checkCpu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkDebug"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkMultiOpen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkRoot"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkVpn"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkRom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkEmulator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkSign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+
+            <TextView
+                android:id="@+id/checkHook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello World!" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

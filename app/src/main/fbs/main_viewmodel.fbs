@@ -1,0 +1,26 @@
+namespace com.fbs.app.main.viewmodel;
+
+table UiData {
+  content:string;
+}
+
+enum Click:int {
+  TEST,
+}
+
+enum Property:int {
+  UI_DATA,
+  SHOW_EMPTY,
+  SHOW_ERROR,
+  SHOW_TOAST,
+}
+
+table ShowEmpty  {
+  content:string;
+}
+
+table ShowError {
+  content:string;
+}
+
+root_type UiData;

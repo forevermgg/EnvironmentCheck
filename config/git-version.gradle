@@ -1,0 +1,93 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.ajoberstar.grgit:grgit-gradle:5.0.0"
+    }
+}
+
+/**
+ * git.describe()
+ *
+ * Find the most recent tag that is reachable from HEAD. If the tag points to the commit,
+ * then only the tag is shown. Otherwise, it suffixes the tag name with the number of additional
+ * commits on top of the tagged object and the abbreviated object name of the most recent commit.
+ *
+ * More info: https://git-scm.com/docs/git-describe
+ */
+
+def defaultVersion = "1.0"
+
+ext {
+    git = org.ajoberstar.grgit.Grgit.open(currentDir: projectDir)
+    gitVersionName = git.describe()
+    if (!gitVersionName) {
+        gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+        gitVersionName = "$defaultVersion-$gitSha"
+    }
+    // gitVersionCode = git.tag.list().size() + 1
+    gitVersionCode = gitVersionCode()
+    gitVersionCodeTime = git.head().time
+}
+
+task printVersion() {
+    println("Version Name: $gitVersionName")
+    println("Version Code: $gitVersionCode")
+    println("Version Code Time: $gitVersionCodeTime")
+
+    println("gitVersionCode(): ${gitVersionCode()}")
+    println("gitVersionName(): ${gitVersionName()}")
+}
+
+
+/**
+ * 通过git的Commit数来获取version code
+ * @return
+ */
+def static gitVersionCode() {
+    def cmd = 'git rev-list HEAD --first-parent --count'
+    def versionCode = cmd.execute().text.trim().toInteger()
+
+    println("versionCode: $versionCode")
+    def forceVersionCode = null
+    if (forceVersionCode != null) {
+        return forceVersionCode
+    }
+    def cmd2 = 'git rev-list HEAD --first-parent --count'
+    if (cmd2.execute().text.trim() == "") {
+        return 1
+    }
+    println("gitVersionCode cmd2: ${cmd2.execute().text.trim()}")
+    def versionCode2 = cmd2.execute().text.trim().toInteger()
+    println("versionCode2: $versionCode2")
+    return versionCode2
+}
+
+/**
+ * 通过git上的最近一个tag来获取version name
+ * @return
+ */
+def static gitVersionName() {
+    def cmd1 = 'git describe --tags'
+    def tag = cmd1.execute().text.trim()
+    def arr = tag.split("-")
+    def version1 = arr[0]
+
+    def cmd2 = 'git describe --tags'
+    def version2 = cmd2.execute().text.trim()
+
+    def pattern = "-(\\d+)-g"
+    def matcher = version2 =~ pattern
+
+    if (matcher) {
+        version2 = version2.substring(0, matcher.start()) + "." + matcher[0][1]
+    } else {
+        version2 = version2 + ".0"
+    }
+    println("Version1: $version1")
+    println("Version2: $version2")
+    return version2
+}

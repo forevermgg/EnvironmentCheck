@@ -1,0 +1,9 @@
+[submodule "third_party/hash-library"]
+	path = third_party/hash-library
+	url = https://github.com/stbrumme/hash-library
+[submodule "third_party/flatbuffers"]
+	path = third_party/flatbuffers
+	url = https://github.com/google/flatbuffers.git
+[submodule "third_party/snappy"]
+	path = third_party/snappy
+	url = https://github.com/google/snappy.git
