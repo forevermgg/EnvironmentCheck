@@ -103,13 +103,13 @@ class MainActivity : ComponentActivity() {
             mainViewModel?.handle(Click.TEST, "")
         }
 
-        val input = ("Hello snappy-java! Snappy-java is a JNI-based wrapper of "
+        /*val input = ("Hello snappy-java! Snappy-java is a JNI-based wrapper of "
                 + "Snappy, a fast compresser/decompresser.")
         val compressed = Snappy.compress(input.toByteArray(charset(Charsets.UTF_8.toString())))
         val uncompressed = Snappy.uncompress(compressed)
 
         val result = String(uncompressed, charset(Charsets.UTF_8.toString()))
-        println(result)
+        println(result)*/
     }
 
     private fun hook(a: Int, b: Int): Int {
