@@ -14,7 +14,7 @@ message("FLATBUFFERS_SRC: " ${FLATBUFFERS_SRC})
 include_directories(${FLATBUFFERS_SRC}/include)
 
 add_subdirectory(flatbuffers)
-add_subdirectory(snappy)
+# add_subdirectory(snappy)
 
 FILE(GLOB Generated_SRCS generated/*.h)
 
@@ -51,12 +51,12 @@ add_library( # Sets the name of the library.
         native-lib.cpp
         ${Generated_SRCS})
 
-add_library(
+#[[add_library(
         snappy-android
         # Sets the library as a shared library.
         SHARED
         snappy_natvie.cpp
-)
+)]]
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -82,9 +82,9 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         ${log-lib})
 
-target_link_libraries( # Specifies the target library.
+#[[target_link_libraries( # Specifies the target library.
         snappy-android
         snappy
         # Links the target library to the log library
         # included in the NDK.
-        ${log-lib})
+        ${log-lib})]]

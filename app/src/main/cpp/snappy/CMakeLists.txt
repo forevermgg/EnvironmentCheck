@@ -18,6 +18,7 @@ set(Snappy_Library_SRCS
         ${DSNAPPY_LIBRARY_SRC}/snappy-sinksource.h
         ${DSNAPPY_LIBRARY_SRC}/snappy-sinksource.cc
         ${DSNAPPY_LIBRARY_SRC}/snappy-stubs-internal.h
+        ${DSNAPPY_LIBRARY_SRC}/snappy-stubs-internal.cc
         ${DSNAPPY_LIBRARY_SRC}/snappy-stubs-public.h
         ${DSNAPPY_LIBRARY_SRC}/snappy-stubs-internal.cc
         ${DSNAPPY_LIBRARY_SRC}/snappy_compress_fuzzer.cc
