@@ -1,0 +1,8 @@
+namespace com.fbs.app.loading;
+
+table LoadingViewParams {
+  content:string;
+  show: byte;
+}
+
+root_type LoadingViewParams;

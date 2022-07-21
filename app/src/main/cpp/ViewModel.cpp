@@ -5,6 +5,7 @@
 #include <string>
 
 #include "generated/toast_generated.h"
+#include "generated/loading_view_generated.h"
 #include "log_utils.h"
 #include "qjniobject.h"
 using namespace com::fbs::app;
@@ -19,9 +20,13 @@ ViewModel::~ViewModel() {
   LOGE("~ViewModel()")
 }
 
-void ViewModel::bind() { LOGE("ViewModel::bind()") }
+void ViewModel::bind() {
+  LOGE("ViewModel::bind()")
+}
 
-void ViewModel::unBind() { LOGE("ViewModel::unBind()") }
+void ViewModel::unBind() {
+  LOGE("ViewModel::unBind()")
+}
 
 void ViewModel::handle(const int key, const std::string &value) {
   LOGE("ViewModel handle()")
@@ -68,15 +73,26 @@ void ViewModel::setViewModelAttached(bool state) {
 }
 
 void ViewModel::showLoading(const std::string &msg) {
-  QJniObject jstring_params = QJniObject::fromString(msg);
   QJniObject jniObject = QJniObject(bind_java_view_model_);
-  jniObject.callMethod<void>("showLoading", "(Ljava/lang/String;)V",
-                             jstring_params.object<jstring>());
+
+  // create a new animal flatbuffers
+  auto fb = FlatBufferBuilder(1024);
+  auto tiger = loading::CreateLoadingViewParamsDirect(fb, msg.c_str(), 1);
+  fb.Finish(tiger);
+
+  // copies it to a Java byte array.
+  QJniEnvironment env;
+  auto buf = reinterpret_cast<jbyte *>(fb.GetBufferPointer());
+  int size = fb.GetSize();
+  auto ret = env->NewByteArray(size);
+  env->SetByteArrayRegion(ret, 0, fb.GetSize(), buf);
+  jniObject.callMethod<void>("showLoading", "([B)V",
+                             ret);
 }
 
-void ViewModel::hideLoading() {
+void ViewModel::hiddenLoading() {
   QJniObject jniObject = QJniObject(bind_java_view_model_);
-  jniObject.callMethod<void>("hideLoading", "()V");
+  jniObject.callMethod<void>("hiddenLoading", "()V");
 }
 
 void ViewModel::showToast(const std::string &params) {

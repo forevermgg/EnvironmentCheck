@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Looper;
 import android.widget.Toast;
 
+import androidx.annotation.Keep;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.ViewModel;
 
@@ -17,6 +18,7 @@ import java.util.function.Consumer;
 
 import timber.log.Timber;
 
+@Keep
 public abstract class QtNativeViewModel extends ViewModel implements NativeObject {
 	private static final long nativeFinalizerPtr = nativeGetFinalizerPtr();
 	private static final Object mutex = new Object();
@@ -118,6 +120,12 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 				}
 			}
 		});
+	}
+	
+	public void showLoading(byte[] params) {
+	}
+	
+	public void hiddenLoading() {
 	}
 	
 	public void setProp(int key, String value) {

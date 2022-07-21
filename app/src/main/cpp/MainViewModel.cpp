@@ -23,11 +23,13 @@ void MainViewModel::bind() {
   setProp(main::viewmodel::Property_SHOW_TOAST, "1");
   showToast("FOREVER");
   setProp(main::viewmodel::Property_UI_DATA, "test ui data");
+  showLoading("FOREVER");
 }
 
 void MainViewModel::unBind() {
   ViewModel::unBind();
   LOGE("MainViewModel::unBind()")
+  hiddenLoading();
 }
 
 void MainViewModel::handle(const int key, const std::string &value) {
