@@ -3,7 +3,11 @@ package com.mgg.environmentcheck
 import com.fbs.app.main.viewmodel.Property
 import timber.log.Timber
 
-class MainViewModel() : QtNativeViewModel() {
+class MainViewModel : QtNativeViewModel() {
+    public override fun getViewModelType(): String {
+        return MainViewModel::class.java.name
+    }
+
     override fun bindSetPropDispatcher() {
         setPropDispatcherByInterface.put(Property.SHOWTOAST) {
                 obj: QtNativeViewModel, params: String? -> obj.showToast(params)
@@ -23,9 +27,5 @@ class MainViewModel() : QtNativeViewModel() {
 
     private fun showError(params: String) {
         Timber.e(params)
-    }
-
-    public override fun getViewModelType(): String {
-        return MainViewModel::class.java.name
     }
 }

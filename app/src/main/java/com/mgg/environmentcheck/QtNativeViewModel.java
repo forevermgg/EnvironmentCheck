@@ -2,12 +2,14 @@ package com.mgg.environmentcheck;
 
 import android.annotation.SuppressLint;
 import android.os.Looper;
+import android.widget.Toast;
 
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.ViewModel;
 
-import com.fbs.app.ToastParams;
+import com.fbs.app.toast.ToastParams;
 import com.hjq.toast.ToastUtils;
+import com.mgg.checkenv.ContextProvider;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentHashMap;
@@ -102,9 +104,20 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 		}
 	}
 	
+	@SuppressLint("RestrictedApi")
 	public void showToast(byte[] params) {
 		ToastParams toastParams = ToastParams.Companion.getRootAsToastParams(ByteBuffer.wrap(params));
 		Timber.e("showToast: toastParams content = %s duration = %d", toastParams.getContent(), toastParams.getDuration());
+		ArchTaskExecutor.getInstance().postToMainThread(new Runnable() {
+			@Override
+			public void run() {
+				if (toastParams.getDuration() > 0) {
+					Toast.makeText(ContextProvider.get().getContext(), toastParams.getContent(), toastParams.getDuration()).show();
+				} else {
+					Toast.makeText(ContextProvider.get().getContext(), toastParams.getContent(), toastParams.getSystemsDuration()).show();
+				}
+			}
+		});
 	}
 	
 	public void setProp(int key, String value) {

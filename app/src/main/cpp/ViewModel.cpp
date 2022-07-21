@@ -87,7 +87,7 @@ void ViewModel::showToast(const std::string &params) {
 
   // create a new animal flatbuffers
   auto fb = FlatBufferBuilder(1024);
-  auto tiger = CreateToastParamsDirect(fb, params.c_str(), 300);
+  auto tiger = CreateToastParamsDirect(fb, params.c_str(), 0, toast::Duration_LENGTH_SHORT);
   fb.Finish(tiger);
 
   // copies it to a Java byte array.

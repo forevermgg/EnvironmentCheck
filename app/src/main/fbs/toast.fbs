@@ -1,8 +1,14 @@
-namespace com.fbs.app;
+namespace com.fbs.app.toast;
+
+enum Duration:int {
+  LENGTH_SHORT,
+  LENGTH_LONG,
+}
 
 table ToastParams {
   content:string;
   duration: int;
+  systemsDuration:Duration;
 }
 
 root_type ToastParams;
