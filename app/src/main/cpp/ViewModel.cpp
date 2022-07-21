@@ -23,18 +23,6 @@ void ViewModel::bind() { LOGE("ViewModel::bind()") }
 
 void ViewModel::unBind() { LOGE("ViewModel::unBind()") }
 
-void ViewModel::handle(const std::string &key, const std::string &value) {
-  LOGE("ViewModel handle()")
-  if (bind_java_view_model_ == nullptr) {
-    LOGE("bind_java_view_model_ == nullptr")
-    return;
-  }
-  if (!isViewModelAttached()) {
-    LOGE("view_model_is_attached_ is false")
-    return;
-  }
-}
-
 void ViewModel::handle(const int key, const std::string &value) {
   LOGE("ViewModel handle()")
   if (bind_java_view_model_ == nullptr) {
@@ -65,7 +53,6 @@ void ViewModel::setProp(const int key, const std::string &value) {
 
 void ViewModel::setJavaViewModel(jobject bind_java_view_model) {
   bind_java_view_model_ = bind_java_view_model;
-  view_model_is_attached_ = true;
 }
 
 jobject ViewModel::getJavaViewModel() { return bind_java_view_model_; }
@@ -74,6 +61,10 @@ bool ViewModel::isViewModelAttached() const { return view_model_is_attached_; }
 
 void ViewModel::setViewModelAttached(bool state) {
   view_model_is_attached_ = state;
+  if (bind_java_view_model_ != nullptr) {
+    QJniObject jniObject = QJniObject(bind_java_view_model_);
+    jniObject.callMethod<void>("setViewModelAttached", "(Z)V", view_model_is_attached_);
+  }
 }
 
 void ViewModel::showLoading(const std::string &msg) {
@@ -108,4 +99,6 @@ void ViewModel::showToast(const std::string &params) {
   jniObject.callMethod<void>("showToast", "([B)V", ret);
 }
 
-void ViewModel::showCustomToast(const std::string &params) {}
+void ViewModel::showCustomToast(const std::string &params) {
+  QJniEnvironment env;
+}

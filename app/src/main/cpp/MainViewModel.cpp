@@ -9,7 +9,9 @@
 using namespace com::fbs::app;
 using namespace flatbuffers;
 
-MainViewModel::MainViewModel(){LOGE("MainViewModel")}
+MainViewModel::MainViewModel(){
+  LOGE("MainViewModel")
+}
 
 MainViewModel::~MainViewModel() {
   LOGE("~MainViewModel")
@@ -20,16 +22,12 @@ void MainViewModel::bind() {
   LOGE("MainViewModel::bind()")
   setProp(main::viewmodel::Property_SHOW_TOAST, "1");
   showToast("FOREVER");
+  setProp(main::viewmodel::Property_UI_DATA, "test ui data");
 }
 
 void MainViewModel::unBind() {
   ViewModel::unBind();
   LOGE("MainViewModel::unBind()")
-}
-
-void MainViewModel::handle(const std::string &key, const std::string &value) {
-  ViewModel::handle(key, value);
-  // https://en.cppreference.com/w/cpp/language/switch
 }
 
 void MainViewModel::handle(const int key, const std::string &value) {

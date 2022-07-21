@@ -25,7 +25,6 @@ extern "C" JNIEXPORT void JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeRelease(
     JNIEnv *env, jclass clazz, jlong nativePeer) {
   auto value = reinterpret_cast<ViewModel *>(nativePeer);
-  value->unBind();
   delete value;
 }
 
@@ -42,6 +41,7 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeBind(
   LOGE("QtNativeViewModel_nativeBind");
   auto viewModel = reinterpret_cast<ViewModel *>(nativePeer);
   viewModel->setJavaViewModel(bind_java_view_model);
+  viewModel->setViewModelAttached(true);
   viewModel->bind();
 }
 
@@ -51,6 +51,7 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeUnBind(JNIEnv *env,
                                                              jlong native_ptr) {
   auto viewModel = reinterpret_cast<ViewModel *>(native_ptr);
   viewModel->setViewModelAttached(false);
+  viewModel->unBind();
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -59,14 +60,5 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeHandleIntKey(
   auto viewModel = reinterpret_cast<ViewModel *>(native_ptr);
   viewModel->handle(
       (int)key,
-      FOREVER::STRING_CONVERT::JavaStringToString(env, value).c_str());
-}
-
-extern "C" JNIEXPORT void JNICALL
-Java_com_mgg_environmentcheck_QtNativeViewModel_nativeHandleStringKey(
-    JNIEnv *env, jclass clazz, jlong native_ptr, jstring key, jstring value) {
-  auto viewModel = reinterpret_cast<ViewModel *>(native_ptr);
-  viewModel->handle(
-      FOREVER::STRING_CONVERT::JavaStringToString(env, key).c_str(),
       FOREVER::STRING_CONVERT::JavaStringToString(env, value).c_str());
 }

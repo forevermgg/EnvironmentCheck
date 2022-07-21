@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModel;
 import com.fbs.app.ToastParams;
 import com.hjq.toast.ToastUtils;
 
-import org.json.JSONObject;
-
 import java.nio.ByteBuffer;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import timber.log.Timber;
 
@@ -20,12 +20,17 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	private static final Object mutex = new Object();
 	private long nativePtr = 0L;
 	private boolean isRelease = false;
+	private boolean isViewModelAttached = false;
+	public ConcurrentHashMap<Integer, ViewModelHandleProp> setPropDispatcherByInterface = new ConcurrentHashMap();
+	public ConcurrentHashMap<Integer, Consumer<String>> setPropDispatcherByFunction = new ConcurrentHashMap<>();
 	
 	public QtNativeViewModel() {
 		Timber.e("QtNativeViewModel Create");
 		nativePtr = nativeCreate(getViewModelType());
 		NativeContext.dummyContext.addReference(this);
 		Timber.e("QtNativeViewModel Create nativePtr = %s", String.valueOf(nativePtr));
+		bindSetPropDispatcher();
+		bindJavaViewModel();
 	}
 	
 	private static native long nativeGetFinalizerPtr();
@@ -37,8 +42,6 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	private static native void nativeUnBind(final long nativePtr);
 	
 	private static native void nativeHandleIntKey(final long nativePtr, int key, String value);
-	
-	private static native void nativeHandleStringKey(final long nativePtr, String key, String value);
 	
 	private static native void nativeRelease(final long nativePtr);
 	
@@ -54,10 +57,6 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 				Timber.e("QtNativeViewModel onCleared nativeRelease");
 			}
 		}
-	}
-	
-	public void bindJavaViewModel() {
-		nativeBind(nativePtr, this);
 	}
 	
 	@Override
@@ -76,8 +75,22 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	
 	abstract String getViewModelType();
 	
+	abstract void bindSetPropDispatcher();
+	
+	public void bindJavaViewModel() {
+		nativeBind(nativePtr, this);
+	}
+	
 	public boolean isMainThread() {
 		return Looper.getMainLooper().getThread().getId() == Thread.currentThread().getId();
+	}
+	
+	public boolean isViewModelAttached() {
+		return isViewModelAttached;
+	}
+	
+	public void setViewModelAttached(boolean viewModelAttached) {
+		isViewModelAttached = viewModelAttached;
 	}
 	
 	@SuppressLint("RestrictedApi")
@@ -96,10 +109,13 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	
 	public void setProp(int key, String value) {
 		Timber.e("setProp(String key = " + key + " String value = " + value + ")");
-	}
-	
-	public void handle(String key, String value) {
-		nativeHandleStringKey(nativePtr, key, value);
+		// 从逻辑分派Dispatcher中获得业务逻辑代码，result变量是一段lambda表达式
+		synchronized (mutex) {
+			if (value != null) {
+				setPropDispatcherByFunction.get(key).accept(value);
+				setPropDispatcherByInterface.get(key).setPropDispatcher(this, value);
+			}
+		}
 	}
 	
 	public void handle(int key, String value) {

@@ -6,7 +6,6 @@ class ViewModel {
  public:
   ViewModel();
   virtual ~ViewModel();
-  virtual void handle(const std::string &key, const std::string &value);
   virtual void handle(const int key, const std::string &value);
   void setProp(const int key, const std::string &value);
   void showLoading(const std::string &msg);

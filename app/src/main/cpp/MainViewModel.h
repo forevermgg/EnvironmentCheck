@@ -13,7 +13,6 @@ class MainViewModel : ViewModel {
   ~MainViewModel();
   virtual void unBind() override;
   virtual void bind() override;
-  virtual void handle(const std::string &key, const std::string &value) override;
   virtual void handle(const int key, const std::string &value) override;
 };
 
