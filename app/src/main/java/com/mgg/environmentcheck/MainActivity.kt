@@ -24,12 +24,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 
 class MainActivity : ComponentActivity() {
     private var isDestory: Boolean = false
     private lateinit var binding: ActivityMainBinding
     private var mainViewModel: MainViewModel? = null
+    private val cacert by lazy {
+        val path = cacheDir.resolve("cacert.pem")
+        assets.open("cacert.pem").copyTo(FileOutputStream(path))
+        path
+    }
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,6 +117,7 @@ class MainActivity : ComponentActivity() {
 
         val result = String(uncompressed, charset(Charsets.UTF_8.toString()))
         println(result)
+        Timber.e("cacert.path:" + cacert.path + " " + getGerritChanges(cacert.path))
     }
 
     private fun hook(a: Int, b: Int): Int {
@@ -124,6 +132,8 @@ class MainActivity : ComponentActivity() {
     external fun stringFromJNI(): String
 
     external fun testToast()
+
+    private external fun getGerritChanges(cacert: String): Array<String>
 
     override fun onBackPressed() {
         super.onBackPressed()

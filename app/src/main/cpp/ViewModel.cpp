@@ -116,5 +116,4 @@ void ViewModel::showToast(const std::string &params) {
 }
 
 void ViewModel::showCustomToast(const std::string &params) {
-  QJniEnvironment env;
 }

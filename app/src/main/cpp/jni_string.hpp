@@ -5,6 +5,8 @@
 #include <locale>
 #include <string>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
 #ifndef JNI_STRING_UTIL
 #define JNI_STRING_UTIL
 namespace FOREVER {
@@ -43,3 +45,5 @@ static jstring StringToJavaString(JNIEnv *env, const std::string &u8_string) {
 }  // namespace STRING_CONVERT
 }  // namespace FOREVER
 #endif  // JNI_STRING_UTIL
+
+#pragma clang diagnostic pop

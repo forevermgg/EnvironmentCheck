@@ -12,7 +12,7 @@ inline void throw_exception(JNIEnv *env, jobject self, int errorCode) {
   env->CallVoidMethod(self, mth_throwex, (jint)errorCode);
 }
 
-extern "C" extern "C" JNIEXPORT jstring JNICALL
+extern "C" JNIEXPORT jstring JNICALL
 Java_com_mgg_environmentcheck_SnappyNative_nativeLibraryVersion(
     JNIEnv *env, jobject /* this */) {
   return env->NewStringUTF("1.1.7");

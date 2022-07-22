@@ -18,6 +18,9 @@ add_subdirectory(snappy)
 
 FILE(GLOB Generated_SRCS generated/*.h)
 
+find_package(curl REQUIRED CONFIG)
+find_package(jsoncpp REQUIRED CONFIG)
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -30,6 +33,11 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
+        java_interop.h
+        http.h
+        http.cpp
+        logging.h
+        logging.cpp
         macros.h
         log_utils.h
         log_level.h
@@ -74,12 +82,16 @@ find_library( # Sets the name of the path variable.
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
+set(disabled_compile_warnings "-Werror,-Wunused-function")
+target_compile_options(environmentcheck PRIVATE -Wall -Werror)
 
 target_link_libraries( # Specifies the target library.
         environmentcheck
         flatbuffers
         # Links the target library to the log library
         # included in the NDK.
+        curl::curl
+        jsoncpp::jsoncpp
         ${log-lib})
 
 target_link_libraries( # Specifies the target library.

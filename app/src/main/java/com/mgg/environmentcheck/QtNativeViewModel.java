@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.ViewModel;
 
@@ -25,10 +26,13 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	private long nativePtr = 0L;
 	private boolean isRelease = false;
 	private boolean isViewModelAttached = false;
+	@NonNull
+	private final Looper mainLooper;
 	public ConcurrentHashMap<Integer, ViewModelHandleProp> setPropDispatcherByInterface = new ConcurrentHashMap();
 	public ConcurrentHashMap<Integer, Consumer<String>> setPropDispatcherByFunction = new ConcurrentHashMap<>();
 	
 	public QtNativeViewModel() {
+		mainLooper = Looper.getMainLooper();
 		Timber.e("QtNativeViewModel Create");
 		nativePtr = nativeCreate(getViewModelType());
 		NativeContext.dummyContext.addReference(this);
@@ -91,6 +95,21 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	
 	public boolean isViewModelAttached() {
 		return isViewModelAttached;
+	}
+	
+	private void ensureRunningOnMainThread() {
+		if (Looper.myLooper() != mainLooper) {
+			throw new RuntimeException(
+					"Methods marked with @UiThread must be executed on the main thread. Current thread: "
+							+ Thread.currentThread().getName());
+		}
+	}
+	
+	private void ensureAttachedToNative() {
+		if (nativePtr == 0) {
+			throw new RuntimeException(
+					"Cannot execute operation because ViewModel is not attached to native.");
+		}
 	}
 	
 	public void setViewModelAttached(boolean viewModelAttached) {

@@ -294,7 +294,7 @@ jclass QJniObject::loadClass(const std::string &className, JNIEnv *env,
                              bool binEncoded) {
   const std::string &binEncClassName =
       binEncoded ? className : QJniObject::toBinaryEncClassName(className);
-  jclass clazz;
+  jclass clazz = nullptr;
 
   QJniObject classLoader(QtAndroidPrivate::classLoader());
   if (!classLoader.isValid()) return nullptr;
@@ -370,7 +370,7 @@ jfieldID QJniObject::getCachedFieldID(JNIEnv *env, const char *name,
 jclass QtAndroidPrivate::findClass(const char *className, JNIEnv *env) {
   const std::string &classDotEnc =
       QJniObjectPrivate::toBinaryEncClassName(className);
-  jclass clazz;
+  jclass clazz = nullptr;
   if (env) {  // We got an env. pointer (We expect this to be the right env. and
               // call FindClass())
     jclass fclazz = env->FindClass(className);
