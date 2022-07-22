@@ -191,7 +191,11 @@ dependencies {
     implementation "com.github.skydoves:lazybones:1.0.4"
     implementation "com.github.skydoves:lazybones-viewmodel:1.0.4"
 
+    // https://mvnrepository.com/artifact/com.android.ndk.thirdparty
     implementation "com.android.ndk.thirdparty:curl:7.79.1-beta-1"
     implementation "com.android.ndk.thirdparty:jsoncpp:1.9.5-beta-1"
     implementation "com.android.ndk.thirdparty:openssl:1.1.1l-beta-1"
+    implementation 'com.android.ndk.thirdparty:libpng:1.6.37-alpha-1'
+
+    // implementation 'com.android.encryption:aes:1.0.0'
 }

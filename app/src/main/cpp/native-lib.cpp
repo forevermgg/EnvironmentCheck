@@ -14,19 +14,38 @@
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_mgg_environmentcheck_MainActivity_stringFromJNI(JNIEnv *env,
                                                          jobject /* this */) {
-  std::string cpuAbi;
-#if defined(__i386__)
-  cpuAbi = "x86";
+#if defined(__arm__)
+    #if defined(__ARM_ARCH_7A__)
+    #if defined(__ARM_NEON__)
+      #if defined(__ARM_PCS_VFP)
+        #define ABI "armeabi-v7a/NEON (hard-float)"
+      #else
+        #define ABI "armeabi-v7a/NEON"
+      #endif
+    #else
+      #if defined(__ARM_PCS_VFP)
+        #define ABI "armeabi-v7a (hard-float)"
+      #else
+        #define ABI "armeabi-v7a"
+      #endif
+    #endif
+  #else
+   #define ABI "armeabi"
+  #endif
+#elif defined(__i386__)
+#define ABI "x86"
 #elif defined(__x86_64__)
-  cpuAbi = "x86_64";
+    #define ABI "x86_64"
+#elif defined(__mips64)  /* mips64el-* toolchain defines __mips__ too */
+#define ABI "mips64"
+#elif defined(__mips__)
+#define ABI "mips"
 #elif defined(__aarch64__)
-  cpuAbi = "arm64-v8a";
-#elif defined(__arm__)
-  cpuAbi = "armeabi-v7";
+#define ABI "arm64-v8a"
 #else
-  cpuAbi = "un know";
+#define ABI "unknown"
 #endif
-  return env->NewStringUTF(cpuAbi.c_str());
+  return (*env).NewStringUTF("Hello from JNI !  Compiled with ABI " ABI ".");
 }
 
 std::vector<std::string> get_change_titles(const std::string& cacert_path) {
