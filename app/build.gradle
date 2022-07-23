@@ -21,6 +21,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments "-DFLATBUFFERS_SRC=${rootProject.projectDir}/third_party/flatbuffers"
+                arguments "-DDOUBLE_CONVERSION_SRC=${rootProject.projectDir}/third_party/double-conversion"
                 arguments "-DANDROID_STL=c++_shared"
                 cppFlags '-std=c++17 -Wunused-function'
             }

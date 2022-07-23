@@ -10,11 +10,14 @@ cmake_minimum_required(VERSION 3.18.1)
 project("environmentcheck")
 
 message("FLATBUFFERS_SRC: " ${FLATBUFFERS_SRC})
+message("DOUBLE_CONVERSION_SRC: " ${DOUBLE_CONVERSION_SRC})
 
 include_directories(${FLATBUFFERS_SRC}/include)
+include_directories(${DOUBLE_CONVERSION_SRC}/double-conversion)
 
 add_subdirectory(flatbuffers)
 add_subdirectory(snappy)
+add_subdirectory(double-conversion)
 
 FILE(GLOB Generated_SRCS generated/*.h)
 
@@ -36,6 +39,8 @@ add_library( # Sets the name of the library.
         java_interop.h
         http.h
         http.cpp
+        #[[curl_api.h
+        curl_api.cc]]
         logging.h
         logging.cpp
         macros.h
@@ -64,6 +69,13 @@ add_library(
         # Sets the library as a shared library.
         SHARED
         snappy_natvie.cpp
+)
+
+add_library(
+        double-conversion-android
+        # Sets the library as a shared library.
+        SHARED
+        jni_double_conversion.cpp
 )
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -97,6 +109,13 @@ target_link_libraries( # Specifies the target library.
 target_link_libraries( # Specifies the target library.
         snappy-android
         snappy
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib})
+
+target_link_libraries( # Specifies the target library.
+        double-conversion-android
+        double-conversion
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
