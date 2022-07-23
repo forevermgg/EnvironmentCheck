@@ -13,3 +13,9 @@
 [submodule "third_party/integers"]
 	path = third_party/integers
 	url = https://github.com/google/integers.git
+[submodule "third_party/cctz"]
+	path = third_party/cctz
+	url = https://github.com/google/cctz.git
+[submodule "third_party/double-conversion"]
+	path = third_party/double-conversion
+	url = https://github.com/google/double-conversion.git

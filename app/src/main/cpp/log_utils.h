@@ -3,6 +3,7 @@
 
 #include <android/log.h>
 #include <string.h>
+#include <sys/syscall.h>
 
 #define DEBUG  // 可以通过 CmakeLists.txt
 // 等方式来定义在这个宏，实现动态打开和关闭LOG

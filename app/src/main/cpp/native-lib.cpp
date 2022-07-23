@@ -52,8 +52,7 @@ std::vector<std::string> get_change_titles(const std::string& cacert_path) {
   std::string error;
   auto result = curlssl::http::Client(cacert_path)
           .get(
-                  "http://android-review.googlesource.com/changes/"
-                  "?q=status:open&n=10",
+                  "http://android-review.googlesource.com/changes/?q=status:open&n=10",
                   &error);
   if (!result) {
     return {error.c_str()};
@@ -112,6 +111,5 @@ Java_com_mgg_environmentcheck_MainActivity_getGerritChanges(JNIEnv *env, jobject
 
   const std::string cacert =
           curlssl::jni::Convert<std::string>::from(env, cacert_java);
-  return curlssl::jni::Convert<jobjectArray, jstring>::from(env,
-                                                   get_change_titles(cacert));
+  return curlssl::jni::Convert<jobjectArray, jstring>::from(env,get_change_titles(cacert));
 }
