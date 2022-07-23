@@ -7,3 +7,9 @@
 [submodule "third_party/snappy"]
 	path = third_party/snappy
 	url = https://github.com/google/snappy.git
+[submodule "third_party/libnop"]
+	path = third_party/libnop
+	url = https://github.com/google/libnop.git
+[submodule "third_party/integers"]
+	path = third_party/integers
+	url = https://github.com/google/integers.git
