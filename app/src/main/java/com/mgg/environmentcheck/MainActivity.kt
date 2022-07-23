@@ -117,7 +117,7 @@ class MainActivity : ComponentActivity() {
 
         val result = String(uncompressed, charset(Charsets.UTF_8.toString()))
         println(result)
-        Timber.e("cacert.path:" + cacert.path + " " + getGerritChanges(cacert.path))
+        // Timber.e("cacert.path:" + cacert.path + " " + getGerritChanges(cacert.path))
     }
 
     private fun hook(a: Int, b: Int): Int {

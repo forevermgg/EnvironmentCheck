@@ -52,7 +52,7 @@ std::vector<std::string> get_change_titles(const std::string& cacert_path) {
   std::string error;
   auto result = curlssl::http::Client(cacert_path)
           .get(
-                  "http://android-review.googlesource.com/changes/?q=status:open&n=10",
+                  "https://android-review.googlesource.com/changes/?q=status:open&n=10",
                   &error);
   if (!result) {
     return {error.c_str()};

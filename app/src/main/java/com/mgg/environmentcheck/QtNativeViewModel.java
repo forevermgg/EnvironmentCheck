@@ -142,9 +142,13 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 	}
 	
 	public void showLoading(byte[] params) {
+		ensureAttachedToNative();
+		ensureRunningOnMainThread();
 	}
 	
 	public void hiddenLoading() {
+		ensureAttachedToNative();
+		ensureRunningOnMainThread();
 	}
 	
 	public void setProp(int key, String value) {

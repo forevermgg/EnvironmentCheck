@@ -196,6 +196,7 @@ dependencies {
     implementation "com.android.ndk.thirdparty:jsoncpp:1.9.5-beta-1"
     implementation "com.android.ndk.thirdparty:openssl:1.1.1l-beta-1"
     implementation 'com.android.ndk.thirdparty:libpng:1.6.37-alpha-1'
+    implementation 'com.android.ndk.thirdparty:googletest:1.11.0-beta-1'
 
     // implementation 'com.android.encryption:aes:1.0.0'
 }

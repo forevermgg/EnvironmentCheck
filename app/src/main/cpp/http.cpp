@@ -20,7 +20,7 @@
 #include <optional>
 #include <string>
 #include <cassert>
-
+#include "log_utils.h"
 #include "curl/curl.h"
 using namespace std::string_literals;
 
@@ -42,7 +42,9 @@ Client::Client(const std::string& cacert_path) : cacert_path(cacert_path) {
   curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-Client::~Client() { curl_global_cleanup(); }
+Client::~Client() {
+  curl_global_cleanup();
+}
 
 std::optional<std::string> Client::get(const std::string& url,
                                        std::string* error) const {
@@ -53,6 +55,9 @@ std::optional<std::string> Client::get(const std::string& url,
 
   std::unique_ptr<CURL, decltype(&curl_easy_cleanup)> curl(curl_easy_init(),
                                                            curl_easy_cleanup);
+  if (!(curl_version_info(CURLVERSION_NOW)->features & CURL_VERSION_HTTP2)) {
+    LOGE("curl not support http2");
+  }
   if (curl == nullptr) {
     *error = "Failed to create CURL object";
     return std::nullopt;
