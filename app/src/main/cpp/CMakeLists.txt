@@ -18,6 +18,7 @@ include_directories(${DOUBLE_CONVERSION_SRC}/double-conversion)
 add_subdirectory(flatbuffers)
 add_subdirectory(snappy)
 add_subdirectory(double-conversion)
+add_subdirectory(abseil-cpp)
 
 FILE(GLOB Generated_SRCS generated/*.h)
 
@@ -39,8 +40,6 @@ add_library( # Sets the name of the library.
         java_interop.h
         http.h
         http.cpp
-        #[[curl_api.h
-        curl_api.cc]]
         logging.h
         logging.cpp
         macros.h
