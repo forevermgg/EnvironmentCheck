@@ -10,8 +10,8 @@
 #include <atomic>
 #include <cassert>
 
-#include "../macros.h"
 #include "../logging.h"
+#include "../macros.h"
 
 namespace FOREVER {
 namespace internal {

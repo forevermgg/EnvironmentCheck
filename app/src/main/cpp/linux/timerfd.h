@@ -13,6 +13,7 @@
 // clang-format on
 
 #include <sys/timerfd.h>
+
 #include "../timer/time_point.h"
 
 #define FOREVER_TIMERFD_AVAILABLE 1
@@ -33,9 +34,7 @@
 
 int timerfd_create(int clockid, int flags);
 
-int timerfd_settime(int ufc,
-                    int flags,
-                    const struct itimerspec* utmr,
+int timerfd_settime(int ufc, int flags, const struct itimerspec* utmr,
                     struct itimerspec* otmr);
 
 #endif  // __has_include(<sys/timerfd.h>)
@@ -43,12 +42,12 @@ int timerfd_settime(int ufc,
 namespace FOREVER {
 
 /// Rearms the timer to expire at the given time point.
-    bool TimerRearm(int fd, FOREVER::TimePoint time_point);
+bool TimerRearm(int fd, FOREVER::TimePoint time_point);
 
 /// Drains the timer FD and returns true if it has expired. This may be false in
 /// case the timer read is non-blocking and this routine was called before the
 /// timer expiry.
-    bool TimerDrain(int fd);
+bool TimerDrain(int fd);
 
 }  // namespace FOREVER
 
