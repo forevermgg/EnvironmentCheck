@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "generated/toast_generated.h"
 #include "generated/loading_view_generated.h"
+#include "generated/toast_generated.h"
 #include "log_utils.h"
 #include "qjniobject.h"
 using namespace com::fbs::app;
@@ -21,6 +21,11 @@ ViewModel::~ViewModel() {
 }
 
 void ViewModel::bind() {
+  if (bind_java_view_model_ != nullptr) {
+    QJniObject jniObject = QJniObject(bind_java_view_model_);
+    jniObject.callMethod<void>("setViewModelAttached", "(Z)V",
+                               view_model_is_attached_);
+  }
   LOGE("ViewModel::bind()")
 }
 
@@ -66,10 +71,6 @@ bool ViewModel::isViewModelAttached() const { return view_model_is_attached_; }
 
 void ViewModel::setViewModelAttached(bool state) {
   view_model_is_attached_ = state;
-  if (bind_java_view_model_ != nullptr) {
-    QJniObject jniObject = QJniObject(bind_java_view_model_);
-    jniObject.callMethod<void>("setViewModelAttached", "(Z)V", view_model_is_attached_);
-  }
 }
 
 void ViewModel::showLoading(const std::string &msg) {
@@ -86,8 +87,7 @@ void ViewModel::showLoading(const std::string &msg) {
   int size = fb.GetSize();
   auto ret = env->NewByteArray(size);
   env->SetByteArrayRegion(ret, 0, fb.GetSize(), buf);
-  jniObject.callMethod<void>("showLoading", "([B)V",
-                             ret);
+  jniObject.callMethod<void>("showLoading", "([B)V", ret);
 }
 
 void ViewModel::hiddenLoading() {
@@ -103,7 +103,8 @@ void ViewModel::showToast(const std::string &params) {
 
   // create a new animal flatbuffers
   auto fb = FlatBufferBuilder(1024);
-  auto tiger = CreateToastParamsDirect(fb, params.c_str(), 0, toast::Duration_LENGTH_SHORT);
+  auto tiger = CreateToastParamsDirect(fb, params.c_str(), 0,
+                                       toast::Duration_LENGTH_SHORT);
   fb.Finish(tiger);
 
   // copies it to a Java byte array.
@@ -115,5 +116,4 @@ void ViewModel::showToast(const std::string &params) {
   jniObject.callMethod<void>("showToast", "([B)V", ret);
 }
 
-void ViewModel::showCustomToast(const std::string &params) {
-}
+void ViewModel::showCustomToast(const std::string &params) {}

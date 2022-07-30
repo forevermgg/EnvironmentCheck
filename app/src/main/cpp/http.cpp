@@ -16,12 +16,13 @@
 
 #include "http.h"
 
+#include <cassert>
 #include <memory>
 #include <optional>
 #include <string>
-#include <cassert>
-#include "log_utils.h"
+
 #include "curl/curl.h"
+#include "log_utils.h"
 using namespace std::string_literals;
 
 namespace {
@@ -42,9 +43,7 @@ Client::Client(const std::string& cacert_path) : cacert_path(cacert_path) {
   curl_global_init(CURL_GLOBAL_DEFAULT);
 }
 
-Client::~Client() {
-  curl_global_cleanup();
-}
+Client::~Client() { curl_global_cleanup(); }
 
 std::optional<std::string> Client::get(const std::string& url,
                                        std::string* error) const {

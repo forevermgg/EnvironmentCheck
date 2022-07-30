@@ -18,7 +18,7 @@ include_directories(${DOUBLE_CONVERSION_SRC}/double-conversion)
 add_subdirectory(flatbuffers)
 add_subdirectory(snappy)
 add_subdirectory(double-conversion)
-add_subdirectory(abseil-cpp)
+# add_subdirectory(abseil-cpp)
 
 FILE(GLOB Generated_SRCS generated/*.h)
 
@@ -61,6 +61,73 @@ add_library( # Sets the name of the library.
         MainViewModel.h
         MainViewModel.cpp
         native-lib.cpp
+        string_conversion.h
+        string_conversion.cc
+        wakeable.h
+        task_queue_id.h
+        task_source_grade.h
+        delayed_task.h
+        delayed_task.cc
+        task_source.h
+        task_source.cc
+        thread_local.h
+        thread_local.cc
+        make_copyable.h
+        message_loop_task_queues.h
+        message_loop_task_queues.cc
+        android/scoped_java_ref.h
+        android/scoped_java_ref.cc
+        android/jni_util.h
+        android/jni_util.cc
+        android/jni_weak_ref.h
+        android/jni_weak_ref.cc
+        unique_object.h
+        unique_fd.h
+        unique_fd.cc
+        message_loop_impl.h
+        linux/timerfd.h
+        linux/timerfd.cc
+        android/message_loop_android.h
+        android/message_loop_android.cc
+        message_loop_impl.cc
+        message_loop.h
+        message_loop.cc
+        task_runner.h
+        task_runner.cc
+        memory/task_runner_checker.h
+        memory/task_runner_checker.cc
+        thread.h
+        thread.cc
+        thread_host.h
+        thread_host.cc
+        task_runners.h
+        task_runners.cc
+        memory/ref_counted.h
+        memory/ref_counted_internal.h
+        memory/ref_ptr.h
+        memory/ref_ptr_internal.h
+        memory/thread_checker.h
+        memory/weak_ptr.h
+        memory/weak_ptr_internal.h
+        memory/weak_ptr_internal.cc
+        timer/timestamp_provider.h
+        timer/time_delta.h
+        timer/time_point.h
+        timer/time_point.cc
+        timer/chrono_timestamp_provider.h
+        timer/chrono_timestamp_provider.cc
+        synchronization/atomic_object.h
+        synchronization/waitable_event.h
+        synchronization/waitable_event.cc
+        synchronization/sync_switch.h
+        synchronization/sync_switch.cc
+        synchronization/shared_mutex.h
+        synchronization/shared_mutex_std.h
+        synchronization/shared_mutex_std.cc
+        synchronization/semaphore.h
+        synchronization/semaphore.cc
+        synchronization/count_down_latch.h
+        synchronization/count_down_latch.cc
         ${Generated_SRCS})
 
 add_library(
@@ -82,7 +149,7 @@ add_library(
 # default, you only need to specify the name of the public NDK library
 # you want to add. CMake verifies that the library exists before
 # completing its build.
-
+find_library(android android)
 find_library( # Sets the name of the path variable.
         log-lib
 
@@ -103,6 +170,7 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         curl::curl
         jsoncpp::jsoncpp
+        ${android}
         ${log-lib})
 
 target_link_libraries( # Specifies the target library.

@@ -54,26 +54,7 @@ add_library( # Sets the name of the library.
         check_multi_open.cpp
         check_sign.cpp
         check_hook.cpp
-        check_device_uuid.cpp
-        timer/timestamp_provider.h
-        timer/time_delta.h
-        timer/time_point.h
-        timer/time_point.cc
-        timer/chrono_timestamp_provider.h
-        timer/chrono_timestamp_provider.cc
-        synchronization/atomic_object.h
-        synchronization/waitable_event.h
-        synchronization/waitable_event.cc
-        synchronization/sync_switch.h
-        synchronization/sync_switch.cc
-        synchronization/shared_mutex.h
-        synchronization/shared_mutex_std.h
-        synchronization/shared_mutex_std.cc
-        synchronization/semaphore.h
-        synchronization/semaphore.cc
-        synchronization/count_down_latch.h
-        synchronization/count_down_latch.cc
-        )
+        check_device_uuid.cpp)
 
 include_directories(${HASH_LIBRARY_SRC}/)
 
@@ -82,7 +63,7 @@ include_directories(${HASH_LIBRARY_SRC}/)
 # default, you only need to specify the name of the public NDK library
 # you want to add. CMake verifies that the library exists before
 # completing its build.
-
+find_library(android android)
 find_library( # Sets the name of the path variable.
         log-lib
 
@@ -99,4 +80,5 @@ target_link_libraries( # Specifies the target library.
 
         # Links the target library to the log library
         # included in the NDK.
-        ${log-lib})
+        ${log-lib}
+        ${android})

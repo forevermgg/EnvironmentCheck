@@ -59,6 +59,7 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 		Timber.e("QtNativeViewModel onCleared");
 		synchronized (mutex) {
 			if (!isRelease) {
+				isViewModelAttached = false;
 				nativeUnBind(nativePtr);
 				nativeRelease(nativePtr);
 				isRelease = true;
@@ -73,6 +74,7 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
 		Timber.e("QtNativeViewModel finalize");
 		synchronized (mutex) {
 			if (!isRelease) {
+				isViewModelAttached = false;
 				nativeUnBind(nativePtr);
 				nativeRelease(nativePtr);
 				isRelease = true;

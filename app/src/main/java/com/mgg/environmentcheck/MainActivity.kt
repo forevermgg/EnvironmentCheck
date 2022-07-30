@@ -54,6 +54,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         })
+        CheckEnv().stringFromJNI()
         binding.checkCpu.text = "CheckCpu:" + CheckEnv.getCpuInfo().toString()
         binding.checkDebug.text = "CheckDebug:" + CheckEnv.getDebugInfo().toString()
         binding.checkMultiOpen.text = "CheckMultiOpen:" + CheckEnv.getMoreOpenInfo().toString()

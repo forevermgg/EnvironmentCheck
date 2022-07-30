@@ -6,6 +6,7 @@
 #define ENVIRONMENTCHECK_MAINVIEWMODEL_H
 
 #include "ViewModel.h"
+#include "thread_host.h"
 
 class MainViewModel : ViewModel {
  public:
@@ -14,6 +15,9 @@ class MainViewModel : ViewModel {
   virtual void unBind() override;
   virtual void bind() override;
   virtual void handle(const int key, const std::string &value) override;
+
+ private:
+  std::shared_ptr<FOREVER::ThreadHost> thread_host_;
 };
 
 #endif  // ENVIRONMENTCHECK_MAINVIEWMODEL_H

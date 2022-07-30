@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <string>
+
 #include "../../../../third_party/snappy/snappy.h"
 
 inline void throw_exception(JNIEnv *env, jobject self, int errorCode) {
@@ -275,9 +276,12 @@ Java_com_mgg_environmentcheck_SnappyNative_isValidCompressedBuffer__JJJ(
   return ret;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_com_mgg_environmentcheck_SnappyNative_arrayCopy(
-    JNIEnv *env, jobject self, jobject input, jint offset, jint length,
-    jobject output, jint output_offset) {
+extern "C" JNIEXPORT void JNICALL
+Java_com_mgg_environmentcheck_SnappyNative_arrayCopy(JNIEnv *env, jobject self,
+                                                     jobject input, jint offset,
+                                                     jint length,
+                                                     jobject output,
+                                                     jint output_offset) {
   char *src = (char *)env->GetPrimitiveArrayCritical((jarray)input, 0);
   char *dest = (char *)env->GetPrimitiveArrayCritical((jarray)output, 0);
   if (src == 0 || dest == 0) {
