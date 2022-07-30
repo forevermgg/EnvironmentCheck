@@ -29,9 +29,7 @@ void ViewModel::bind() {
   LOGE("ViewModel::bind()")
 }
 
-void ViewModel::unBind() {
-  LOGE("ViewModel::unBind()")
-}
+void ViewModel::unBind() { LOGE("ViewModel::unBind()") }
 
 void ViewModel::handle(const int key, const std::string &value) {
   LOGE("ViewModel handle()")
