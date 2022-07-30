@@ -61,6 +61,18 @@ add_library( # Sets the name of the library.
         timer/time_point.cc
         timer/chrono_timestamp_provider.h
         timer/chrono_timestamp_provider.cc
+        synchronization/atomic_object.h
+        synchronization/waitable_event.h
+        synchronization/waitable_event.cc
+        synchronization/sync_switch.h
+        synchronization/sync_switch.cc
+        synchronization/shared_mutex.h
+        synchronization/shared_mutex_std.h
+        synchronization/shared_mutex_std.cc
+        synchronization/semaphore.h
+        synchronization/semaphore.cc
+        synchronization/count_down_latch.h
+        synchronization/count_down_latch.cc
         )
 
 include_directories(${HASH_LIBRARY_SRC}/)

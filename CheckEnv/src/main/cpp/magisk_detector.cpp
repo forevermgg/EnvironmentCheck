@@ -72,9 +72,9 @@ static inline int scan_maps() {
   return 0;
 }
 
-extern "C"
-JNIEXPORT jint JNICALL
-Java_com_mgg_checkenv_magisk_MagiskDetector_haveMagicMount(JNIEnv *env, jobject thiz) {
+extern "C" JNIEXPORT jint JNICALL
+Java_com_mgg_checkenv_magisk_MagiskDetector_haveMagicMount(JNIEnv *env,
+                                                           jobject thiz) {
   scan_mountinfo();
   if (minor == -1 || major == -1) return -1;
   return scan_maps();

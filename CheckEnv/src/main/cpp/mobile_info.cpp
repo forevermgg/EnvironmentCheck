@@ -15,15 +15,18 @@ using std::string;
 string getBootId() {
   string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/boot_id");
   if (strlen(bootId.c_str()) == 0) {
-    bootId = FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/boot_id");
+    bootId =
+        FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/boot_id");
   }
   return bootId;
 }
 
 string getEntropyAvail() {
-  string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/entropy_avail");
+  string bootId =
+      FOREVER::COMMON::readFile("/proc/sys/kernel/random/entropy_avail");
   if (strlen(bootId.c_str()) == 0) {
-    bootId = FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/entropy_avail");
+    bootId = FOREVER::COMMON::shellExecute(
+        "cat /proc/sys/kernel/random/entropy_avail");
   }
   return bootId;
 }
@@ -31,23 +34,28 @@ string getEntropyAvail() {
 string getPoolSize() {
   string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/poolsize");
   if (strlen(bootId.c_str()) == 0) {
-    bootId = FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/poolsize");
+    bootId =
+        FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/poolsize");
   }
   return bootId;
 }
 
 string getReadWakeupThreshold() {
-  string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/read_wakeup_threshold");
+  string bootId = FOREVER::COMMON::readFile(
+      "/proc/sys/kernel/random/read_wakeup_threshold");
   if (strlen(bootId.c_str()) == 0) {
-    bootId = FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/read_wakeup_threshold");
+    bootId = FOREVER::COMMON::shellExecute(
+        "cat /proc/sys/kernel/random/read_wakeup_threshold");
   }
   return bootId;
 }
 
 string getWriteWakeupThreshold() {
-  string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/write_wakeup_threshold");
+  string bootId = FOREVER::COMMON::readFile(
+      "/proc/sys/kernel/random/write_wakeup_threshold");
   if (strlen(bootId.c_str()) == 0) {
-    bootId = FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/write_wakeup_threshold");
+    bootId = FOREVER::COMMON::shellExecute(
+        "cat /proc/sys/kernel/random/write_wakeup_threshold");
   }
   return bootId;
 }
@@ -61,10 +69,11 @@ string getUuid() {
 }
 
 string getURandomMinReseedSecs() {
-  string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/urandom_min_reseed_secs");
+  string bootId = FOREVER::COMMON::readFile(
+      "/proc/sys/kernel/random/urandom_min_reseed_secs");
   if (strlen(bootId.c_str()) == 0) {
-    bootId =
-            FOREVER::COMMON::shellExecute("cat /proc/sys/kernel/random/urandom_min_reseed_secs");
+    bootId = FOREVER::COMMON::shellExecute(
+        "cat /proc/sys/kernel/random/urandom_min_reseed_secs");
   }
   return bootId;
 }
@@ -193,8 +202,9 @@ string checkHookByMap() {
 
 string checkHookByPackage() {
   string data;
-  if (FOREVER::COMMON::existsFile("/data/data/de.robv.android.xposed.installer") ||
-          FOREVER::COMMON::existsFile("/data/data/io.va.exposed")) {
+  if (FOREVER::COMMON::existsFile(
+          "/data/data/de.robv.android.xposed.installer") ||
+      FOREVER::COMMON::existsFile("/data/data/io.va.exposed")) {
     data += "xposed";
   }
   if (FOREVER::COMMON::existsFile("/data/data/com.saurik.substrate")) {

@@ -40,6 +40,6 @@ static jstring StringToJavaString(JNIEnv *env, const std::string &u8_string) {
       reinterpret_cast<const jchar *>(u16_string.data()), u16_string.length());
   return result;
 }
-} // namespace STRING_CONVERT
-} // namespace FOREVER
+}  // namespace STRING_CONVERT
+}  // namespace FOREVER
 #endif  // JNI_STRING_UTIL

@@ -4193,21 +4193,21 @@ LSS_INLINE int LSS_NAME(readahead)(int fd, loff_t off, int len) {
 #endif
 #endif
 #if defined(__aarch64__)
-LSS_INLINE _syscall3(int, dup3, int, s, int, d, int, f) LSS_INLINE
-    _syscall4(int, newfstatat, int, dirfd, const char *, pathname,
-              struct kernel_stat *, buf, int, flags)
-        LSS_INLINE _syscall2(int, pipe2, int *, pipefd, int, flags) LSS_INLINE
-    _syscall5(int, ppoll, struct kernel_pollfd *, u, unsigned int, n,
-              const struct kernel_timespec *, t, const struct kernel_sigset_t *,
-              sigmask, size_t, s)
-        LSS_INLINE _syscall4(int, readlinkat, int, d, const char *, p, char *,
-                             b, size_t, s)
+LSS_INLINE _syscall3(int, dup3, int, s, int, d, int, f)
+    LSS_INLINE _syscall4(int, newfstatat, int, dirfd, const char *, pathname,
+                         struct kernel_stat *, buf, int, flags) LSS_INLINE
+    _syscall2(int, pipe2, int *, pipefd, int, flags)
+        LSS_INLINE _syscall5(int, ppoll, struct kernel_pollfd *, u,
+                             unsigned int, n, const struct kernel_timespec *, t,
+                             const struct kernel_sigset_t *, sigmask, size_t,
+                             s) LSS_INLINE
+    _syscall4(int, readlinkat, int, d, const char *, p, char *, b, size_t, s)
 #endif
 /*
  * Polyfills for deprecated syscalls.
  */
 #if defined(__aarch64__)
-            LSS_INLINE int LSS_NAME(dup2)(int s, int d) {
+        LSS_INLINE int LSS_NAME(dup2)(int s, int d) {
   return LSS_NAME(dup3)(s, d, 0);
 }
 LSS_INLINE int LSS_NAME(open)(const char *pathname, int flags, int mode) {

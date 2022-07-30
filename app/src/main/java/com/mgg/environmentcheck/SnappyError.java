@@ -1,10 +1,6 @@
 package com.mgg.environmentcheck;
 
-public class SnappyError
-		extends Error {
-	/**
-	 *
-	 */
+public class SnappyError extends Error {
 	private static final long serialVersionUID = 1L;
 	
 	private final SnappyErrorCode errorCode;

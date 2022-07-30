@@ -1,5 +1,6 @@
 package com.mgg.environmentcheck
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -26,13 +27,13 @@ class TestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     fun bind(position: Int, msg: String) {
         /*viewModel.item.observe(this) {
             Timber.e("LifecycleViewHolderViewModel$it")
             itemView.findViewById<TextView>(R.id.tvContent).text = it
         }*/
-        itemView.findViewById<TestView>(R.id.mTestView).findViewById<TextView>(R.id.tvContent).text =
-            "position:$position : $msg"
+        itemView.findViewById<TestView>(R.id.mTestView).findViewById<TextView>(R.id.tvContent).text = "position:$position : $msg"
         Timber.e("bind position:$position : $msg")
     }
 

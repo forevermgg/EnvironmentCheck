@@ -92,13 +92,17 @@ Java_com_mgg_checkenv_sign_CheckSign_checkSignature(JNIEnv *env, jobject,
   hashByteArray(HASH_MD5, jbyteArray, size, certMD5);
 
   // strcmp(str1,str2)，若str1=str2，则返回零；若str1<str2，则返回负数；若str1>str2，则返回正数。
-  int cmpResult =
-      strcmp(certMD5, FOREVER::STRING_CONVERT::JavaStringToString(env, signature_md5).c_str());
+  int cmpResult = strcmp(
+      certMD5,
+      FOREVER::STRING_CONVERT::JavaStringToString(env, signature_md5).c_str());
 
   char resultStr[1000] = {0};
   strcat(resultStr, "真实签名：");
-  strcat(resultStr, FOREVER::STRING_CONVERT::JavaStringToString(env, signature_md5).c_str());
-  LOGE("真实签名： %s", FOREVER::STRING_CONVERT::JavaStringToString(env, signature_md5).c_str());
+  strcat(
+      resultStr,
+      FOREVER::STRING_CONVERT::JavaStringToString(env, signature_md5).c_str());
+  LOGE("真实签名： %s",
+       FOREVER::STRING_CONVERT::JavaStringToString(env, signature_md5).c_str());
   strcat(resultStr, "\n\n获取到的签名：");
   LOGE("获取到的签名： %s", certMD5);
   strcat(resultStr, certMD5);

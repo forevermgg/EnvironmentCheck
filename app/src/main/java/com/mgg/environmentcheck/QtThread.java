@@ -106,6 +106,4 @@ public class QtThread {
 			e.printStackTrace();
 		}
 	}
-	
-
 }

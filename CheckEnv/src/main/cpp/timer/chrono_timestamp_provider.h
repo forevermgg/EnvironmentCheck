@@ -5,8 +5,8 @@
 #ifndef FOREVER_TIME_CHRONO_TIMESTAMP_PROVIDER_H_
 #define FOREVER_TIME_CHRONO_TIMESTAMP_PROVIDER_H_
 
-#include "timestamp_provider.h"
 #include "time_point.h"
+#include "timestamp_provider.h"
 
 namespace FOREVER {
 

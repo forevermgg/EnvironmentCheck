@@ -211,7 +211,8 @@ Java_com_mgg_checkenv_multiopen_CheckMultiOpen_isNativeCheckSystemDualApp(
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_mgg_checkenv_multiopen_CheckMultiOpen_isNativeCheckUserDualAppByDataDir(
     JNIEnv *env, jobject, jstring data_dir) {
-  return isUserDualApp(FOREVER::STRING_CONVERT::JavaStringToString(env, data_dir));
+  return isUserDualApp(
+      FOREVER::STRING_CONVERT::JavaStringToString(env, data_dir));
 }
 
 extern "C" JNIEXPORT jint JNICALL
