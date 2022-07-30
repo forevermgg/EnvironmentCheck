@@ -4,7 +4,7 @@
 
 #include "jni_weak_ref.h"
 #include "jni_util.h"
-
+#include "../logging.h"
 namespace FOREVER {
 namespace jni {
 
@@ -45,7 +45,7 @@ ScopedJavaLocalRef<jobject> GetRealObject(JNIEnv* env, jweak obj) {
   if (obj) {
     real = env->NewLocalRef(obj);
     if (!real) {
-      /*FML_DLOG(ERROR) << "The real object has been deleted!";*/
+      FOREVER_DLOG(ERROR) << "The real object has been deleted!";
     }
   }
   return ScopedJavaLocalRef<jobject>(env, real);

@@ -28,12 +28,12 @@ class TaskRunnerChecker final {
 };
 
 #if !defined(NDEBUG)
-#define FML_DECLARE_TASK_RUNNER_CHECKER(c) FOREVER::TaskRunnerChecker c
-#define FML_DCHECK_TASK_RUNNER_IS_CURRENT(c) \
-  assert((c).RunsOnCreationTaskRunner())
+#define FOREVER_DECLARE_TASK_RUNNER_CHECKER(c) FOREVER::TaskRunnerChecker c
+#define FOREVER_DCHECK_TASK_RUNNER_IS_CURRENT(c) \
+  FOREVER_DCHECK((c).RunsOnCreationTaskRunner())
 #else
-#define FML_DECLARE_TASK_RUNNER_CHECKER(c)
-#define FML_DCHECK_TASK_RUNNER_IS_CURRENT(c) ((void)0)
+#define FOREVER_DECLARE_TASK_RUNNER_CHECKER(c)
+#define FOREVER_DCHECK_TASK_RUNNER_IS_CURRENT(c) ((void)0)
 #endif
 
 }  // namespace FOREVER

@@ -8,7 +8,7 @@
 #ifndef FOREVER_MEMORY_WEAK_PTR_H_
 #define FOREVER_MEMORY_WEAK_PTR_H_
 #include <pthread.h>
-
+#include "../logging.h"
 #include "../macros.h"
 
 namespace FOREVER {
@@ -39,12 +39,12 @@ class ThreadChecker final {
 };
 
 #if !defined(NDEBUG)
-#define FML_DECLARE_THREAD_CHECKER(c) FOREVER::ThreadChecker c
-#define FML_DCHECK_CREATION_THREAD_IS_CURRENT(c) \
-  assert(pthread_equal(c).IsCreationThreadCurrent())
+#define FOREVER_DECLARE_THREAD_CHECKER(c) FOREVER::ThreadChecker c
+#define FOREVER_DCHECK_CREATION_THREAD_IS_CURRENT(c) \
+  FOREVER_DCHECK(pthread_equal(c).IsCreationThreadCurrent())
 #else
-#define FML_DECLARE_THREAD_CHECKER(c)
-#define FML_DCHECK_CREATION_THREAD_IS_CURRENT(c) ((void)0)
+#define FOREVER_DECLARE_THREAD_CHECKER(c)
+#define FOREVER_DCHECK_CREATION_THREAD_IS_CURRENT(c) ((void)0)
 #endif
 
 }  // namespace FOREVER

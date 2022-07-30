@@ -5,7 +5,7 @@
 #include "jni_util.h"
 #include "../string_conversion.h"
 #include "../thread_local.h"
-
+#include "../logging.h"
 #include <sys/prctl.h>
 
 #include <string>
@@ -198,7 +198,7 @@ bool CheckException(JNIEnv* env) {
 
   jthrowable exception = env->ExceptionOccurred();
   env->ExceptionClear();
-  /*FML_LOG(ERROR) << fml::jni::GetJavaExceptionInfo(env, exception);*/
+  FOREVER_LOG(ERROR) << FOREVER::jni::GetJavaExceptionInfo(env, exception);
   env->DeleteLocalRef(exception);
   return false;
 }

@@ -20,11 +20,11 @@
 namespace FOREVER {
 
 struct DebugThreadChecker {
-  FML_DECLARE_THREAD_CHECKER(checker);
+  FOREVER_DECLARE_THREAD_CHECKER(checker);
 };
 
 struct DebugTaskRunnerChecker {
-  FML_DECLARE_TASK_RUNNER_CHECKER(checker);
+  FOREVER_DECLARE_TASK_RUNNER_CHECKER(checker);
 };
 
 // Forward declaration, so |WeakPtr<T>| can friend it.
@@ -110,7 +110,7 @@ class WeakPtr {
       : ptr_(ptr), flag_(std::move(flag)) {}
 
   virtual void CheckThreadSafety() const {
-    FML_DCHECK_CREATION_THREAD_IS_CURRENT(checker_.checker);
+    FOREVER_DCHECK_CREATION_THREAD_IS_CURRENT(checker_.checker);
   }
 
  private:
@@ -167,7 +167,7 @@ class TaskRunnerAffineWeakPtr : public WeakPtr<T> {
 
  protected:
   void CheckThreadSafety() const override {
-    FML_DCHECK_TASK_RUNNER_IS_CURRENT(checker_.checker);
+    FOREVER_DCHECK_TASK_RUNNER_IS_CURRENT(checker_.checker);
   }
 
  private:
@@ -254,7 +254,7 @@ class WeakPtrFactory {
   FOREVER::RefPtr<FOREVER::internal::WeakPtrFlag> flag_;
 
   void CheckThreadSafety() const {
-    FML_DCHECK_CREATION_THREAD_IS_CURRENT(checker_.checker);
+    FOREVER_DCHECK_CREATION_THREAD_IS_CURRENT(checker_.checker);
   }
 
   DebugThreadChecker checker_;
@@ -291,7 +291,7 @@ class TaskRunnerAffineWeakPtrFactory {
   FOREVER::RefPtr<FOREVER::internal::WeakPtrFlag> flag_;
 
   void CheckThreadSafety() const {
-    FML_DCHECK_TASK_RUNNER_IS_CURRENT(checker_.checker);
+    FOREVER_DCHECK_TASK_RUNNER_IS_CURRENT(checker_.checker);
   }
 
   DebugTaskRunnerChecker checker_;
