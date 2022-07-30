@@ -162,8 +162,8 @@ class MessageLoopTaskQueues
 
   std::atomic_int order_;
 
-  FML_FRIEND_MAKE_REF_COUNTED(MessageLoopTaskQueues);
-  FML_FRIEND_REF_COUNTED_THREAD_SAFE(MessageLoopTaskQueues);
+  FOREVER_FRIEND_MAKE_REF_COUNTED(MessageLoopTaskQueues);
+  FOREVER_FRIEND_REF_COUNTED_THREAD_SAFE(MessageLoopTaskQueues);
   FOREVER_DISALLOW_COPY_ASSIGN_AND_MOVE(MessageLoopTaskQueues);
 };
 

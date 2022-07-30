@@ -4,16 +4,17 @@
 
 #include <iostream>
 #include "thread_local.h"
+#include "logging.h"
 
 namespace FOREVER {
 namespace internal {
 
 ThreadLocalPointer::ThreadLocalPointer(void (*destroy)(void*)) {
-  assert(pthread_key_create(&key_, destroy) == 0);
+  FOREVER_CHECK(pthread_key_create(&key_, destroy) == 0);
 }
 
 ThreadLocalPointer::~ThreadLocalPointer() {
-  assert(pthread_key_delete(key_) == 0);
+  FOREVER_CHECK(pthread_key_delete(key_) == 0);
 }
 
 void* ThreadLocalPointer::get() const {
@@ -24,9 +25,9 @@ void* ThreadLocalPointer::swap(void* ptr) {
   void* old_ptr = get();
   int err = pthread_setspecific(key_, ptr);
   if (err) {
-    std::cout << "pthread_setspecific failed (" << err
+    FOREVER_CHECK(false) << "pthread_setspecific failed (" << err
                 << "): " << strerror(err);
-    assert(false);
+    FOREVER_CHECK(false);
   }
   return old_ptr;
 }

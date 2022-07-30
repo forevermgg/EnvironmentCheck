@@ -3,6 +3,7 @@
 #include <deque>
 #include <memory>
 
+#include "log_settings.h"
 #include "qjnienvironment.h"
 #include "qjnihelpers_p.h"
 #include "qjniobject.h"
@@ -62,6 +63,11 @@ jint QtAndroidPrivate::initJNI(JavaVM *vm, JNIEnv *env) {
   }*/
   env->DeleteLocalRef(jQtNative);
   if (QJniEnvironment::checkAndClearExceptions(env)) return JNI_ERR;
+  {
+    FOREVER::LogSettings log_settings;
+    log_settings.min_log_level = FOREVER::LOG_INFO;
+    FOREVER::SetLogSettings(log_settings);
+  }
   return JNI_OK;
 }
 

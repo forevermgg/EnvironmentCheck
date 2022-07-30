@@ -48,7 +48,7 @@ class CopyableLambda {
 //
 // std::unique_ptr<Foo> foo = ...
 // std::function<int()> func =
-//     fml::MakeCopyable([bar = std::move(foo)]() { return bar->count(); });
+//     FOREVER::MakeCopyable([bar = std::move(foo)]() { return bar->count(); });
 //
 // Notice that the return type of MakeCopyable is rarely used directly. Instead,
 // callers typically erase the type by implicitly converting the return value

@@ -11,12 +11,12 @@ WeakPtrFlag::WeakPtrFlag() : is_valid_(true) {}
 
 WeakPtrFlag::~WeakPtrFlag() {
   // Should be invalidated before destruction.
-  assert(!is_valid_);
+  FOREVER_DCHECK(!is_valid_);
 }
 
 void WeakPtrFlag::Invalidate() {
   // Invalidation should happen exactly once.
-  assert(is_valid_);
+  FOREVER_DCHECK(is_valid_);
   is_valid_ = false;
 }
 

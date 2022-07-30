@@ -5,13 +5,6 @@
 #ifndef FOREVER_EINTR_WRAPPER_H_
 #define FOREVER_EINTR_WRAPPER_H_
 #include <errno.h>
-#if defined(FML_OS_WIN)
-
-// Windows has no concept of EINTR.
-#define FML_HANDLE_EINTR(x) (x)
-#define FML_IGNORE_EINTR(x) (x)
-
-#else
 
 #define FOREVER_HANDLE_EINTR(x)                             \
   ({                                                        \
@@ -33,7 +26,5 @@
     } while (0);                                          \
     eintr_wrapper_result;                                 \
   })
-
-#endif  // defined(FML_OS_WIN)
 
 #endif  // FOREVER_EINTR_WRAPPER_H_

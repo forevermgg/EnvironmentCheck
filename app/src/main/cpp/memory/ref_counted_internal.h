@@ -11,6 +11,7 @@
 #include <cassert>
 
 #include "../macros.h"
+#include "../logging.h"
 
 namespace FOREVER {
 namespace internal {
@@ -21,8 +22,8 @@ class RefCountedThreadSafeBase {
   // AddRef，增加引用计数，同时确保操作的原子性
   void AddRef() const {
 #ifndef NDEBUG
-    assert(!adoption_required_);
-    assert(!destruction_started_);
+    FOREVER_DCHECK(!adoption_required_);
+    FOREVER_DCHECK(!destruction_started_);
 #endif
     // std::memory_order_relaxed，仅保证此操作的原子性
     ref_count_.fetch_add(1u, std::memory_order_relaxed);
@@ -32,7 +33,7 @@ class RefCountedThreadSafeBase {
     return ref_count_.load(std::memory_order_acquire) == 1u;
   }
 
-  void AssertHasOneRef() const { assert(HasOneRef()); }
+  void AssertHasOneRef() const { FOREVER_DCHECK(HasOneRef()); }
 
  protected:
   RefCountedThreadSafeBase();
@@ -42,10 +43,10 @@ class RefCountedThreadSafeBase {
   // Release，减少引用计数，同时确保操作的原子性
   bool Release() const {
 #ifndef NDEBUG
-    assert(!adoption_required_);
-    assert(!destruction_started_);
+    FOREVER_DCHECK(!adoption_required_);
+    FOREVER_DCHECK(!destruction_started_);
 #endif
-    assert(ref_count_.load(std::memory_order_acquire) != 0u);
+    FOREVER_DCHECK(ref_count_.load(std::memory_order_acquire) != 0u);
     // TODO(vtl): We could add the following:
     //     if (ref_count_.load(std::memory_order_relaxed) == 1u) {
     // #ifndef NDEBUG
@@ -71,7 +72,7 @@ class RefCountedThreadSafeBase {
 
 #ifndef NDEBUG
   void Adopt() {
-    assert(adoption_required_);
+    FOREVER_DCHECK(adoption_required_);
     adoption_required_ = false;
   }
 #endif
@@ -102,9 +103,9 @@ inline RefCountedThreadSafeBase::RefCountedThreadSafeBase()
 
 inline RefCountedThreadSafeBase::~RefCountedThreadSafeBase() {
 #ifndef NDEBUG
-  assert(!adoption_required_);
+  FOREVER_DCHECK(!adoption_required_);
   // Should only be destroyed as a result of |Release()|.
-  assert(!destruction_started_);
+  FOREVER_DCHECK(!destruction_started_);
 #endif
 }
 

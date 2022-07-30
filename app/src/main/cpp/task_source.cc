@@ -5,6 +5,7 @@
 #define FOREVER_USED_ON_EMBEDDER
 
 #include "task_source.h"
+#include "logging.h"
 
 namespace FOREVER {
 
@@ -61,7 +62,7 @@ bool TaskSource::IsEmpty() const {
 }
 
 TaskSource::TopTask TaskSource::Top() const {
-  assert(!IsEmpty());
+  FOREVER_CHECK(!IsEmpty());
   if (secondary_pause_requests_ > 0 || secondary_task_queue_.empty()) {
     const auto& primary_top = primary_task_queue_.top();
     return {
@@ -97,7 +98,7 @@ void TaskSource::PauseSecondary() {
 
 void TaskSource::ResumeSecondary() {
   secondary_pause_requests_--;
-  assert(secondary_pause_requests_ >= 0);
+  FOREVER_DCHECK(secondary_pause_requests_ >= 0);
 }
 
 }  // namespace FOREVER

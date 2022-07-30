@@ -4,21 +4,22 @@
 
 #ifndef FOREVER_PLATFORM_LINUX_TIMER_FD_H_
 #define FOREVER_PLATFORM_LINUX_TIMER_FD_H_
-#include "../timer/time_point.h"
+
 // clang-format off
 #if __has_include(<sys/timerfd.h>) && \
     (!defined(__ANDROID_API__) || __ANDROID_API__ >= 19)
-    // sys/timerfd.h is always present in Android NDK due to unified headers,
-    // but timerfd functions are only available on API 19 or later.
+// sys/timerfd.h is always present in Android NDK due to unified headers,
+// but timerfd functions are only available on API 19 or later.
 // clang-format on
 
 #include <sys/timerfd.h>
+#include "../timer/time_point.h"
 
-#define FML_TIMERFD_AVAILABLE 1
+#define FOREVER_TIMERFD_AVAILABLE 1
 
 #else  // __has_include(<sys/timerfd.h>)
 
-#define FML_TIMERFD_AVAILABLE 0
+#define FOREVER_TIMERFD_AVAILABLE 0
 
 #include <sys/types.h>
 // Must come after sys/types
@@ -32,7 +33,9 @@
 
 int timerfd_create(int clockid, int flags);
 
-int timerfd_settime(int ufc, int flags, const struct itimerspec* utmr,
+int timerfd_settime(int ufc,
+                    int flags,
+                    const struct itimerspec* utmr,
                     struct itimerspec* otmr);
 
 #endif  // __has_include(<sys/timerfd.h>)
@@ -40,12 +43,12 @@ int timerfd_settime(int ufc, int flags, const struct itimerspec* utmr,
 namespace FOREVER {
 
 /// Rearms the timer to expire at the given time point.
-bool TimerRearm(int fd, FOREVER::TimePoint time_point);
+    bool TimerRearm(int fd, FOREVER::TimePoint time_point);
 
 /// Drains the timer FD and returns true if it has expired. This may be false in
 /// case the timer read is non-blocking and this routine was called before the
 /// timer expiry.
-bool TimerDrain(int fd);
+    bool TimerDrain(int fd);
 
 }  // namespace FOREVER
 

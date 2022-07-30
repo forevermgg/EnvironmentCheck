@@ -22,7 +22,7 @@ namespace FOREVER {
 // Such objects require *adoption* to obtain the first |RefPtr|, which is
 // accomplished using |AdoptRef| (see below). (This is due to such objects being
 // constructed with a reference count of 1. The adoption requirement is
-// enforced, at least in Debug builds, by assertions.)
+// enforced, at least in Debug builds, by FOREVER_CHECKions.)
 //
 // E.g., if |Foo| is an intrusively reference-counted class:
 //
@@ -122,12 +122,12 @@ class RefPtr final {
   T* get() const { return ptr_; }
 
   T& operator*() const {
-    assert(ptr_);
+    FOREVER_DCHECK(ptr_);
     return *ptr_;
   }
 
   T* operator->() const {
-    assert(ptr_);
+    FOREVER_DCHECK(ptr_);
     return ptr_;
   }
 
@@ -215,7 +215,7 @@ class RefPtr final {
   friend RefPtr<T> AdoptRef<T>(T*);
 
   enum AdoptTag { ADOPT };
-  RefPtr(T* ptr, AdoptTag) : ptr_(ptr) { assert(ptr_); }
+  RefPtr(T* ptr, AdoptTag) : ptr_(ptr) { FOREVER_DCHECK(ptr_); }
 
   T* ptr_;
 };

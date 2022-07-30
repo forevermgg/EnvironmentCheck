@@ -14,6 +14,7 @@
 #include "make_copyable.h"
 #include "task_source.h"
 #include "thread_local.h"
+#include "logging.h"
 
 namespace FOREVER {
 
@@ -74,7 +75,7 @@ MessageLoopTaskQueues::~MessageLoopTaskQueues() = default;
 void MessageLoopTaskQueues::Dispose(TaskQueueId queue_id) {
   std::lock_guard guard(queue_mutex_);
   const auto& queue_entry = queue_entries_.at(queue_id);
-  assert(queue_entry->subsumed_by == _kUnmerged);
+  FOREVER_DCHECK(queue_entry->subsumed_by == _kUnmerged);
   auto& subsumed_set = queue_entry->owner_of;
   for (auto& subsumed : subsumed_set) {
     queue_entries_.erase(subsumed);
@@ -86,7 +87,7 @@ void MessageLoopTaskQueues::Dispose(TaskQueueId queue_id) {
 void MessageLoopTaskQueues::DisposeTasks(TaskQueueId queue_id) {
   std::lock_guard guard(queue_mutex_);
   const auto& queue_entry = queue_entries_.at(queue_id);
-  assert(queue_entry->subsumed_by == _kUnmerged);
+  FOREVER_DCHECK(queue_entry->subsumed_by == _kUnmerged);
   auto& subsumed_set = queue_entry->owner_of;
   queue_entry->task_source->ShutDown();
   for (auto& subsumed : subsumed_set) {
@@ -182,7 +183,7 @@ void MessageLoopTaskQueues::AddTaskObserver(TaskQueueId queue_id,
                                             intptr_t key,
                                             const FOREVER::closure& callback) {
   std::lock_guard guard(queue_mutex_);
-  assert(callback != nullptr);
+  FOREVER_DCHECK(callback != nullptr) << "Observer callback must be non-null.";
   queue_entries_.at(queue_id)->task_observers[key] = callback;
 }
 
@@ -218,8 +219,8 @@ std::vector<FOREVER::closure> MessageLoopTaskQueues::GetObserversToNotify(
 void MessageLoopTaskQueues::SetWakeable(TaskQueueId queue_id,
                                         FOREVER::Wakeable* wakeable) {
   std::lock_guard guard(queue_mutex_);
-  assert(!queue_entries_.at(queue_id)->wakeable);
-  //    << "Wakeable can only be set once.";
+  FOREVER_CHECK(!queue_entries_.at(queue_id)->wakeable)
+          << "Wakeable can only be set once.";
   queue_entries_.at(queue_id)->wakeable = wakeable;
 }
 
@@ -240,27 +241,27 @@ bool MessageLoopTaskQueues::Merge(TaskQueueId owner, TaskQueueId subsumed) {
 
   // Ensure owner_entry->subsumed_by being _kUnmerged
   if (owner_entry->subsumed_by != _kUnmerged) {
-    /*FML_LOG(WARNING) << "Thread merging failed: owner_entry was already "
+    FOREVER_LOG(WARNING) << "Thread merging failed: owner_entry was already "
                         "subsumed by others, owner="
                      << owner << ", subsumed=" << subsumed
-                     << ", owner->subsumed_by=" << owner_entry->subsumed_by;*/
+                     << ", owner->subsumed_by=" << owner_entry->subsumed_by;
     return false;
   }
   // Ensure subsumed_entry->owner_of being empty
   if (!subsumed_entry->owner_of.empty()) {
-    /*FML_LOG(WARNING)
+    FOREVER_LOG(WARNING)
         << "Thread merging failed: subsumed_entry already owns others, owner="
         << owner << ", subsumed=" << subsumed
-        << ", subsumed->owner_of.size()=" << subsumed_entry->owner_of.size();*/
+        << ", subsumed->owner_of.size()=" << subsumed_entry->owner_of.size();
     return false;
   }
   // Ensure subsumed_entry->subsumed_by being _kUnmerged
   if (subsumed_entry->subsumed_by != _kUnmerged) {
-    /*FML_LOG(WARNING) << "Thread merging failed: subsumed_entry was already "
+    FOREVER_LOG(WARNING) << "Thread merging failed: subsumed_entry was already "
                         "subsumed by others, owner="
                      << owner << ", subsumed=" << subsumed
                      << ", subsumed->subsumed_by="
-                     << subsumed_entry->subsumed_by;*/
+                     << subsumed_entry->subsumed_by;
     return false;
   }
   // All checking is OK, set merged state.
@@ -278,28 +279,28 @@ bool MessageLoopTaskQueues::Unmerge(TaskQueueId owner, TaskQueueId subsumed) {
   std::lock_guard guard(queue_mutex_);
   const auto& owner_entry = queue_entries_.at(owner);
   if (owner_entry->owner_of.empty()) {
-    /*FML_LOG(WARNING)
+    FOREVER_LOG(WARNING)
         << "Thread unmerging failed: owner_entry doesn't own anyone, owner="
-        << owner << ", subsumed=" << subsumed;*/
+        << owner << ", subsumed=" << subsumed;
     return false;
   }
   if (owner_entry->subsumed_by != _kUnmerged) {
-    /*FML_LOG(WARNING)
+    FOREVER_LOG(WARNING)
         << "Thread unmerging failed: owner_entry was subsumed by others, owner="
         << owner << ", subsumed=" << subsumed
-        << ", owner_entry->subsumed_by=" << owner_entry->subsumed_by;*/
+        << ", owner_entry->subsumed_by=" << owner_entry->subsumed_by;
     return false;
   }
   if (queue_entries_.at(subsumed)->subsumed_by == _kUnmerged) {
-    /*FML_LOG(WARNING) << "Thread unmerging failed: subsumed_entry wasn't "
+    FOREVER_LOG(WARNING) << "Thread unmerging failed: subsumed_entry wasn't "
                         "subsumed by others, owner="
-                     << owner << ", subsumed=" << subsumed;*/
+                     << owner << ", subsumed=" << subsumed;
     return false;
   }
   if (owner_entry->owner_of.find(subsumed) == owner_entry->owner_of.end()) {
-    /*FML_LOG(WARNING) << "Thread unmerging failed: owner_entry didn't own the "
+    FOREVER_LOG(WARNING) << "Thread unmerging failed: owner_entry didn't own the "
                         "given subsumed queue id, owner="
-                     << owner << ", subsumed=" << subsumed;*/
+                     << owner << ", subsumed=" << subsumed;
     return false;
   }
 
@@ -375,10 +376,10 @@ FOREVER::TimePoint MessageLoopTaskQueues::GetNextWakeTimeUnlocked(
 
 TaskSource::TopTask MessageLoopTaskQueues::PeekNextTaskUnlocked(
     TaskQueueId owner) const {
-  assert(HasPendingTasksUnlocked(owner));
+  FOREVER_DCHECK(HasPendingTasksUnlocked(owner));
   const auto& entry = queue_entries_.at(owner);
   if (entry->owner_of.empty()) {
-    assert(!entry->task_source->IsEmpty());
+    FOREVER_CHECK(!entry->task_source->IsEmpty());
     return entry->task_source->Top();
   }
 
@@ -404,7 +405,7 @@ TaskSource::TopTask MessageLoopTaskQueues::PeekNextTaskUnlocked(
   }
   // At least one task at the top because PeekNextTaskUnlocked() is called after
   // HasPendingTasksUnlocked()
-  assert(top_task.has_value());
+  FOREVER_CHECK(top_task.has_value());
   return top_task.value();
 }
 

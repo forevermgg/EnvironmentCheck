@@ -43,8 +43,8 @@ class MessageLoopAndroid : public MessageLoopImpl {
 
   void OnEventFired();
 
-  FML_FRIEND_MAKE_REF_COUNTED(MessageLoopAndroid);
-  FML_FRIEND_REF_COUNTED_THREAD_SAFE(MessageLoopAndroid);
+  FOREVER_FRIEND_MAKE_REF_COUNTED(MessageLoopAndroid);
+  FOREVER_FRIEND_REF_COUNTED_THREAD_SAFE(MessageLoopAndroid);
   FOREVER_DISALLOW_COPY_AND_ASSIGN(MessageLoopAndroid);
 };
 

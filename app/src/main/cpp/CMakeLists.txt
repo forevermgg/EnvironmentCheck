@@ -37,14 +37,14 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        java_interop.h
-        http.h
-        http.cpp
+        log_level.h
+        log_settings_state.cc
+        log_settings.h
+        log_settings.cc
         logging.h
-        logging.cpp
+        logging.cc
         macros.h
         log_utils.h
-        log_level.h
         jni_string.hpp
         qtnamespacemacros.h
         qglobal.h

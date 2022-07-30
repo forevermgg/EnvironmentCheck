@@ -36,7 +36,7 @@ void TaskRunner::PostDelayedTask(const FOREVER::closure& task,
 }
 
 TaskQueueId TaskRunner::GetTaskQueueId() {
-  assert(loop_);
+  FOREVER_DCHECK(loop_);
   return loop_->GetTaskQueueId();
 }
 
@@ -54,7 +54,7 @@ bool TaskRunner::RunsTasksOnCurrentThread() {
 
 void TaskRunner::RunNowOrPostTask(FOREVER::RefPtr<FOREVER::TaskRunner> runner,
                                   const FOREVER::closure& task) {
-  assert(runner);
+  FOREVER_DCHECK(runner);
   if (runner->RunsTasksOnCurrentThread()) {
     task();
   } else {

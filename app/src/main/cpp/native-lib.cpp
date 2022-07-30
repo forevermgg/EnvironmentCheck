@@ -4,8 +4,6 @@
 
 #include <string>
 
-#include "http.h"
-#include "java_interop.h"
 #include "json/json.h"
 #include "log_utils.h"
 #include "logging.h"
@@ -48,30 +46,6 @@ Java_com_mgg_environmentcheck_MainActivity_stringFromJNI(JNIEnv *env,
   return (*env).NewStringUTF("Hello from JNI !  Compiled with ABI " ABI ".");
 }
 
-std::vector<std::string> get_change_titles(const std::string &cacert_path) {
-  std::string error;
-  auto result = curlssl::http::Client(cacert_path)
-                    .get(
-                        "https://android-review.googlesource.com/changes/"
-                        "?q=status:open&n=10",
-                        &error);
-  if (!result) {
-    return {error.c_str()};
-  }
-
-  // Strip XSSI defense prefix:
-  // https://gerrit-review.googlesource.com/Documentation/rest-api.html#output
-  const std::string payload = result.value().substr(5);
-
-  Json::Value root;
-  std::istringstream(payload) >> root;
-  std::vector<std::string> titles;
-  for (const auto &change : root) {
-    titles.push_back(change["subject"].asString());
-  }
-  return titles;
-}
-
 jobject getApplication(JNIEnv *env) {
   jobject application = nullptr;
   jclass activity_thread_clz = env->FindClass("android/app/ActivityThread");
@@ -95,6 +69,8 @@ jobject getApplication(JNIEnv *env) {
 extern "C" JNIEXPORT void JNICALL
 Java_com_mgg_environmentcheck_MainActivity_testToast(JNIEnv *env,
                                                      jobject activity) {
+  FOREVER_LOG(ERROR) << "FOREVER "
+                     << " testToast";
   QJniObject javaString = QJniObject::fromString("test toast");
   QJniObject toast = QJniObject::callStaticObjectMethod(
       "android/widget/Toast", "makeText",
@@ -102,17 +78,4 @@ Java_com_mgg_environmentcheck_MainActivity_testToast(JNIEnv *env,
       "Toast;",
       getApplication(env), javaString.object(), jint(1));
   toast.callMethod<void>("show");
-}
-
-extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_mgg_environmentcheck_MainActivity_getGerritChanges(
-    JNIEnv *env, jobject thiz, jstring cacert_java) {
-  if (cacert_java == nullptr) {
-    curlssl::logging::FatalError(env, "cacert argument cannot be null");
-  }
-
-  const std::string cacert =
-      curlssl::jni::Convert<std::string>::from(env, cacert_java);
-  return curlssl::jni::Convert<jobjectArray, jstring>::from(
-      env, get_change_titles(cacert));
 }

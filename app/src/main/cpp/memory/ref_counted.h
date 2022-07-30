@@ -21,13 +21,13 @@ namespace FOREVER {
 //
 // |~Foo()| *may* be made private (e.g., to avoid accidental deletion of objects
 // while there are still references to them), |Foo| should friend
-// |RefCountedThreadSafe<Foo>|; use |FML_FRIEND_REF_COUNTED_THREAD_SAFE()|
+// |RefCountedThreadSafe<Foo>|; use |FOREVER_FRIEND_REF_COUNTED_THREAD_SAFE()|
 // for this:
 //
 //   class Foo : public RefCountedThreadSafe<Foo> {
 //     ...
 //    private:
-//     FML_FRIEND_REF_COUNTED_THREAD_SAFE(Foo);
+//     FOREVER_FRIEND_REF_COUNTED_THREAD_SAFE(Foo);
 //     ~Foo();
 //     ...
 //   };
@@ -126,13 +126,13 @@ class RefCountedThreadSafe
 
 // If you subclass |RefCountedThreadSafe| and want to keep your destructor
 // private, use this. (See the example above |RefCountedThreadSafe|.)
-#define FML_FRIEND_REF_COUNTED_THREAD_SAFE(T) \
+#define FOREVER_FRIEND_REF_COUNTED_THREAD_SAFE(T) \
   friend class ::FOREVER::RefCountedThreadSafe<T>
 
 // If you want to keep your constructor(s) private and still want to use
 // |MakeRefCounted<T>()|, use this. (See the example above
 // |RefCountedThreadSafe|.)
-#define FML_FRIEND_MAKE_REF_COUNTED(T) \
+#define FOREVER_FRIEND_MAKE_REF_COUNTED(T) \
   friend class ::FOREVER::internal::MakeRefCountedHelper<T>
 
 }  // namespace FOREVER

@@ -5,11 +5,13 @@
 #define FML_USED_ON_EMBEDDER
 
 #include "message_loop_impl.h"
+#include "logging.h"
 
 #include <algorithm>
 #include <vector>
 
 #include "android/message_loop_android.h"
+#include "message_loop.h"
 
 namespace FOREVER {
 
@@ -30,7 +32,7 @@ MessageLoopImpl::~MessageLoopImpl() {
 
 void MessageLoopImpl::PostTask(const FOREVER::closure& task,
                                FOREVER::TimePoint target_time) {
-  assert(task != nullptr);
+  FOREVER_DCHECK(task != nullptr);
   if (terminated_) {
     // If the message loop has already been terminated, PostTask should destruct
     // |task| synchronously within this function.
@@ -41,21 +43,21 @@ void MessageLoopImpl::PostTask(const FOREVER::closure& task,
 
 void MessageLoopImpl::AddTaskObserver(intptr_t key,
                                       const FOREVER::closure& callback) {
-  assert(callback != nullptr);
-  /*FML_DCHECK(MessageLoop::GetCurrent().GetLoopImpl().get() == this)
+  FOREVER_DCHECK(callback != nullptr);
+  FOREVER_DCHECK(MessageLoop::GetCurrent().GetLoopImpl().get() == this)
       << "Message loop task observer must be added on the same thread as the "
-         "loop.";*/
+         "loop.";
   if (callback != nullptr) {
     task_queue_->AddTaskObserver(queue_id_, key, callback);
   } else {
-    // FML_LOG(ERROR) << "Tried to add a null TaskObserver.";
+    FOREVER_LOG(ERROR) << "Tried to add a null TaskObserver.";
   }
 }
 
 void MessageLoopImpl::RemoveTaskObserver(intptr_t key) {
-  /*FML_DCHECK(MessageLoop::GetCurrent().GetLoopImpl().get() == this)
+  FOREVER_DCHECK(MessageLoop::GetCurrent().GetLoopImpl().get() == this)
       << "Message loop task observer must be removed from the same thread as "
-         "the loop.";*/
+         "the loop.";
   task_queue_->RemoveTaskObserver(queue_id_, key);
 }
 

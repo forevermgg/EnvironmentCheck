@@ -68,8 +68,8 @@ class TaskRunner : public FOREVER::RefCountedThreadSafe<TaskRunner>,
  private:
   FOREVER::RefPtr<MessageLoopImpl> loop_;
 
-  FML_FRIEND_MAKE_REF_COUNTED(TaskRunner);
-  FML_FRIEND_REF_COUNTED_THREAD_SAFE(TaskRunner);
+  FOREVER_FRIEND_MAKE_REF_COUNTED(TaskRunner);
+  FOREVER_FRIEND_REF_COUNTED_THREAD_SAFE(TaskRunner);
   FOREVER_DISALLOW_COPY_AND_ASSIGN(TaskRunner);
 };
 

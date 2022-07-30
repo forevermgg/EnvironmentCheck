@@ -8,8 +8,9 @@
 #include <unistd.h>
 
 #include "../eintr_wrapper.h"
+#include "../logging.h"
 
-#if FML_TIMERFD_AVAILABLE == 0
+#if FOREVER_TIMERFD_AVAILABLE == 0
 
 #include <asm/unistd.h>
 #include <sys/syscall.h>
@@ -18,17 +19,14 @@ int timerfd_create(int clockid, int flags) {
   return syscall(__NR_timerfd_create, clockid, flags);
 }
 
-int timerfd_settime(int ufc,
-                    int flags,
-                    const struct itimerspec* utmr,
+int timerfd_settime(int ufc, int flags, const struct itimerspec* utmr,
                     struct itimerspec* otmr) {
   return syscall(__NR_timerfd_settime, ufc, flags, utmr, otmr);
 }
 
-#endif  // FML_TIMERFD_AVAILABLE == 0
+#endif  // FOREVER_TIMERFD_AVAILABLE == 0
 
 namespace FOREVER {
-
 #ifndef NSEC_PER_SEC
 #define NSEC_PER_SEC 1000000000
 #endif
@@ -49,7 +47,7 @@ bool TimerRearm(int fd, FOREVER::TimePoint time_point) {
 
   int result = ::timerfd_settime(fd, TFD_TIMER_ABSTIME, &spec, nullptr);
   if (result != 0) {
-    /*FML_DLOG(ERROR) << "timerfd_settime err:" << strerror(errno);*/
+    FOREVER_DLOG(ERROR) << "timerfd_settime err:" << strerror(errno);
   }
   return result == 0;
 }
@@ -57,11 +55,11 @@ bool TimerRearm(int fd, FOREVER::TimePoint time_point) {
 bool TimerDrain(int fd) {
   // 8 bytes must be read from a signaled timer file descriptor when signaled.
   uint64_t fire_count = 0;
-  ssize_t size = FOREVER_HANDLE_EINTR(::read(fd, &fire_count, sizeof(uint64_t)));
+  ssize_t size =
+      FOREVER_HANDLE_EINTR(::read(fd, &fire_count, sizeof(uint64_t)));
   if (size != sizeof(uint64_t)) {
     return false;
   }
   return fire_count > 0;
 }
-
 }  // namespace FOREVER

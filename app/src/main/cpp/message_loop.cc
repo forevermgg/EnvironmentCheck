@@ -11,6 +11,7 @@
 #include "message_loop_impl.h"
 #include "task_runner.h"
 #include "thread_local.h"
+#include "logging.h"
 
 namespace FOREVER {
 
@@ -18,9 +19,9 @@ FOREVER_THREAD_LOCAL ThreadLocalUniquePtr<MessageLoop> tls_message_loop;
 
 MessageLoop& MessageLoop::GetCurrent() {
   auto* loop = tls_message_loop.get();
-  /*FML_CHECK(loop != nullptr)
+  FOREVER_CHECK(loop != nullptr)
       << "MessageLoop::EnsureInitializedForCurrentThread was not called on "
-         "this thread prior to message loop use.";*/
+         "this thread prior to message loop use.";
   return *loop;
 }
 
@@ -39,8 +40,8 @@ bool MessageLoop::IsInitializedForCurrentThread() {
 MessageLoop::MessageLoop()
     : loop_(MessageLoopImpl::Create()),
       task_runner_(FOREVER::MakeRefCounted<FOREVER::TaskRunner>(loop_)) {
-  assert(loop_);
-  assert(task_runner_);
+  FOREVER_CHECK(loop_);
+  FOREVER_CHECK(task_runner_);
 }
 
 MessageLoop::~MessageLoop() = default;
@@ -75,9 +76,9 @@ void MessageLoop::RunExpiredTasksNow() {
 
 TaskQueueId MessageLoop::GetCurrentTaskQueueId() {
   auto* loop = tls_message_loop.get();
-  /*FML_CHECK(loop != nullptr)
+  FOREVER_CHECK(loop != nullptr)
       << "MessageLoop::EnsureInitializedForCurrentThread was not called on "
-         "this thread prior to message loop use.";*/
+         "this thread prior to message loop use.";
   return loop->GetLoopImpl()->GetTaskQueueId();
 }
 
