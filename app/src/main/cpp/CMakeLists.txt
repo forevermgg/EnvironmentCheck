@@ -110,6 +110,11 @@ add_library( # Sets the name of the library.
         memory/weak_ptr.h
         memory/weak_ptr_internal.h
         memory/weak_ptr_internal.cc
+        memory/atomic.h
+        memory/shared_ptr.h
+        memory/unique_ptr.h
+        internal/type_traits.h
+        meta/move.h
         timer/timestamp_provider.h
         timer/time_delta.h
         timer/time_point.h
