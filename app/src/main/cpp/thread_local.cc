@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "thread_local.h"
-#include "logging.h"
+#include "log/logging.h"
 
 namespace FOREVER {
 namespace internal {

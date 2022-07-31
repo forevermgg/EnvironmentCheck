@@ -9,7 +9,7 @@
 
 #include "MainViewModel.h"
 #include "jni_string.hpp"
-#include "log_utils.h"
+#include "log/log_utils.h"
 
 static void finalize_mixed(jlong ptr) {
   delete reinterpret_cast<ViewModel *>(ptr);

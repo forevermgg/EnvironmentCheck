@@ -5,7 +5,7 @@
 #define FOREVER_USED_ON_EMBEDDER
 
 #include "task_source.h"
-#include "logging.h"
+#include "log/logging.h"
 
 namespace FOREVER {
 

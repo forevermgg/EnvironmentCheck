@@ -4,7 +4,7 @@
 
 #include "jni_weak_ref.h"
 #include "jni_util.h"
-#include "../logging.h"
+#include "../log/logging.h"
 namespace FOREVER {
 namespace jni {
 

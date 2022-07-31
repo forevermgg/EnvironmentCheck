@@ -6,8 +6,8 @@
 
 #include "generated/loading_view_generated.h"
 #include "generated/toast_generated.h"
-#include "log_utils.h"
-#include "logging.h"
+#include "log/log_utils.h"
+#include "log/logging.h"
 #include "qjniobject.h"
 
 using namespace com::fbs::app;

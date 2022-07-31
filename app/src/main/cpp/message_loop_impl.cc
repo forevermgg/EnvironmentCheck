@@ -5,7 +5,7 @@
 #define FOREVER_USED_ON_EMBEDDER
 
 #include "message_loop_impl.h"
-#include "logging.h"
+#include "log/logging.h"
 
 #include <algorithm>
 #include <vector>

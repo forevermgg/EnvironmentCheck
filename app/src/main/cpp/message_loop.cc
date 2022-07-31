@@ -11,7 +11,7 @@
 #include "message_loop_impl.h"
 #include "task_runner.h"
 #include "thread_local.h"
-#include "logging.h"
+#include "log/logging.h"
 
 namespace FOREVER {
 

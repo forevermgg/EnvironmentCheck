@@ -8,7 +8,7 @@
 #include <unistd.h>
 
 #include "../eintr_wrapper.h"
-#include "../logging.h"
+#include "../log/logging.h"
 
 #if FOREVER_TIMERFD_AVAILABLE == 0
 

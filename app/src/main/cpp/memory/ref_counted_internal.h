@@ -10,7 +10,7 @@
 #include <atomic>
 #include <cassert>
 
-#include "../logging.h"
+#include "../log/logging.h"
 #include "../macros.h"
 
 namespace FOREVER {

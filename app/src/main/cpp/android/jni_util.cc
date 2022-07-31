@@ -5,7 +5,7 @@
 #include "jni_util.h"
 #include "../string_conversion.h"
 #include "../thread_local.h"
-#include "../logging.h"
+#include "../log/logging.h"
 #include <sys/prctl.h>
 
 #include <string>

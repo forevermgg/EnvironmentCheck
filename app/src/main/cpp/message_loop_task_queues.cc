@@ -14,7 +14,7 @@
 #include "make_copyable.h"
 #include "task_source.h"
 #include "thread_local.h"
-#include "logging.h"
+#include "log/logging.h"
 
 namespace FOREVER {
 

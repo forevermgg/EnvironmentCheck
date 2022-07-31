@@ -3,7 +3,7 @@
 #include <deque>
 #include <memory>
 
-#include "log_settings.h"
+#include "log/log_settings.h"
 #include "qjnienvironment.h"
 #include "qjnihelpers_p.h"
 #include "qjniobject.h"

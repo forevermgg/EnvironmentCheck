@@ -37,14 +37,14 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        log_level.h
-        log_settings_state.cc
-        log_settings.h
-        log_settings.cc
-        logging.h
-        logging.cc
+        log/log_level.h
+        log/log_settings_state.cc
+        log/log_settings.h
+        log/log_settings.cc
+        log/logging.h
+        log/logging.cc
         macros.h
-        log_utils.h
+        log/log_utils.h
         jni_string.hpp
         qtnamespacemacros.h
         qglobal.h

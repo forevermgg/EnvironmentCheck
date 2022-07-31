@@ -8,8 +8,8 @@
 #include <thread>
 
 #include "generated/main_viewmodel_generated.h"
-#include "log_utils.h"
-#include "logging.h"
+#include "log/log_utils.h"
+#include "log/logging.h"
 #include "message_loop.h"
 #include "task_runners.h"
 

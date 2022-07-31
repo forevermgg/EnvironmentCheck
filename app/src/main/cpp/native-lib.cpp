@@ -5,8 +5,8 @@
 #include <string>
 
 #include "json/json.h"
-#include "log_utils.h"
-#include "logging.h"
+#include "log/log_utils.h"
+#include "log/logging.h"
 #include "qjniobject.h"
 
 extern "C" JNIEXPORT jstring JNICALL

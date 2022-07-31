@@ -9,7 +9,7 @@
 #define FOREVER_MEMORY_WEAK_PTR_H_
 #include <pthread.h>
 
-#include "../logging.h"
+#include "../log/logging.h"
 #include "../macros.h"
 
 namespace FOREVER {
