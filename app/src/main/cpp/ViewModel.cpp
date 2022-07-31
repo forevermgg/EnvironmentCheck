@@ -9,6 +9,7 @@
 #include "log_utils.h"
 #include "logging.h"
 #include "qjniobject.h"
+
 using namespace com::fbs::app;
 using namespace flatbuffers;
 ViewModel::ViewModel() {
@@ -89,9 +90,12 @@ void ViewModel::showLoading(const std::string &msg) {
 
 void ViewModel::hiddenLoading() {
   // 必须在主线调用
-  QJniObject::callStaticMethod<void>("com/mgg/environmentcheck/QtNative",
+  /*QJniObject::callStaticMethod<void>("com/mgg/environmentcheck/QtNative",
                                      "runPendingCppRunnablesOnAndroidThread",
-                                     "()V");
+                                     "()V");*/
+  // Note: The '64' below is the max size of the callables passed to the
+  // scheduler. This is done to reduce allocations and make schedulers more
+  // efficient.
   QJniObject jniObject = QJniObject(bind_java_view_model_);
   jniObject.callMethod<void>("hiddenLoading", "()V");
 }

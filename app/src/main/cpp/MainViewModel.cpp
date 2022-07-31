@@ -9,6 +9,7 @@
 
 #include "generated/main_viewmodel_generated.h"
 #include "log_utils.h"
+#include "logging.h"
 #include "message_loop.h"
 #include "task_runners.h"
 
