@@ -7,6 +7,7 @@
 #include "generated/loading_view_generated.h"
 #include "generated/toast_generated.h"
 #include "log_utils.h"
+#include "logging.h"
 #include "qjniobject.h"
 using namespace com::fbs::app;
 using namespace flatbuffers;
@@ -20,20 +21,13 @@ ViewModel::~ViewModel() {
   LOGE("~ViewModel()")
 }
 
-void ViewModel::bind() {
-  if (bind_java_view_model_ != nullptr) {
-    QJniObject jniObject = QJniObject(bind_java_view_model_);
-    jniObject.callMethod<void>("setViewModelAttached", "(Z)V",
-                               view_model_is_attached_);
-  }
-  LOGE("ViewModel::bind()")
-}
+void ViewModel::bind() { LOGE("ViewModel::bind()") }
 
 void ViewModel::unBind() { LOGE("ViewModel::unBind()") }
 
 void ViewModel::handle(const int key, const std::string &value) {
   LOGE("ViewModel handle()")
-  if (bind_java_view_model_ == nullptr) {
+  if (getJavaViewModel() == nullptr) {
     LOGE("bind_java_view_model_ == nullptr")
     return;
   }
@@ -45,7 +39,7 @@ void ViewModel::handle(const int key, const std::string &value) {
 
 void ViewModel::setProp(const int key, const std::string &value) {
   LOGE("ViewModel setProp()")
-  if (bind_java_view_model_ == nullptr) {
+  if (getJavaViewModel() == nullptr) {
     LOGE("bind_java_view_model_ == nullptr")
     return;
   }
@@ -69,6 +63,11 @@ bool ViewModel::isViewModelAttached() const { return view_model_is_attached_; }
 
 void ViewModel::setViewModelAttached(bool state) {
   view_model_is_attached_ = state;
+  if (bind_java_view_model_ != nullptr && view_model_is_attached_ == true) {
+    QJniObject jniObject = QJniObject(bind_java_view_model_);
+    jniObject.callMethod<void>("setViewModelAttached", "(Z)V",
+                               view_model_is_attached_);
+  }
 }
 
 void ViewModel::showLoading(const std::string &msg) {
@@ -89,6 +88,10 @@ void ViewModel::showLoading(const std::string &msg) {
 }
 
 void ViewModel::hiddenLoading() {
+  // 必须在主线调用
+  QJniObject::callStaticMethod<void>("com/mgg/environmentcheck/QtNative",
+                                     "runPendingCppRunnablesOnAndroidThread",
+                                     "()V");
   QJniObject jniObject = QJniObject(bind_java_view_model_);
   jniObject.callMethod<void>("hiddenLoading", "()V");
 }
@@ -98,7 +101,6 @@ void ViewModel::showToast(const std::string &params) {
   QJniObject jniObject = QJniObject(bind_java_view_model_);
   jniObject.callMethod<void>("showToast", "(Ljava/lang/String;)V",
                              jstring_params.object<jstring>());
-
   // create a new animal flatbuffers
   auto fb = FlatBufferBuilder(1024);
   auto tiger = CreateToastParamsDirect(fb, params.c_str(), 0,

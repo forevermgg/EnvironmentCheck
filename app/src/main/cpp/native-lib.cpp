@@ -71,11 +71,11 @@ Java_com_mgg_environmentcheck_MainActivity_testToast(JNIEnv *env,
                                                      jobject activity) {
   FOREVER_LOG(ERROR) << "FOREVER "
                      << " testToast";
-  QJniObject javaString = QJniObject::fromString("test toast");
+  /*QJniObject javaString = QJniObject::fromString("test toast");
   QJniObject toast = QJniObject::callStaticObjectMethod(
       "android/widget/Toast", "makeText",
       "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/"
       "Toast;",
       getApplication(env), javaString.object(), jint(1));
-  toast.callMethod<void>("show");
+  toast.callMethod<void>("show");*/
 }

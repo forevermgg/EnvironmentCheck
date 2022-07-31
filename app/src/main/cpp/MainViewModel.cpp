@@ -41,29 +41,34 @@ MainViewModel::~MainViewModel() {
   thread_host_.reset();
 }
 
-std::thread::id main_thread_id = std::this_thread::get_id();
-
-void is_main_thread() {
-  if (main_thread_id == std::this_thread::get_id()) {
-    LOGE("This is the main thread.\n");
-  } else {
-    LOGE("This is not the main thread.\n");
-  }
-}
-
 void MainViewModel::bind() {
   ViewModel::bind();
   LOGE("MainViewModel::bind()")
   setProp(main::viewmodel::Property_SHOW_TOAST, "1");
-  showToast("FOREVER");
   setProp(main::viewmodel::Property_UI_DATA, "test ui data");
   showLoading("FOREVER");
   bool done = false;
   thread_host_->io_thread->GetTaskRunner()->PostTask([&done]() {
     done = true;
-    is_main_thread();
+    FOREVER_LOG(ERROR) << "io_thread Ran on thread: "
+                       << std::this_thread::get_id();
   });
-  is_main_thread();
+  thread_host_->ui_thread->GetTaskRunner()->PostTask([]() {
+    FOREVER_LOG(ERROR) << "ui_thread Ran on thread: "
+                       << std::this_thread::get_id();
+    // hiddenLoading();
+  });
+  thread_host_->platform_thread->GetTaskRunner()->PostTask([]() {
+    FOREVER_LOG(ERROR) << "platform_thread Ran on thread: "
+                       << std::this_thread::get_id();
+  });
+  thread_host_->raster_thread->GetTaskRunner()->PostTask([]() {
+    FOREVER_LOG(ERROR) << "raster_thread Ran on thread: "
+                       << std::this_thread::get_id();
+  });
+  FOREVER_LOG(ERROR) << "main_thread Ran on thread: "
+                     << std::this_thread::get_id();
+  hiddenLoading();
 }
 
 void MainViewModel::unBind() {

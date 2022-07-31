@@ -25,6 +25,8 @@ class FinalizerRunnable implements Runnable {
 				Timber.e("The FinalizerRunnable thread has been interrupted." +
 						" Native resources cannot be freed anymore");
 				break;
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

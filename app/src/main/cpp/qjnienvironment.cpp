@@ -1,5 +1,7 @@
 #include "qjnienvironment.h"
 
+#include <thread>
+
 #include "qjnihelpers_p.h"
 #include "qjniobject.h"
 
@@ -49,7 +51,7 @@ struct QJniLocalRefDeleterPrivate {
     env->DeleteLocalRef(obj);
   }
 };
-
+static thread_local QJniEnvironmentPrivateTLS *jniEnvTLS;
 /*!
     \fn QJniEnvironment::QJniEnvironment()
 
@@ -65,6 +67,9 @@ QJniEnvironment::QJniEnvironment() : d(new QJniEnvironmentPrivate{}) {
   if (ret == JNI_EDETACHED) {  // We need to (re-)attach
     JavaVMAttachArgs args = {JNI_VERSION_1_6, qJniThreadName, nullptr};
     if (vm->AttachCurrentThread(&d->jniEnv, &args) != JNI_OK) return;
+    if (jniEnvTLS == nullptr) {
+      jniEnvTLS = new QJniEnvironmentPrivateTLS();
+    }  // If we attached the thread we own it.
   }
 }
 

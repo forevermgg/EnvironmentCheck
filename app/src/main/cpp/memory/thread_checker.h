@@ -8,6 +8,7 @@
 #ifndef FOREVER_MEMORY_WEAK_PTR_H_
 #define FOREVER_MEMORY_WEAK_PTR_H_
 #include <pthread.h>
+
 #include "../logging.h"
 #include "../macros.h"
 

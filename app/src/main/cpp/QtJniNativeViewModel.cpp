@@ -21,11 +21,12 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeGetFinalizerPtr(
   return reinterpret_cast<jlong>(&finalize_mixed);
 }
 
-extern "C" JNIEXPORT void JNICALL
+extern "C" JNIEXPORT long JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeRelease(
     JNIEnv *env, jclass clazz, jlong nativePeer) {
   auto value = reinterpret_cast<ViewModel *>(nativePeer);
   delete value;
+  return 0;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
