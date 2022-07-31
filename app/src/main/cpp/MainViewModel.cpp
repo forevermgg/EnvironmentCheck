@@ -19,22 +19,21 @@ using namespace flatbuffers;
 MainViewModel::MainViewModel() {
   LOGE("MainViewModel")
   FOREVER::MessageLoop::EnsureInitializedForCurrentThread();
-  std::unique_ptr<FOREVER::ThreadHost> threadhost;
-  FOREVER::RefPtr<FOREVER::TaskRunner> platform_task_runner;
+  /*FOREVER::RefPtr<FOREVER::TaskRunner> platform_task_runner;
   FOREVER::RefPtr<FOREVER::TaskRunner> raster_task_runner;
   FOREVER::RefPtr<FOREVER::TaskRunner> ui_task_runner;
-  FOREVER::RefPtr<FOREVER::TaskRunner> io_task_runner;
+  FOREVER::RefPtr<FOREVER::TaskRunner> io_task_runner;*/
   thread_host_ = std::make_unique<FOREVER::ThreadHost>(
       "test",
       FOREVER::ThreadHost::Type::Platform | FOREVER::ThreadHost::Type::IO |
           FOREVER::ThreadHost::Type::UI | FOREVER::ThreadHost::Type::RASTER);
-  platform_task_runner = FOREVER::MessageLoop::GetCurrent().GetTaskRunner();
+  /*platform_task_runner = FOREVER::MessageLoop::GetCurrent().GetTaskRunner();
   raster_task_runner = thread_host_->raster_thread->GetTaskRunner();
   ui_task_runner = thread_host_->ui_thread->GetTaskRunner();
   io_task_runner = thread_host_->io_thread->GetTaskRunner();
   FOREVER::TaskRunners task_runners("test", platform_task_runner,
                                     raster_task_runner, ui_task_runner,
-                                    io_task_runner);
+                                    io_task_runner);*/
 }
 
 MainViewModel::~MainViewModel() {

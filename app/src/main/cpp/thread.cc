@@ -47,6 +47,7 @@ Thread::Thread(const ThreadConfigSetter& setter, const ThreadConfig& config)
 }
 
 Thread::~Thread() {
+  FOREVER_LOG(ERROR) << "~Thread()";
   Join();
 }
 
