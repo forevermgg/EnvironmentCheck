@@ -4,7 +4,7 @@
 
 #include "../synchronization/semaphore.h"
 #include "../eintr_wrapper.h"
-
+#include "../log/logging.h"
 #include <semaphore.h>
 
 namespace FOREVER {
@@ -20,7 +20,7 @@ class PlatformSemaphore {
       (void)result;
       // Can only be EINVAL which should not be possible since we checked for
       // validity.
-      assert(result == 0);
+      FOREVER_DCHECK(result == 0);
     }
   }
 

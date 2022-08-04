@@ -5,6 +5,7 @@
 #ifndef FOREVER_TIME_CHRONO_TIMESTAMP_PROVIDER_H_
 #define FOREVER_TIME_CHRONO_TIMESTAMP_PROVIDER_H_
 
+#include "../log/logging.h"
 #include "time_point.h"
 #include "timestamp_provider.h"
 
@@ -28,8 +29,7 @@ class ChronoTimestampProvider : TimestampProvider {
  private:
   ChronoTimestampProvider();
 
-  ChronoTimestampProvider(const ChronoTimestampProvider&) = delete;
-  ChronoTimestampProvider& operator=(const ChronoTimestampProvider&) = delete;
+  FOREVER_DISALLOW_COPY_AND_ASSIGN(ChronoTimestampProvider);
 };
 
 FOREVER::TimePoint ChronoTicksSinceEpoch();

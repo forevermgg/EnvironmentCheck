@@ -11,10 +11,9 @@
 #include <string>
 namespace FOREVER {
 namespace jni {
-
-#define ASSERT_NO_EXCEPTION() assert(env->ExceptionCheck() == JNI_FALSE);
-
 static JavaVM* g_jvm = nullptr;
+
+#define ASSERT_NO_EXCEPTION() FOREVER_CHECK(env->ExceptionCheck() == JNI_FALSE);
 
 struct JNIDetach {
   ~JNIDetach() { DetachFromVM(); }
@@ -24,13 +23,13 @@ struct JNIDetach {
 FOREVER_THREAD_LOCAL FOREVER::ThreadLocalUniquePtr<JNIDetach> tls_jni_detach;
 
 void InitJavaVM(JavaVM* vm) {
-  assert(g_jvm == nullptr);
+  FOREVER_DCHECK(g_jvm == nullptr);
   g_jvm = vm;
 }
 
 JNIEnv* AttachCurrentThread() {
-  assert(g_jvm != nullptr);
-   /*   << "Trying to attach to current thread without calling InitJavaVM first.";*/
+  FOREVER_DCHECK(g_jvm != nullptr)
+      << "Trying to attach to current thread without calling InitJavaVM first.";
 
   JNIEnv* env = nullptr;
   if (g_jvm->GetEnv(reinterpret_cast<void**>(&env), JNI_VERSION_1_4) ==
@@ -50,9 +49,9 @@ JNIEnv* AttachCurrentThread() {
     args.name = thread_name;
   }
   [[maybe_unused]] jint ret = g_jvm->AttachCurrentThread(&env, &args);
-  assert(JNI_OK == ret);
+  FOREVER_DCHECK(JNI_OK == ret);
 
-  assert(tls_jni_detach.get() == nullptr);
+  FOREVER_DCHECK(tls_jni_detach.get() == nullptr);
   tls_jni_detach.reset(new JNIDetach());
 
   return env;
@@ -119,7 +118,7 @@ std::vector<std::string> StringListToVector(JNIEnv* env, jobject list) {
   }
 
   ScopedJavaLocalRef<jclass> list_clazz(env, env->FindClass("java/util/List"));
-  assert(!list_clazz.is_null());
+  FOREVER_DCHECK(!list_clazz.is_null());
 
   jmethodID list_get =
       env->GetMethodID(list_clazz.obj(), "get", "(I)Ljava/lang/Object;");
@@ -144,10 +143,10 @@ std::vector<std::string> StringListToVector(JNIEnv* env, jobject list) {
 ScopedJavaLocalRef<jobjectArray> VectorToStringArray(
     JNIEnv* env,
     const std::vector<std::string>& vector) {
-  assert(env);
+  FOREVER_DCHECK(env);
   ScopedJavaLocalRef<jclass> string_clazz(env,
                                           env->FindClass("java/lang/String"));
-  assert(!string_clazz.is_null());
+  FOREVER_DCHECK(!string_clazz.is_null());
   jobjectArray java_array =
       env->NewObjectArray(vector.size(), string_clazz.obj(), NULL);
   ASSERT_NO_EXCEPTION();
@@ -161,10 +160,10 @@ ScopedJavaLocalRef<jobjectArray> VectorToStringArray(
 ScopedJavaLocalRef<jobjectArray> VectorToBufferArray(
     JNIEnv* env,
     const std::vector<std::vector<uint8_t>>& vector) {
-  assert(env);
+  FOREVER_DCHECK(env);
   ScopedJavaLocalRef<jclass> byte_buffer_clazz(
       env, env->FindClass("java/nio/ByteBuffer"));
-  assert(!byte_buffer_clazz.is_null());
+  FOREVER_DCHECK(!byte_buffer_clazz.is_null());
   jobjectArray java_array =
       env->NewObjectArray(vector.size(), byte_buffer_clazz.obj(), NULL);
   ASSERT_NO_EXCEPTION();

@@ -8,6 +8,7 @@
 
 #include <cerrno>
 #include <ctime>
+#include "../log/logging.h"
 
 namespace FOREVER {
 
@@ -19,7 +20,7 @@ bool WaitWithTimeoutImpl(std::unique_lock<std::mutex>* locker,
                          std::condition_variable* cv,
                          ConditionFn condition,
                          TimeDelta timeout) {
-  assert(locker->owns_lock());
+  FOREVER_DCHECK(locker->owns_lock());
 
   if (condition()) {
     return false;
@@ -42,7 +43,7 @@ bool WaitWithTimeoutImpl(std::unique_lock<std::mutex>* locker,
 
     // Or the wakeup may have been spurious.
     TimePoint now = TimePoint::Now();
-    assert(now >= start);
+    FOREVER_DCHECK(now >= start);
     TimeDelta elapsed = now - start;
     // It's possible that we may have timed out anyway.
     if (elapsed >= timeout) {
@@ -100,7 +101,7 @@ bool AutoResetWaitableEvent::WaitWithTimeout(TimeDelta timeout) {
 
     // Or the wakeup may have been spurious.
     TimePoint now = TimePoint::Now();
-    assert(now >= start);
+    FOREVER_DCHECK(now >= start);
     TimeDelta elapsed = now - start;
     // It's possible that we may have timed out anyway.
     if (elapsed >= timeout) {
@@ -162,7 +163,7 @@ bool ManualResetWaitableEvent::WaitWithTimeout(TimeDelta timeout) {
         return signaled_ || signal_id_ != last_signal_id;
       },
       timeout);
-  assert(rv || signaled_ || signal_id_ != last_signal_id);
+  FOREVER_DCHECK(rv || signaled_ || signal_id_ != last_signal_id);
   return rv;
 }
 

@@ -15,7 +15,7 @@ TaskRunnerChecker::TaskRunnerChecker()
 TaskRunnerChecker::~TaskRunnerChecker() = default;
 
 bool TaskRunnerChecker::RunsOnCreationTaskRunner() const {
-  assert(FOREVER::MessageLoop::IsInitializedForCurrentThread());
+  FOREVER_CHECK(FOREVER::MessageLoop::IsInitializedForCurrentThread());
   const auto current_queue_id = MessageLoop::GetCurrentTaskQueueId();
   if (RunsOnTheSameThread(current_queue_id, initialized_queue_id_)) {
     return true;

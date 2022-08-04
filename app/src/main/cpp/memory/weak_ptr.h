@@ -94,13 +94,13 @@ class WeakPtr {
 
   T& operator*() const {
     CheckThreadSafety();
-    assert(*this);
+    FOREVER_DCHECK(*this);
     return *get();
   }
 
   T* operator->() const {
     CheckThreadSafety();
-    assert(*this);
+    FOREVER_DCHECK(*this);
     return get();
   }
 
@@ -231,7 +231,7 @@ class WeakPtrFactory {
   explicit WeakPtrFactory(T* ptr)
       : ptr_(ptr),
         flag_(FOREVER::MakeRefCounted<FOREVER::internal::WeakPtrFlag>()) {
-    assert(ptr_);
+    FOREVER_DCHECK(ptr_);
   }
 
   ~WeakPtrFactory() {
@@ -270,7 +270,7 @@ class TaskRunnerAffineWeakPtrFactory {
   explicit TaskRunnerAffineWeakPtrFactory(T* ptr)
       : ptr_(ptr),
         flag_(FOREVER::MakeRefCounted<FOREVER::internal::WeakPtrFlag>()) {
-    assert(ptr_);
+    FOREVER_DCHECK(ptr_);
   }
 
   ~TaskRunnerAffineWeakPtrFactory() {

@@ -15,25 +15,32 @@
 
 using namespace com::fbs::app;
 using namespace flatbuffers;
-
 MainViewModel::MainViewModel() {
   LOGE("MainViewModel")
   FOREVER::MessageLoop::EnsureInitializedForCurrentThread();
-  /*FOREVER::RefPtr<FOREVER::TaskRunner> platform_task_runner;
+  FOREVER::RefPtr<FOREVER::TaskRunner> platform_task_runner;
   FOREVER::RefPtr<FOREVER::TaskRunner> raster_task_runner;
   FOREVER::RefPtr<FOREVER::TaskRunner> ui_task_runner;
-  FOREVER::RefPtr<FOREVER::TaskRunner> io_task_runner;*/
+  FOREVER::RefPtr<FOREVER::TaskRunner> io_task_runner;
   thread_host_ = std::make_unique<FOREVER::ThreadHost>(
       "test",
-      FOREVER::ThreadHost::Type::Platform | FOREVER::ThreadHost::Type::IO |
+      FOREVER::ThreadHost::Type::IO | FOREVER::ThreadHost::Type::Platform |
           FOREVER::ThreadHost::Type::UI | FOREVER::ThreadHost::Type::RASTER);
-  /*platform_task_runner = FOREVER::MessageLoop::GetCurrent().GetTaskRunner();
+  platform_task_runner = FOREVER::MessageLoop::GetCurrent().GetTaskRunner();
   raster_task_runner = thread_host_->raster_thread->GetTaskRunner();
   ui_task_runner = thread_host_->ui_thread->GetTaskRunner();
   io_task_runner = thread_host_->io_thread->GetTaskRunner();
   FOREVER::TaskRunners task_runners("test", platform_task_runner,
                                     raster_task_runner, ui_task_runner,
-                                    io_task_runner);*/
+                                    io_task_runner);
+  task_runners.GetPlatformTaskRunner()->PostTask([]() {
+    FOREVER_LOG(ERROR) << "task_runners GetPlatformTaskRunner Ran on thread: "
+                       << std::this_thread::get_id();
+  });
+  task_runners.GetIOTaskRunner()->PostTask([]() {
+    FOREVER_LOG(ERROR) << "task_runners GetIOTaskRunner Ran on thread: "
+                       << std::this_thread::get_id();
+  });
 }
 
 MainViewModel::~MainViewModel() {

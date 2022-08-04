@@ -7,8 +7,8 @@
 
 #include <sstream>
 
-#include "log_level.h"
 #include "../macros.h"
+#include "log_level.h"
 
 namespace FOREVER {
 

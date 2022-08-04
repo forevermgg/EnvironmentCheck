@@ -19,9 +19,9 @@
 #include <cstdint>
 
 #include "atomic.h"
-#include "unique_ptr.h"
-#include "meta/move.h"
 #include "internal/type_traits.h"
+#include "meta/move.h"
+#include "unique_ptr.h"
 
 namespace FOREVER {
 

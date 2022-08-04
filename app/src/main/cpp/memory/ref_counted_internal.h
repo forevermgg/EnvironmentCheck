@@ -105,7 +105,7 @@ inline RefCountedThreadSafeBase::~RefCountedThreadSafeBase() {
 #ifndef NDEBUG
   FOREVER_DCHECK(!adoption_required_);
   // Should only be destroyed as a result of |Release()|.
-  FOREVER_DCHECK(!destruction_started_);
+  FOREVER_DCHECK(destruction_started_);
 #endif
 }
 

@@ -18,7 +18,7 @@ JavaObjectWeakGlobalRef::JavaObjectWeakGlobalRef(
 
 JavaObjectWeakGlobalRef::JavaObjectWeakGlobalRef(JNIEnv* env, jobject obj)
     : obj_(env->NewWeakGlobalRef(obj)) {
-  assert(obj_);
+  FOREVER_DCHECK(obj_);
 }
 
 JavaObjectWeakGlobalRef::~JavaObjectWeakGlobalRef() {

@@ -6,6 +6,7 @@
 #define ENVIRONMENTCHECK_MAINVIEWMODEL_H
 
 #include "ViewModel.h"
+#include "task_runners.h"
 #include "thread_host.h"
 
 class MainViewModel : ViewModel {
@@ -18,6 +19,7 @@ class MainViewModel : ViewModel {
 
  private:
   std::shared_ptr<FOREVER::ThreadHost> thread_host_;
+  // FOREVER::TaskRunners task_runners_;
 };
 
 #endif  // ENVIRONMENTCHECK_MAINVIEWMODEL_H

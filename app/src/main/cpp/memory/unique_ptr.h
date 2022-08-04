@@ -17,8 +17,8 @@
 #ifndef FOREVER_MEMORY_UNIQUE_PTR_H_
 #define FOREVER_MEMORY_UNIQUE_PTR_H_
 
-#include "meta/move.h"
 #include "internal/type_traits.h"
+#include "meta/move.h"
 
 namespace FOREVER {
 
