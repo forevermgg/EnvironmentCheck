@@ -133,6 +133,10 @@ add_library( # Sets the name of the library.
         synchronization/semaphore.cc
         synchronization/count_down_latch.h
         synchronization/count_down_latch.cc
+        DefaultTaskExecutor.h
+        DefaultTaskExecutor.cpp
+        ArchTaskExecutor.h
+        ArchTaskExecutor.cpp
         ${Generated_SRCS})
 
 add_library(

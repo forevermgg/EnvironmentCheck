@@ -7,6 +7,7 @@
 #include <sstream>
 #include <thread>
 
+#include "ArchTaskExecutor.h"
 #include "generated/main_viewmodel_generated.h"
 #include "log/log_utils.h"
 #include "log/logging.h"
@@ -17,35 +18,20 @@ using namespace com::fbs::app;
 using namespace flatbuffers;
 MainViewModel::MainViewModel() {
   LOGE("MainViewModel")
-  FOREVER::MessageLoop::EnsureInitializedForCurrentThread();
-  FOREVER::RefPtr<FOREVER::TaskRunner> platform_task_runner;
-  FOREVER::RefPtr<FOREVER::TaskRunner> raster_task_runner;
-  FOREVER::RefPtr<FOREVER::TaskRunner> ui_task_runner;
-  FOREVER::RefPtr<FOREVER::TaskRunner> io_task_runner;
-  thread_host_ = std::make_unique<FOREVER::ThreadHost>(
-      "test",
-      FOREVER::ThreadHost::Type::IO | FOREVER::ThreadHost::Type::Platform |
-          FOREVER::ThreadHost::Type::UI | FOREVER::ThreadHost::Type::RASTER);
-  platform_task_runner = FOREVER::MessageLoop::GetCurrent().GetTaskRunner();
-  raster_task_runner = thread_host_->raster_thread->GetTaskRunner();
-  ui_task_runner = thread_host_->ui_thread->GetTaskRunner();
-  io_task_runner = thread_host_->io_thread->GetTaskRunner();
-  FOREVER::TaskRunners task_runners("test", platform_task_runner,
-                                    raster_task_runner, ui_task_runner,
-                                    io_task_runner);
-  task_runners.GetPlatformTaskRunner()->PostTask([]() {
-    FOREVER_LOG(ERROR) << "task_runners GetPlatformTaskRunner Ran on thread: "
+  arch_task_executor_ = std::make_unique<ArchTaskExecutor>();
+  arch_task_executor_->executeOnMainThread([]() {
+    FOREVER_LOG(ERROR) << "executeOnMainThread: "
                        << std::this_thread::get_id();
   });
-  task_runners.GetIOTaskRunner()->PostTask([]() {
-    FOREVER_LOG(ERROR) << "task_runners GetIOTaskRunner Ran on thread: "
+  arch_task_executor_->executeOnDiskIO([]() {
+    FOREVER_LOG(ERROR) << "executeOnDiskIO: "
                        << std::this_thread::get_id();
   });
 }
 
 MainViewModel::~MainViewModel() {
   LOGE("~MainViewModel")
-  thread_host_.reset();
+  arch_task_executor_.reset();
 }
 
 void MainViewModel::bind() {
@@ -54,7 +40,7 @@ void MainViewModel::bind() {
   setProp(main::viewmodel::Property_SHOW_TOAST, "1");
   setProp(main::viewmodel::Property_UI_DATA, "test ui data");
   showLoading("FOREVER");
-  bool done = false;
+  /*bool done = false;
   thread_host_->io_thread->GetTaskRunner()->PostTask([&done]() {
     done = true;
     FOREVER_LOG(ERROR) << "io_thread Ran on thread: "
@@ -72,7 +58,7 @@ void MainViewModel::bind() {
   thread_host_->raster_thread->GetTaskRunner()->PostTask([]() {
     FOREVER_LOG(ERROR) << "raster_thread Ran on thread: "
                        << std::this_thread::get_id();
-  });
+  });*/
   FOREVER_LOG(ERROR) << "main_thread Ran on thread: "
                      << std::this_thread::get_id();
   hiddenLoading();
