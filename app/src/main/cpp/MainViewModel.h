@@ -5,10 +5,10 @@
 #ifndef ENVIRONMENTCHECK_MAINVIEWMODEL_H
 #define ENVIRONMENTCHECK_MAINVIEWMODEL_H
 
+#include "ArchTaskExecutor.h"
 #include "ViewModel.h"
 #include "task_runners.h"
 #include "thread_host.h"
-#include "ArchTaskExecutor.h"
 
 class MainViewModel : ViewModel {
  public:

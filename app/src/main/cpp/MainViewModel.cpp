@@ -20,12 +20,10 @@ MainViewModel::MainViewModel() {
   LOGE("MainViewModel")
   arch_task_executor_ = std::make_unique<ArchTaskExecutor>();
   arch_task_executor_->executeOnMainThread([]() {
-    FOREVER_LOG(ERROR) << "executeOnMainThread: "
-                       << std::this_thread::get_id();
+    FOREVER_LOG(ERROR) << "executeOnMainThread: " << std::this_thread::get_id();
   });
   arch_task_executor_->executeOnDiskIO([]() {
-    FOREVER_LOG(ERROR) << "executeOnDiskIO: "
-                       << std::this_thread::get_id();
+    FOREVER_LOG(ERROR) << "executeOnDiskIO: " << std::this_thread::get_id();
   });
 }
 
