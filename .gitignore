@@ -16,3 +16,4 @@ local.properties
 /maven-repo
 .gradle.properties
 /.idea/*
+/app/src/main/cpp/generated/
