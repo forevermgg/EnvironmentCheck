@@ -38,25 +38,6 @@ void MainViewModel::bind() {
   setProp(main::viewmodel::Property_SHOW_TOAST, "1");
   setProp(main::viewmodel::Property_UI_DATA, "test ui data");
   showLoading("FOREVER");
-  /*bool done = false;
-  thread_host_->io_thread->GetTaskRunner()->PostTask([&done]() {
-    done = true;
-    FOREVER_LOG(ERROR) << "io_thread Ran on thread: "
-                       << std::this_thread::get_id();
-  });
-  thread_host_->ui_thread->GetTaskRunner()->PostTask([]() {
-    FOREVER_LOG(ERROR) << "ui_thread Ran on thread: "
-                       << std::this_thread::get_id();
-    // hiddenLoading();
-  });
-  thread_host_->platform_thread->GetTaskRunner()->PostTask([]() {
-    FOREVER_LOG(ERROR) << "platform_thread Ran on thread: "
-                       << std::this_thread::get_id();
-  });
-  thread_host_->raster_thread->GetTaskRunner()->PostTask([]() {
-    FOREVER_LOG(ERROR) << "raster_thread Ran on thread: "
-                       << std::this_thread::get_id();
-  });*/
   FOREVER_LOG(ERROR) << "main_thread Ran on thread: "
                      << std::this_thread::get_id();
   hiddenLoading();
@@ -65,7 +46,6 @@ void MainViewModel::bind() {
 void MainViewModel::unBind() {
   ViewModel::unBind();
   LOGE("MainViewModel::unBind()")
-  // hiddenLoading();
 }
 
 void MainViewModel::handle(const int key, const std::string &value) {

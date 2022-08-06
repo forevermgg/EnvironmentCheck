@@ -14,6 +14,16 @@
 #include <string>
 #include <utility>
 
+ArchTaskExecutor *ArchTaskExecutor::Current() {
+  auto executor = std::shared_ptr<ArchTaskExecutor>();
+  auto isolate_data = static_cast<std::shared_ptr<ArchTaskExecutor>>(executor);
+  return isolate_data ? isolate_data.get() : nullptr;
+}
+
+std::weak_ptr<ArchTaskExecutor> ArchTaskExecutor::GetWeakPtr() {
+  return shared_from_this();
+}
+
 ArchTaskExecutor::ArchTaskExecutor() {
   thread_host_ = std::make_unique<FOREVER::ThreadHost>(
       "Forever_ArchTaskExecutor",

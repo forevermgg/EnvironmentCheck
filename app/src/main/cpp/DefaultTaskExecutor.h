@@ -25,7 +25,7 @@ class DefaultTaskExecutor final : public TaskExecutor {
  private:
   const FOREVER::TaskRunners task_runners_;
   std::thread::id main_thread_ = std::this_thread::get_id();
-  ;
+  FOREVER_DISALLOW_COPY_AND_ASSIGN(DefaultTaskExecutor);
 };
 
 #endif  // ENVIRONMENTCHECK_DEFAULTTASKEXECUTOR_H
