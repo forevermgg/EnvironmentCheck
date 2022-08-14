@@ -27,6 +27,9 @@ android {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10'
     /*def ktor_version = "1.6.3"
     api("io.ktor:ktor-client-apache:$ktor_version")
     api("io.ktor:ktor-client-java:$ktor_version")

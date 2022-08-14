@@ -17,6 +17,10 @@ import com.mgg.checkenv.utils.Base64
 import com.mgg.checkenv.utils.ShellUtils
 import com.mgg.checkenv.uuid.CheckDevicesUUID
 import com.mgg.checkenv.vpn.isUsingVpn
+import com.mgg.core.coroutine.coroutineDbScope
+import com.mgg.core.coroutine.coroutineFileScope
+import com.mgg.core.coroutine.coroutineIoScope
+import com.mgg.core.coroutine.coroutineMainScope
 import com.mgg.environmentcheck.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -119,6 +123,19 @@ class MainActivity : ComponentActivity() {
         val result = String(uncompressed, charset(Charsets.UTF_8.toString()))
         println(result)
         // Timber.e("cacert.path:" + cacert.path + " " + getGerritChanges(cacert.path))
+        coroutineIoScope.launch {
+            Timber.e("coroutineIoScope thread id = " + Thread.currentThread().id)
+        }
+        coroutineDbScope.launch {
+            Timber.e("coroutineDbScope thread id = " + Thread.currentThread().id)
+        }
+        coroutineFileScope.launch {
+            Timber.e("coroutineFileScope thread id = " + Thread.currentThread().id)
+        }
+        coroutineMainScope.launch {
+            Timber.e("coroutineMainScope thread id = " + Thread.currentThread().id)
+        }
+        Timber.e("Main thread id = " + Thread.currentThread().id)
     }
 
     private fun hook(a: Int, b: Int): Int {

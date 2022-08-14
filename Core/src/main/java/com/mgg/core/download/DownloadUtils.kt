@@ -1,10 +1,7 @@
 package com.mgg.core.download
 
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+
+import okhttp3.*
 import okio.buffer
 import okio.sink
 import okio.source

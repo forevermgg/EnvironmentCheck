@@ -12,6 +12,7 @@ project("environmentcheck")
 message("FLATBUFFERS_SRC: " ${FLATBUFFERS_SRC})
 message("DOUBLE_CONVERSION_SRC: " ${DOUBLE_CONVERSION_SRC})
 
+# Specifies a path to native header files.
 include_directories(${FLATBUFFERS_SRC}/include)
 include_directories(${DOUBLE_CONVERSION_SRC}/double-conversion)
 
@@ -165,10 +166,11 @@ find_library( # Sets the name of the path variable.
         # Specifies the name of the NDK library that
         # you want CMake to locate.
         log)
-
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
+# now build app's shared lib
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17 -Wall -Werror")
 set(disabled_compile_warnings "-Werror,-Wunused-function")
 target_compile_options(environmentcheck PRIVATE -Wall -Werror)
 
