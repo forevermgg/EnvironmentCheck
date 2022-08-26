@@ -33,7 +33,8 @@ class TestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             Timber.e("LifecycleViewHolderViewModel$it")
             itemView.findViewById<TextView>(R.id.tvContent).text = it
         }*/
-        itemView.findViewById<TestView>(R.id.mTestView).findViewById<TextView>(R.id.tvContent).text = "position:$position : $msg"
+        itemView.findViewById<TestView>(R.id.mTestView).findViewById<TextView>(R.id.tvContent).text =
+            "position:$position : $msg"
         Timber.e("bind position:$position : $msg")
     }
 

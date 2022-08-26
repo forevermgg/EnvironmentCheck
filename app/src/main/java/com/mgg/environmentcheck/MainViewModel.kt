@@ -9,8 +9,8 @@ class MainViewModel : QtNativeViewModel() {
     }
 
     override fun bindSetPropDispatcher() {
-        setPropDispatcherByInterface.put(Property.SHOWTOAST) {
-                obj: QtNativeViewModel, params: String? -> obj.showToast(params)
+        setPropDispatcherByInterface.put(Property.SHOWTOAST) { obj: QtNativeViewModel, params: String? ->
+            obj.showToast(params)
         }
         setPropDispatcherByFunction.put(Property.UIDATA) { params -> setUIData(params) }
         setPropDispatcherByFunction.put(Property.SHOWEMPTY) { params -> showEmpty(params) }
