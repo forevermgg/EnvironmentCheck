@@ -18,6 +18,7 @@ rootProject.name = "EnvironmentCheck"
 include ':app'
 include ':CheckEnv'
 include ':Core'
+include ':KotlinExtensions'
 
 // To generate libs used in this sample:
 //   1) enable the gen-libs at end of this file
