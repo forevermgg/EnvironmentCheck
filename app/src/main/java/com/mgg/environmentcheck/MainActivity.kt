@@ -94,9 +94,8 @@ class MainActivity : ComponentActivity() {
         testToast()
 
         val orig = "mgg"
-        var encoded: String
         var decoded: String
-        encoded = Base64.encode(orig)
+        var encoded: String = Base64.encode(orig)
         decoded = Base64.decode(encoded)
         Timber.tag("Base64").e("decoded=${decoded} orig=${orig}")
 
@@ -136,6 +135,39 @@ class MainActivity : ComponentActivity() {
             Timber.e("coroutineMainScope thread id = " + Thread.currentThread().id)
         }
         Timber.e("Main thread id = " + Thread.currentThread().id)
+
+        val inputString = "abcddcbe"
+        val inputStringSize = inputString.length
+        val list = mutableListOf<String>()
+        for (i in 0 until inputStringSize + 1) {
+            // 获取子串
+            for (j in 1 until inputStringSize + 1) {
+                if (j > i) {
+                    val substring = inputString.substring(i, j)
+                    Timber.e("substring:$substring")
+                    //  判断是否是回文
+                    if (isHuiwen(substring)) {
+                        list.add(substring)
+                    }
+                }
+            }
+        }
+        Timber.e("list: $list")
+    }
+
+    fun isHuiwen(inputString: String) : Boolean {
+        var i = 0
+        var j = inputString.length - 1
+
+        while (i < j)  {
+            if(inputString[i]!=inputString[j]) {
+                return false
+            }
+            i++
+            j--
+            return true
+        }
+        return false
     }
 
     private fun hook(a: Int, b: Int): Int {
@@ -151,7 +183,7 @@ class MainActivity : ComponentActivity() {
 
     external fun testToast()
 
-    private external fun getGerritChanges(cacert: String): Array<String>
+    // private external fun getGerritChanges(cacert: String): Array<String>
 
     override fun onBackPressed() {
         super.onBackPressed()

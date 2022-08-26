@@ -25,6 +25,7 @@ FILE(GLOB Generated_SRCS generated/*.h)
 
 find_package(curl REQUIRED CONFIG)
 find_package(jsoncpp REQUIRED CONFIG)
+find_package (oboe REQUIRED CONFIG)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
@@ -181,6 +182,7 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         curl::curl
         jsoncpp::jsoncpp
+        oboe::oboe
         ${android}
         ${log-lib})
 
