@@ -13,7 +13,9 @@ import com.fbs.app.toast.ToastParams;
 import com.hjq.toast.ToastUtils;
 import com.mgg.checkenv.ContextProvider;
 
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -184,7 +186,8 @@ public abstract class QtNativeViewModel extends ViewModel implements NativeObjec
   public void setProp(int key, String value) {
     Timber.e("setProp:%s", Arrays.toString(QtNativeViewModel.class.getAnnotations()));
     Timber.e("setProp:%s", Arrays.toString(QtNativeViewModel.class.getDeclaredAnnotations()));
-
+    ArrayList<Method> methods = new ArrayList<Method>();
+    Method[] declaredFunctions = this.getClass().getDeclaredMethods();
     if (!isViewModelAttached()) {
       return;
     }

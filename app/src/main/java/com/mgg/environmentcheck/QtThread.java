@@ -88,7 +88,9 @@ public class QtThread {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-  }  private final Thread m_qtThread =
+  }
+
+  private final Thread m_qtThread =
       new Thread(
           new Runnable() {
             @Override
@@ -108,6 +110,4 @@ public class QtThread {
               }
             }
           });
-
-
 }

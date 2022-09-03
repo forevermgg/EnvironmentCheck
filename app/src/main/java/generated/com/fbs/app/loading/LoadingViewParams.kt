@@ -29,7 +29,7 @@ class LoadingViewParams : Table() {
             return if(o != 0) bb.get(o + bb_pos) else 0
         }
     companion object {
-        fun validateVersion() = Constants.FLATBUFFERS_2_0_0()
+        fun validateVersion() = Constants.FLATBUFFERS_2_0_8()
         fun getRootAsLoadingViewParams(_bb: ByteBuffer): LoadingViewParams = getRootAsLoadingViewParams(_bb, LoadingViewParams())
         fun getRootAsLoadingViewParams(_bb: ByteBuffer, obj: LoadingViewParams): LoadingViewParams {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
