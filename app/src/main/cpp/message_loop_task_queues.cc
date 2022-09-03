@@ -18,12 +18,12 @@
 
 namespace FOREVER {
 
-std::mutex MessageLoopTaskQueues::creation_mutex_;
+// std::mutex MessageLoopTaskQueues::creation_mutex_;
 
 const size_t TaskQueueId::kUnmerged = ULONG_MAX;
 
 // Guarded by creation_mutex_.
-FOREVER::RefPtr<MessageLoopTaskQueues> MessageLoopTaskQueues::instance_;
+// FOREVER::RefPtr<MessageLoopTaskQueues> MessageLoopTaskQueues::instance_;
 
 namespace {
 
@@ -49,14 +49,16 @@ TaskQueueEntry::TaskQueueEntry(TaskQueueId created_for_arg)
   task_source = std::make_unique<TaskSource>(created_for);
 }
 
-FOREVER::RefPtr<MessageLoopTaskQueues> MessageLoopTaskQueues::GetInstance() {
-  std::scoped_lock creation(creation_mutex_);
+/*FOREVER::RefPtr<MessageLoopTaskQueues>*/MessageLoopTaskQueues* MessageLoopTaskQueues::GetInstance() {
+  /*std::scoped_lock creation(creation_mutex_);
   if (!instance_) {
     instance_ = FOREVER::MakeRefCounted<MessageLoopTaskQueues>();
     tls_task_source_grade.reset(
         new TaskSourceGradeHolder{TaskSourceGrade::kUnspecified});
-  }
-  return instance_;
+  }*/
+  static MessageLoopTaskQueues* instance = new MessageLoopTaskQueues;
+  // return instance_;
+  return instance;
 }
 
 TaskQueueId MessageLoopTaskQueues::CreateTaskQueue() {
@@ -68,7 +70,10 @@ TaskQueueId MessageLoopTaskQueues::CreateTaskQueue() {
 }
 
 MessageLoopTaskQueues::MessageLoopTaskQueues()
-    : task_queue_id_counter_(0), order_(0) {}
+    : task_queue_id_counter_(0), order_(0) {
+  tls_task_source_grade.reset(
+      new TaskSourceGradeHolder{TaskSourceGrade::kUnspecified});
+}
 
 MessageLoopTaskQueues::~MessageLoopTaskQueues() = default;
 
@@ -96,7 +101,7 @@ void MessageLoopTaskQueues::DisposeTasks(TaskQueueId queue_id) {
 }
 
 TaskSourceGrade MessageLoopTaskQueues::GetCurrentTaskSourceGrade() {
-  std::scoped_lock creation(creation_mutex_);
+  // std::scoped_lock creation(creation_mutex_);
   return tls_task_source_grade.get()->task_source_grade;
 }
 
@@ -147,7 +152,7 @@ FOREVER::closure MessageLoopTaskQueues::GetNextTaskToRun(TaskQueueId queue_id,
   queue_entries_.at(top.task_queue_id)
       ->task_source->PopTask(top.task.GetTaskSourceGrade());
   {
-    std::scoped_lock creation(creation_mutex_);
+    // std::scoped_lock creation(creation_mutex_);
     const auto task_source_grade = top.task.GetTaskSourceGrade();
     tls_task_source_grade.reset(new TaskSourceGradeHolder{task_source_grade});
   }

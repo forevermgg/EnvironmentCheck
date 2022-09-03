@@ -139,6 +139,8 @@ add_library( # Sets the name of the library.
         DefaultTaskExecutor.cpp
         ArchTaskExecutor.h
         ArchTaskExecutor.cpp
+        concurrent_message_loop.h
+        concurrent_message_loop.cc
         ${Generated_SRCS})
 
 add_library(

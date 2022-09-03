@@ -62,7 +62,8 @@ class MessageLoopImpl : public Wakeable,
   MessageLoopImpl();
 
  private:
-  FOREVER::RefPtr<MessageLoopTaskQueues> task_queue_;
+  // FOREVER::RefPtr<MessageLoopTaskQueues> task_queue_;
+  FOREVER::MessageLoopTaskQueues* task_queue_;
   TaskQueueId queue_id_;
 
   std::atomic_bool terminated_;
