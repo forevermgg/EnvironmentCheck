@@ -83,7 +83,7 @@ void MessageLoopAndroid::Terminate() {
 }
 
 void MessageLoopAndroid::WakeUp(FOREVER::TimePoint time_point) {
-  [[maybe_unused]] bool result = TimerRearm(timer_fd_.get(), time_point);
+  bool result = TimerRearm(timer_fd_.get(), time_point);
   FOREVER_DCHECK(result);
 }
 

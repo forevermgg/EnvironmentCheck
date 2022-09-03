@@ -41,8 +41,7 @@ int GetVlogVerbosity();
 // LOG_FATAL and above is always true.
 bool ShouldCreateLogMessage(LogSeverity severity);
 
-[[noreturn]] void KillProcess();
-
+void KillProcess();
 }  // namespace FOREVER
 
 #define FOREVER_LOG_STREAM(severity)                                   \

@@ -28,35 +28,33 @@ using Any = std::any;
 // have a deployment target of iOS 11. Once we bump our deployment target to
 // that we should delete this.
 template <class T>
-T any_cast(Any const& v)
-{
-    using U = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible_v<T, U const&>,
-                  "T must be a const lvalue reference or a CopyConstructible type");
-    if (auto ptr = std::any_cast<std::add_const_t<U>>(&v))
-        return static_cast<T>(*ptr);
-    throw std::bad_cast();
+T any_cast(Any const& v) {
+  using U = std::remove_cv_t<std::remove_reference_t<T>>;
+  static_assert(
+      std::is_constructible_v<T, U const&>,
+      "T must be a const lvalue reference or a CopyConstructible type");
+  if (auto ptr = std::any_cast<std::add_const_t<U>>(&v))
+    return static_cast<T>(*ptr);
+  throw std::bad_cast();
 }
 
 template <class T>
-T any_cast(Any& v)
-{
-    using U = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible_v<T, U&>, "T must be a lvalue reference or a CopyConstructible type");
-    if (auto ptr = std::any_cast<U>(&v))
-        return static_cast<T>(*ptr);
-    throw std::bad_cast();
+T any_cast(Any& v) {
+  using U = std::remove_cv_t<std::remove_reference_t<T>>;
+  static_assert(std::is_constructible_v<T, U&>,
+                "T must be a lvalue reference or a CopyConstructible type");
+  if (auto ptr = std::any_cast<U>(&v)) return static_cast<T>(*ptr);
+  throw std::bad_cast();
 }
 
 template <class T>
-T any_cast(Any&& v)
-{
-    using U = std::remove_cv_t<std::remove_reference_t<T>>;
-    static_assert(std::is_constructible_v<T, U>, "T must be a rvalue reference or a CopyConstructible type");
-    if (auto ptr = std::any_cast<U>(&v))
-        return static_cast<T>(std::move(*ptr));
-    throw std::bad_cast();
+T any_cast(Any&& v) {
+  using U = std::remove_cv_t<std::remove_reference_t<T>>;
+  static_assert(std::is_constructible_v<T, U>,
+                "T must be a rvalue reference or a CopyConstructible type");
+  if (auto ptr = std::any_cast<U>(&v)) return static_cast<T>(std::move(*ptr));
+  throw std::bad_cast();
 }
-} // namespace realm::util
+}  // namespace realm::util
 
-#endif // REALM_UTIL_ANY_HPP
+#endif  // REALM_UTIL_ANY_HPP

@@ -1,4 +1,5 @@
 package com.mgg.environmentcheck
 
-interface MVVMView {
+interface MVVMView<View> {
+    fun viewType(): Int
 }

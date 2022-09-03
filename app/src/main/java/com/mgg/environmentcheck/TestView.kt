@@ -10,7 +10,7 @@ import timber.log.Timber
 class TestView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-) : LinearLayout(context, attrs), LifecycleObserver {
+) : LinearLayout(context, attrs), LifecycleObserver , MVVMView<TestView> {
     init {
         LayoutInflater.from(context).inflate(R.layout.item_letter, this, true)
     }
@@ -37,6 +37,10 @@ class TestView @JvmOverloads constructor(
 
     fun onDestroy() {
         Timber.tag("mgg").e("LifecycleWindow :onDestroy%s", this)
+    }
+
+    override fun viewType(): Int {
+        return 0
     }
 
     override fun equals(other: Any?): Boolean {

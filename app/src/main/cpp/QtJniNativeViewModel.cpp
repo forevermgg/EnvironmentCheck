@@ -17,13 +17,13 @@ static void finalize_mixed(jlong ptr) {
 
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeGetFinalizerPtr(
-    JNIEnv *env, jclass clazz) {
+    JNIEnv *env, jobject clazz) {
   return reinterpret_cast<jlong>(&finalize_mixed);
 }
 
-extern "C" JNIEXPORT long JNICALL
+extern "C" JNIEXPORT jlong JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeRelease(
-    JNIEnv *env, jclass clazz, jlong nativePeer) {
+    JNIEnv *env, jobject clazz, jlong nativePeer) {
   auto value = reinterpret_cast<ViewModel *>(nativePeer);
   delete value;
   return 0;
@@ -31,14 +31,15 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeRelease(
 
 extern "C" JNIEXPORT jlong JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeCreate(
-    JNIEnv *env, jclass clazz, jstring view_model_type) {
+    JNIEnv *env, jobject clazz, jstring view_model_type) {
   LOGE("QtNativeViewModel_nativeCreate");
   return reinterpret_cast<jlong>(new MainViewModel());
 }
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeBind(
-    JNIEnv *env, jclass clazz, jlong nativePeer, jobject bind_java_view_model) {
+    JNIEnv *env, jobject clazz, jlong nativePeer,
+    jobject bind_java_view_model) {
   LOGE("QtNativeViewModel_nativeBind");
   auto viewModel = reinterpret_cast<ViewModel *>(nativePeer);
   viewModel->setJavaViewModel(bind_java_view_model);
@@ -48,7 +49,7 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeBind(
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeUnBind(JNIEnv *env,
-                                                             jclass clazz,
+                                                             jobject clazz,
                                                              jlong native_ptr) {
   auto viewModel = reinterpret_cast<ViewModel *>(native_ptr);
   viewModel->setViewModelAttached(false);
@@ -57,7 +58,7 @@ Java_com_mgg_environmentcheck_QtNativeViewModel_nativeUnBind(JNIEnv *env,
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_mgg_environmentcheck_QtNativeViewModel_nativeHandleIntKey(
-    JNIEnv *env, jclass clazz, jlong native_ptr, jint key, jstring value) {
+    JNIEnv *env, jobject clazz, jlong native_ptr, jint key, jstring value) {
   auto viewModel = reinterpret_cast<ViewModel *>(native_ptr);
   viewModel->handle(
       (int)key,

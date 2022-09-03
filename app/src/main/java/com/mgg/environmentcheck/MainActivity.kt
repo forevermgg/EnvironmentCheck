@@ -21,6 +21,7 @@ import com.mgg.core.coroutine.coroutineDbScope
 import com.mgg.core.coroutine.coroutineFileScope
 import com.mgg.core.coroutine.coroutineIoScope
 import com.mgg.core.coroutine.coroutineMainScope
+import com.mgg.environmentcheck.annotation.Test
 import com.mgg.environmentcheck.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -153,6 +154,9 @@ class MainActivity : ComponentActivity() {
             }
         }
         Timber.e("list: $list")
+
+        val test = Test()
+        test.handle(1, "mgg")
     }
 
     fun isHuiwen(inputString: String): Boolean {
