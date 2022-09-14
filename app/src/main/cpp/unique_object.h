@@ -6,7 +6,7 @@
 #define FOREVER_UNIQUE_OBJECT_H_
 
 #include <utility>
-
+#include "log/logging.h"
 #include "macros.h"
 
 namespace FOREVER {

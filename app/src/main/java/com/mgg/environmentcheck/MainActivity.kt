@@ -23,6 +23,7 @@ import com.mgg.core.coroutine.coroutineIoScope
 import com.mgg.core.coroutine.coroutineMainScope
 import com.mgg.environmentcheck.annotation.Test
 import com.mgg.environmentcheck.databinding.ActivityMainBinding
+import com.mgg.environmentcheck.utils.ClassUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -157,6 +158,18 @@ class MainActivity : ComponentActivity() {
 
         val test = Test()
         test.handle(1, "mgg")
+        val routerMap = ClassUtils.getFileNameByPackageName(this, "com.mgg.environmentcheck")
+
+        if (routerMap.isNotEmpty()) {
+            for (className in routerMap) {
+                try {
+                    // val any = (Class.forName(className).getConstructor().newInstance())
+                    Timber.e("Class.forName(${className})")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     fun isHuiwen(inputString: String): Boolean {

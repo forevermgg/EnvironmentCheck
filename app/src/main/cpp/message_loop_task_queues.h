@@ -63,7 +63,7 @@ enum class FlushType {
 /// \see FOREVER::MessageLoop
 /// \see FOREVER::Wakeable
 class MessageLoopTaskQueues
-    /*: public FOREVER::RefCountedThreadSafe<MessageLoopTaskQueues>*/ {
+/*: public FOREVER::RefCountedThreadSafe<MessageLoopTaskQueues>*/ {
  public:
   // Lifecycle.
 
@@ -78,8 +78,7 @@ class MessageLoopTaskQueues
 
   // Tasks methods.
 
-  void RegisterTask(TaskQueueId queue_id, 
-  					const FOREVER::closure& task,
+  void RegisterTask(TaskQueueId queue_id, const FOREVER::closure& task,
                     FOREVER::TimePoint target_time,
                     FOREVER::TaskSourceGrade task_source_grade =
                         FOREVER::TaskSourceGrade::kUnspecified);
@@ -95,8 +94,7 @@ class MessageLoopTaskQueues
 
   // Observers methods.
 
-  void AddTaskObserver(TaskQueueId queue_id, 
-   						intptr_t key,
+  void AddTaskObserver(TaskQueueId queue_id, intptr_t key,
                        const FOREVER::closure& callback);
 
   void RemoveTaskObserver(TaskQueueId queue_id, intptr_t key);

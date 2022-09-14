@@ -8,6 +8,22 @@
 
 namespace FOREVER {
 namespace internal {
+
+#if FML_OS_WIN
+
+namespace os_win {
+
+std::mutex UniqueFDTraits::file_map_mutex;
+std::map<HANDLE, DirCacheEntry> UniqueFDTraits::file_map;
+
+void UniqueFDTraits::Free_Handle(HANDLE fd) {
+  CloseHandle(fd);
+}
+
+}  // namespace os_win
+
+#else  // FML_OS_WIN
+
 namespace os_unix {
 
 void UniqueFDTraits::Free(int fd) {
@@ -19,5 +35,8 @@ void UniqueDirTraits::Free(DIR* dir) {
 }
 
 }  // namespace os_unix
+
+#endif  // FML_OS_WIN
+
 }  // namespace internal
 }  // namespace FOREVER

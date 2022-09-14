@@ -141,6 +141,12 @@ add_library( # Sets the name of the library.
         ArchTaskExecutor.cpp
         concurrent_message_loop.h
         concurrent_message_loop.cc
+        ascii_trie.h
+        ascii_trie.cc
+        base32.h
+        base32.cc
+        hex_codec.h
+        hex_codec.cc
         ${Generated_SRCS})
 
 add_library(

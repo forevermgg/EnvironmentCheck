@@ -62,3 +62,17 @@ fun Context.dpToPx(value: Int) = TypedValue.applyDimension(
     TypedValue.COMPLEX_UNIT_DIP,
     value.toFloat(), resources.displayMetrics
 )
+
+inline fun View.onDebouncedListener(
+    delayInClick: Long = 500L,
+    crossinline listener: (View) -> Unit
+) {
+    val enableAgain = Runnable { isEnabled = true }
+    setOnClickListener {
+        if (isEnabled){
+            isEnabled = false
+            postDelayed(enableAgain, delayInClick)
+            listener(it)
+        }
+    }
+}

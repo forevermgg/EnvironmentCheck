@@ -157,6 +157,9 @@ android {
             }
         }
     }*/
+    viewBinding {
+        enabled true
+    }
 }
 /*configurations.all {
     exclude(group = "androidx.appcompat", module = "appcompat")
@@ -215,7 +218,7 @@ dependencies {
     implementation 'com.android.ndk.thirdparty:googletest:1.11.0-beta-1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
     // implementation 'com.android.encryption:aes:1.0.0'
-
+    implementation 'com.google.android.gms:play-services-cronet:16.0.0'
     // uncomment out this one to generate lib binaries,
     // and also uncommented out the one in settings.gradle
     // after lib is generated, just comment them out again
