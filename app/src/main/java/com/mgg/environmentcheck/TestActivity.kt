@@ -1,11 +1,15 @@
 package com.mgg.environmentcheck
 
+import android.content.pm.ApplicationInfo
+import android.content.pm.ApplicationInfoHidden
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dev.rikka.tools.refine.Refine
 
 class TestActivity : ComponentActivity() {
+    private val FLAG_HIDDEN = 1 shl 27
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
@@ -20,5 +24,17 @@ class TestActivity : ComponentActivity() {
         val letterReView = findViewById<RecyclerView>(R.id.mRecyclerView)
         letterReView.adapter = mLetterAdapter
         letterReView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
+        isAppHidden(this.application.applicationInfo)
+        // Refine.unsafeCast<ApplicationInfoHidden>(applicationInfo).primaryCpuAbi
+    }
+
+    private fun isAppHidden(ai: ApplicationInfo): Boolean {
+        return try {
+            val flags: Int = Refine.unsafeCast<ApplicationInfoHidden>(ai).privateFlags
+            flags or ApplicationInfoHidden.PRIVATE_FLAG_HIDDEN == flags
+        } catch (e: Throwable) {
+            ai.flags or FLAG_HIDDEN == ai.flags
+        }
     }
 }

@@ -2,13 +2,18 @@ package com.mgg.environmentcheck
 
 import android.app.Application
 import android.content.Context
+import android.os.Build
 import com.hjq.toast.ToastUtils
 import com.mgg.core.CoreApplication
+import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 class App : CoreApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            HiddenApiBypass.addHiddenApiExemptions("")
+        }
         app = this
         QtNative.setClassLoader(this.classLoader)
         System.loadLibrary("environmentcheck")
