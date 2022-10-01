@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dev.rikka.tools.refine.Refine
+import timber.log.Timber
 
 class TestActivity : ComponentActivity() {
     private val FLAG_HIDDEN = 1 shl 27
@@ -26,7 +27,7 @@ class TestActivity : ComponentActivity() {
         letterReView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
         isAppHidden(this.application.applicationInfo)
-        // Refine.unsafeCast<ApplicationInfoHidden>(applicationInfo).primaryCpuAbi
+        Timber.e("primaryCpuAbi:${Refine.unsafeCast<ApplicationInfoHidden>(applicationInfo).primaryCpuAbi}")
     }
 
     private fun isAppHidden(ai: ApplicationInfo): Boolean {
