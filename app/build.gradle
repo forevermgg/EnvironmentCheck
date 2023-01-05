@@ -20,6 +20,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
+                System.err.println("DFLATBUFFERS_SRC:" + "${rootProject.projectDir}/third_party/flatbuffers")
                 arguments "-DFLATBUFFERS_SRC=${rootProject.projectDir}/third_party/flatbuffers"
                 cppFlags '-std=c++17'
             }
@@ -80,28 +81,36 @@ android {
         fbsFiles.forEach{
             commandLineArgs.add(it.path)
         }
+
         commandLine commandLineArgs
 
         doFirst {
             delete "$outputCppDir/"
             mkdir "$outputCppDir/"
         }
+
         doLast {
-            if (execResult.getExitValue() != 0) {
-                println(standardOutput.toString())
-                throw new GradleException("flatc command line failed")
+            if (executionResult.get().exitValue != 0) {
+                throw new GradleException("flatc failed with: ${executionResult.get().toString()}")
             }
         }
     }
 
     task generateFbsKotlin(type: Exec) {
+        System.err.println("generateFbsKotlin")
         def inputDir = file("$projectDir/src/main/fbs")
+        System.err.println("generateFbsKotlin inputDir:" + inputDir)
         def outputKotlinDir = file("$projectDir/src/main/java/generated/")
+        System.err.println("generateFbsKotlin outputKotlinDir:" + outputKotlinDir)
         def fbsFiles = layout.files { file(inputDir).listFiles() }.filter { File f -> f.name.endsWith(".fbs") }.toList()
         ignoreExitValue(true)
 
         standardOutput = new ByteArrayOutputStream()
         errorOutput = new ByteArrayOutputStream()
+
+        setErrorOutput(errorOutput)
+        setStandardOutput(standardOutput)
+
         def commandLineArgs = ['flatc', '-o', outputKotlinDir, '--kotlin']
         fbsFiles.forEach{
             commandLineArgs.add(it.path)
@@ -109,21 +118,20 @@ android {
         commandLine commandLineArgs
 
         doFirst {
+            System.err.println("generateFbsKotlin doFirst")
             delete "$outputKotlinDir/"
             mkdir "$outputKotlinDir/"
         }
         doLast {
-            if (execResult.getExitValue() != 0) {
-                println(standardOutput.toString())
-                throw new GradleException("flatc command line failed")
+            if (executionResult.get().exitValue != 0) {
+                throw new GradleException("flatc failed with: ${executionResult.get().toString()}")
             }
         }
     }
-
     afterEvaluate {
-        android.applicationVariants.all { variant ->
-            variant.javaCompiler.dependsOn(generateFbsKotlin)
-            variant.javaCompiler.dependsOn(generateFbsCpp)
+        tasks.named("preBuild") {
+            dependsOn(generateFbsKotlin)
+            dependsOn(generateFbsCpp)
         }
     }
 
@@ -194,7 +202,7 @@ dependencies {
     implementation 'com.google.crypto.tink:tink-android:1.6.1'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
-    implementation 'com.google.flatbuffers:flatbuffers-java:2.0.0'
+    implementation 'com.google.flatbuffers:flatbuffers-java:2.0.8'
     implementation 'com.github.getActivity:ToastUtils:10.5'
     implementation "com.github.skydoves:lazybones:1.0.4"
     implementation "com.github.skydoves:lazybones-viewmodel:1.0.4"

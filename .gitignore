@@ -16,3 +16,5 @@ local.properties
 /maven-repo
 .gradle.properties
 /.idea/*
+/hidden-api/build/
+/gen-libs/build/
