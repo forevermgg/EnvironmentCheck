@@ -2,9 +2,8 @@
 
 package com.fbs.app
 
-import java.nio.*
-import kotlin.math.sign
 import com.google.flatbuffers.*
+import java.nio.*
 
 @Suppress("unused")
 class ToastParams : Table() {
@@ -29,7 +28,7 @@ class ToastParams : Table() {
             return if(o != 0) bb.getInt(o + bb_pos) else 0
         }
     companion object {
-        fun validateVersion() = Constants.FLATBUFFERS_23_1_4()
+        fun validateVersion() = Constants.FLATBUFFERS_2_0_8()
         fun getRootAsToastParams(_bb: ByteBuffer): ToastParams = getRootAsToastParams(_bb, ToastParams())
         fun getRootAsToastParams(_bb: ByteBuffer, obj: ToastParams): ToastParams {
             _bb.order(ByteOrder.LITTLE_ENDIAN)

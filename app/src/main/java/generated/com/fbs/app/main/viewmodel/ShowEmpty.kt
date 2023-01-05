@@ -2,9 +2,8 @@
 
 package com.fbs.app.main.viewmodel
 
-import java.nio.*
-import kotlin.math.sign
 import com.google.flatbuffers.*
+import java.nio.*
 
 @Suppress("unused")
 class ShowEmpty : Table() {
@@ -24,7 +23,7 @@ class ShowEmpty : Table() {
     val contentAsByteBuffer : ByteBuffer get() = __vector_as_bytebuffer(4, 1)
     fun contentInByteBuffer(_bb: ByteBuffer) : ByteBuffer = __vector_in_bytebuffer(_bb, 4, 1)
     companion object {
-        fun validateVersion() = Constants.FLATBUFFERS_23_1_4()
+        fun validateVersion() = Constants.FLATBUFFERS_2_0_8()
         fun getRootAsShowEmpty(_bb: ByteBuffer): ShowEmpty = getRootAsShowEmpty(_bb, ShowEmpty())
         fun getRootAsShowEmpty(_bb: ByteBuffer, obj: ShowEmpty): ShowEmpty {
             _bb.order(ByteOrder.LITTLE_ENDIAN)
