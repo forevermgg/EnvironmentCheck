@@ -4,7 +4,7 @@ plugins {
 }
 
 // apply from: "${getRootDir().absolutePath}/config/maven-publish.gradle"
-
+apply from: "hash-library.gradle"
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }

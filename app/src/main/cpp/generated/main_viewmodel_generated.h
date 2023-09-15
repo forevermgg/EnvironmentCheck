@@ -6,6 +6,13 @@
 
 #include "flatbuffers/flatbuffers.h"
 
+// Ensure the included flatbuffers.h is the same version as when this file was
+// generated, otherwise it may not be compatible.
+static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
+              FLATBUFFERS_VERSION_MINOR == 5 &&
+              FLATBUFFERS_VERSION_REVISION == 26,
+             "Non-compatible flatbuffers version included");
+
 namespace com {
 namespace fbs {
 namespace app {
@@ -43,7 +50,7 @@ inline const char * const *EnumNamesClick() {
 }
 
 inline const char *EnumNameClick(Click e) {
-  if (flatbuffers::IsOutRange(e, Click_TEST, Click_TEST)) return "";
+  if (::flatbuffers::IsOutRange(e, Click_TEST, Click_TEST)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesClick()[index];
 }
@@ -79,20 +86,20 @@ inline const char * const *EnumNamesProperty() {
 }
 
 inline const char *EnumNameProperty(Property e) {
-  if (flatbuffers::IsOutRange(e, Property_UI_DATA, Property_SHOW_TOAST)) return "";
+  if (::flatbuffers::IsOutRange(e, Property_UI_DATA, Property_SHOW_TOAST)) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesProperty()[index];
 }
 
-struct UiData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct UiData FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef UiDataBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CONTENT = 4
   };
-  const flatbuffers::String *content() const {
-    return GetPointer<const flatbuffers::String *>(VT_CONTENT);
+  const ::flatbuffers::String *content() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CONTENT);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_CONTENT) &&
            verifier.VerifyString(content()) &&
@@ -102,32 +109,32 @@ struct UiData FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct UiDataBuilder {
   typedef UiData Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_content(flatbuffers::Offset<flatbuffers::String> content) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_content(::flatbuffers::Offset<::flatbuffers::String> content) {
     fbb_.AddOffset(UiData::VT_CONTENT, content);
   }
-  explicit UiDataBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit UiDataBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<UiData> Finish() {
+  ::flatbuffers::Offset<UiData> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<UiData>(end);
+    auto o = ::flatbuffers::Offset<UiData>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<UiData> CreateUiData(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> content = 0) {
+inline ::flatbuffers::Offset<UiData> CreateUiData(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> content = 0) {
   UiDataBuilder builder_(_fbb);
   builder_.add_content(content);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<UiData> CreateUiDataDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<UiData> CreateUiDataDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *content = nullptr) {
   auto content__ = content ? _fbb.CreateString(content) : 0;
   return com::fbs::app::main::viewmodel::CreateUiData(
@@ -135,15 +142,15 @@ inline flatbuffers::Offset<UiData> CreateUiDataDirect(
       content__);
 }
 
-struct ShowEmpty FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ShowEmpty FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ShowEmptyBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CONTENT = 4
   };
-  const flatbuffers::String *content() const {
-    return GetPointer<const flatbuffers::String *>(VT_CONTENT);
+  const ::flatbuffers::String *content() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CONTENT);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_CONTENT) &&
            verifier.VerifyString(content()) &&
@@ -153,32 +160,32 @@ struct ShowEmpty FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ShowEmptyBuilder {
   typedef ShowEmpty Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_content(flatbuffers::Offset<flatbuffers::String> content) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_content(::flatbuffers::Offset<::flatbuffers::String> content) {
     fbb_.AddOffset(ShowEmpty::VT_CONTENT, content);
   }
-  explicit ShowEmptyBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ShowEmptyBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ShowEmpty> Finish() {
+  ::flatbuffers::Offset<ShowEmpty> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ShowEmpty>(end);
+    auto o = ::flatbuffers::Offset<ShowEmpty>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ShowEmpty> CreateShowEmpty(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> content = 0) {
+inline ::flatbuffers::Offset<ShowEmpty> CreateShowEmpty(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> content = 0) {
   ShowEmptyBuilder builder_(_fbb);
   builder_.add_content(content);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ShowEmpty> CreateShowEmptyDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ShowEmpty> CreateShowEmptyDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *content = nullptr) {
   auto content__ = content ? _fbb.CreateString(content) : 0;
   return com::fbs::app::main::viewmodel::CreateShowEmpty(
@@ -186,15 +193,15 @@ inline flatbuffers::Offset<ShowEmpty> CreateShowEmptyDirect(
       content__);
 }
 
-struct ShowError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ShowError FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ShowErrorBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CONTENT = 4
   };
-  const flatbuffers::String *content() const {
-    return GetPointer<const flatbuffers::String *>(VT_CONTENT);
+  const ::flatbuffers::String *content() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CONTENT);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_CONTENT) &&
            verifier.VerifyString(content()) &&
@@ -204,32 +211,32 @@ struct ShowError FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ShowErrorBuilder {
   typedef ShowError Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_content(flatbuffers::Offset<flatbuffers::String> content) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_content(::flatbuffers::Offset<::flatbuffers::String> content) {
     fbb_.AddOffset(ShowError::VT_CONTENT, content);
   }
-  explicit ShowErrorBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ShowErrorBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ShowError> Finish() {
+  ::flatbuffers::Offset<ShowError> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ShowError>(end);
+    auto o = ::flatbuffers::Offset<ShowError>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ShowError> CreateShowError(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> content = 0) {
+inline ::flatbuffers::Offset<ShowError> CreateShowError(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> content = 0) {
   ShowErrorBuilder builder_(_fbb);
   builder_.add_content(content);
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ShowError> CreateShowErrorDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ShowError> CreateShowErrorDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *content = nullptr) {
   auto content__ = content ? _fbb.CreateString(content) : 0;
   return com::fbs::app::main::viewmodel::CreateShowError(
@@ -238,32 +245,32 @@ inline flatbuffers::Offset<ShowError> CreateShowErrorDirect(
 }
 
 inline const com::fbs::app::main::viewmodel::UiData *GetUiData(const void *buf) {
-  return flatbuffers::GetRoot<com::fbs::app::main::viewmodel::UiData>(buf);
+  return ::flatbuffers::GetRoot<com::fbs::app::main::viewmodel::UiData>(buf);
 }
 
 inline const com::fbs::app::main::viewmodel::UiData *GetSizePrefixedUiData(const void *buf) {
-  return flatbuffers::GetSizePrefixedRoot<com::fbs::app::main::viewmodel::UiData>(buf);
+  return ::flatbuffers::GetSizePrefixedRoot<com::fbs::app::main::viewmodel::UiData>(buf);
 }
 
 inline bool VerifyUiDataBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifyBuffer<com::fbs::app::main::viewmodel::UiData>(nullptr);
 }
 
 inline bool VerifySizePrefixedUiDataBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifySizePrefixedBuffer<com::fbs::app::main::viewmodel::UiData>(nullptr);
 }
 
 inline void FinishUiDataBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<com::fbs::app::main::viewmodel::UiData> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<com::fbs::app::main::viewmodel::UiData> root) {
   fbb.Finish(root);
 }
 
 inline void FinishSizePrefixedUiDataBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<com::fbs::app::main::viewmodel::UiData> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<com::fbs::app::main::viewmodel::UiData> root) {
   fbb.FinishSizePrefixed(root);
 }
 

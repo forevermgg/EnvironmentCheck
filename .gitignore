@@ -16,3 +16,5 @@ local.properties
 /maven-repo
 .gradle.properties
 /.idea/*
+/third_party/flatbuffers/
+/third_party/hash-library/
