@@ -4,7 +4,7 @@ plugins {
 }
 
 apply from: "../config/git-version.gradle"
-
+apply from: "flatbuffers.gradle"
 android {
     compileSdk 32
 
@@ -68,112 +68,8 @@ android {
     buildFeatures {
         prefab true
     }
-
-    task generateFbsCpp(type: Exec) {
-        def inputDir = file("$projectDir/src/main/fbs")
-        def outputCppDir = file("$projectDir/src/main/cpp/generated/")
-        def fbsFiles = layout.files { file(inputDir).listFiles() }.filter { File f -> f.name.endsWith(".fbs") }.toList()
-        ignoreExitValue(true)
-
-        standardOutput = new ByteArrayOutputStream()
-        errorOutput = new ByteArrayOutputStream()
-        def commandLineArgs = ['flatc', '-o', outputCppDir, '--cpp']
-        fbsFiles.forEach{
-            commandLineArgs.add(it.path)
-        }
-
-        commandLine commandLineArgs
-
-        doFirst {
-            delete "$outputCppDir/"
-            mkdir "$outputCppDir/"
-        }
-
-        doLast {
-            if (executionResult.get().exitValue != 0) {
-                throw new GradleException("flatc failed with: ${executionResult.get().toString()}")
-            }
-        }
-    }
-
-    task generateFbsKotlin(type: Exec) {
-        System.err.println("generateFbsKotlin")
-        def inputDir = file("$projectDir/src/main/fbs")
-        System.err.println("generateFbsKotlin inputDir:" + inputDir)
-        def outputKotlinDir = file("$projectDir/src/main/java/generated/")
-        System.err.println("generateFbsKotlin outputKotlinDir:" + outputKotlinDir)
-        def fbsFiles = layout.files { file(inputDir).listFiles() }.filter { File f -> f.name.endsWith(".fbs") }.toList()
-        ignoreExitValue(true)
-
-        standardOutput = new ByteArrayOutputStream()
-        errorOutput = new ByteArrayOutputStream()
-
-        setErrorOutput(errorOutput)
-        setStandardOutput(standardOutput)
-
-        def commandLineArgs = ['flatc', '-o', outputKotlinDir, '--kotlin']
-        fbsFiles.forEach{
-            commandLineArgs.add(it.path)
-        }
-        commandLine commandLineArgs
-
-        doFirst {
-            System.err.println("generateFbsKotlin doFirst")
-            delete "$outputKotlinDir/"
-            mkdir "$outputKotlinDir/"
-        }
-        doLast {
-            if (executionResult.get().exitValue != 0) {
-                throw new GradleException("flatc failed with: ${executionResult.get().toString()}")
-            }
-        }
-    }
-    afterEvaluate {
-        tasks.named("preBuild") {
-            dependsOn(generateFbsKotlin)
-            dependsOn(generateFbsCpp)
-        }
-    }
-
-    /*flavorDimensions "stl-variant"
-    productFlavors {
-        gnustl {
-            dimension "stl-variant"
-            applicationIdSuffix ".gnustl"
-            versionNameSuffix "-gnustl"
-            externalNativeBuild {
-                ndkBuild {
-                    arguments "APP_STL=gnustl_static"
-                }
-            }
-        }
-        libcpp {
-            dimension "stl-variant"
-            applicationIdSuffix ".libcpp"
-            versionNameSuffix "-libcpp"
-            externalNativeBuild {
-                ndkBuild {
-                    arguments "APP_STL=c++_static"
-                }
-            }
-        }
-    }*/
 }
-/*configurations.all {
-    exclude(group = "androidx.appcompat", module = "appcompat")
-    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
-    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
-}*/
-/*configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion '26.1.0'
-            }
-        }
-    }
-}*/
+
 dependencies {
     def lifecycle_version = "2.4.1"
     implementation project(":CheckEnv")
@@ -202,7 +98,7 @@ dependencies {
     implementation 'com.google.crypto.tink:tink-android:1.6.1'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
-    implementation 'com.google.flatbuffers:flatbuffers-java:2.0.8'
+    implementation 'com.google.flatbuffers:flatbuffers-java:23.5.26'
     implementation 'com.github.getActivity:ToastUtils:10.5'
     implementation "com.github.skydoves:lazybones:1.0.4"
     implementation "com.github.skydoves:lazybones-viewmodel:1.0.4"

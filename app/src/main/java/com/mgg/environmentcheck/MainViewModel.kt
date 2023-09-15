@@ -13,10 +13,10 @@ class MainViewModel() : QtNativeViewModel() {
     }
 
     private fun bindSetPropDispatcher() {
-        setPropDispatcher1.put(Property.SHOWTOAST) { obj: QtNativeViewModel, params: String? -> obj.showToast(params) }
-        setPropDispatcher2.put(Property.UIDATA) { params -> setUIData(params) }
-        setPropDispatcher2.put(Property.SHOWEMPTY) { params -> showEmpty(params) }
-        setPropDispatcher2.put(Property.SHOWERROR) { params -> showError(params) }
+        setPropDispatcher1.put(Property.SHOW_TOAST) { obj: QtNativeViewModel, params: String? -> obj.showToast(params) }
+        setPropDispatcher2.put(Property.UI_DATA) { params -> setUIData(params) }
+        setPropDispatcher2.put(Property.SHOW_EMPTY) { params -> showEmpty(params) }
+        setPropDispatcher2.put(Property.SHOW_ERROR) { params -> showError(params) }
     }
 
     private fun setUIData(params: String) {

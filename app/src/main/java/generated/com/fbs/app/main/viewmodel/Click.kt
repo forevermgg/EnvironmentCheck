@@ -6,7 +6,5 @@ package com.fbs.app.main.viewmodel
 class Click private constructor() {
     companion object {
         const val TEST: Int = 0
-        val names : Array<String> = arrayOf("TEST")
-        fun name(e: Int) : String = names[e]
     }
 }

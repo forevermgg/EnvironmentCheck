@@ -9,8 +9,8 @@
 // Ensure the included flatbuffers.h is the same version as when this file was
 // generated, otherwise it may not be compatible.
 static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
-              FLATBUFFERS_VERSION_MINOR == 1 &&
-              FLATBUFFERS_VERSION_REVISION == 4,
+              FLATBUFFERS_VERSION_MINOR == 5 &&
+              FLATBUFFERS_VERSION_REVISION == 26,
              "Non-compatible flatbuffers version included");
 
 namespace com {
@@ -20,19 +20,19 @@ namespace app {
 struct ToastParams;
 struct ToastParamsBuilder;
 
-struct ToastParams FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ToastParams FLATBUFFERS_FINAL_CLASS : private ::flatbuffers::Table {
   typedef ToastParamsBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_CONTENT = 4,
     VT_DURATION = 6
   };
-  const flatbuffers::String *content() const {
-    return GetPointer<const flatbuffers::String *>(VT_CONTENT);
+  const ::flatbuffers::String *content() const {
+    return GetPointer<const ::flatbuffers::String *>(VT_CONTENT);
   }
   int32_t duration() const {
     return GetField<int32_t>(VT_DURATION, 0);
   }
-  bool Verify(flatbuffers::Verifier &verifier) const {
+  bool Verify(::flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_CONTENT) &&
            verifier.VerifyString(content()) &&
@@ -43,28 +43,28 @@ struct ToastParams FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
 
 struct ToastParamsBuilder {
   typedef ToastParams Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_content(flatbuffers::Offset<flatbuffers::String> content) {
+  ::flatbuffers::FlatBufferBuilder &fbb_;
+  ::flatbuffers::uoffset_t start_;
+  void add_content(::flatbuffers::Offset<::flatbuffers::String> content) {
     fbb_.AddOffset(ToastParams::VT_CONTENT, content);
   }
   void add_duration(int32_t duration) {
     fbb_.AddElement<int32_t>(ToastParams::VT_DURATION, duration, 0);
   }
-  explicit ToastParamsBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ToastParamsBuilder(::flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ToastParams> Finish() {
+  ::flatbuffers::Offset<ToastParams> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ToastParams>(end);
+    auto o = ::flatbuffers::Offset<ToastParams>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ToastParams> CreateToastParams(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> content = 0,
+inline ::flatbuffers::Offset<ToastParams> CreateToastParams(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
+    ::flatbuffers::Offset<::flatbuffers::String> content = 0,
     int32_t duration = 0) {
   ToastParamsBuilder builder_(_fbb);
   builder_.add_duration(duration);
@@ -72,8 +72,8 @@ inline flatbuffers::Offset<ToastParams> CreateToastParams(
   return builder_.Finish();
 }
 
-inline flatbuffers::Offset<ToastParams> CreateToastParamsDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
+inline ::flatbuffers::Offset<ToastParams> CreateToastParamsDirect(
+    ::flatbuffers::FlatBufferBuilder &_fbb,
     const char *content = nullptr,
     int32_t duration = 0) {
   auto content__ = content ? _fbb.CreateString(content) : 0;
@@ -84,32 +84,32 @@ inline flatbuffers::Offset<ToastParams> CreateToastParamsDirect(
 }
 
 inline const com::fbs::app::ToastParams *GetToastParams(const void *buf) {
-  return flatbuffers::GetRoot<com::fbs::app::ToastParams>(buf);
+  return ::flatbuffers::GetRoot<com::fbs::app::ToastParams>(buf);
 }
 
 inline const com::fbs::app::ToastParams *GetSizePrefixedToastParams(const void *buf) {
-  return flatbuffers::GetSizePrefixedRoot<com::fbs::app::ToastParams>(buf);
+  return ::flatbuffers::GetSizePrefixedRoot<com::fbs::app::ToastParams>(buf);
 }
 
 inline bool VerifyToastParamsBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifyBuffer<com::fbs::app::ToastParams>(nullptr);
 }
 
 inline bool VerifySizePrefixedToastParamsBuffer(
-    flatbuffers::Verifier &verifier) {
+    ::flatbuffers::Verifier &verifier) {
   return verifier.VerifySizePrefixedBuffer<com::fbs::app::ToastParams>(nullptr);
 }
 
 inline void FinishToastParamsBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<com::fbs::app::ToastParams> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<com::fbs::app::ToastParams> root) {
   fbb.Finish(root);
 }
 
 inline void FinishSizePrefixedToastParamsBuffer(
-    flatbuffers::FlatBufferBuilder &fbb,
-    flatbuffers::Offset<com::fbs::app::ToastParams> root) {
+    ::flatbuffers::FlatBufferBuilder &fbb,
+    ::flatbuffers::Offset<com::fbs::app::ToastParams> root) {
   fbb.FinishSizePrefixed(root);
 }
 

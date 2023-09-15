@@ -18,3 +18,5 @@ local.properties
 /.idea/*
 /hidden-api/build/
 /gen-libs/build/
+/third_party/flatbuffers/
+/third_party/hash-library/
