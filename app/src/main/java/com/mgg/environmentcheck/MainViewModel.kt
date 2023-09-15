@@ -21,17 +21,17 @@ class MainViewModel : QtNativeViewModel() {
     }
 
     @BindNativeSetPropFunctionAnnotation(functionId = Property.UI_DATA)
-    private fun setUIData(params: String) {
+    fun setUIData(params: String) {
         Timber.e(params)
     }
 
     @BindNativeSetPropFunctionAnnotation(functionId = Property.SHOW_EMPTY)
-    private fun showEmpty(params: String) {
+    fun showEmpty(params: String) {
         Timber.e(params)
     }
 
     @BindNativeSetPropFunctionAnnotation(functionId = Property.SHOW_ERROR)
-    private fun showError(params: String) {
+    fun showError(params: String) {
         Timber.e(params)
     }
 
