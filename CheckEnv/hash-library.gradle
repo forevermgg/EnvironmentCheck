@@ -1,0 +1,25 @@
+afterEvaluate {
+    // Define a Task that will add a leveldb dependency, downloading
+    // the source from GitHub if needed.
+    println "projectDir:"+projectDir;
+    println "rootDir:"+rootDir;
+    println "buildDir:"+buildDir;
+    task gitCheckOutLevelDb {
+        // Locate or download leveldb.
+        def leveldbDir = "$rootDir/third_party/hash-library"
+        def leveldbFolder = new File(leveldbDir)
+        if (!leveldbFolder.exists()) {
+            exec {
+                executable 'git'
+                args 'clone',
+                        '--branch',
+                        'hash_library_v8',
+                        '--depth',
+                        '1',
+                        'https://github.com/stbrumme/hash-library.git',
+                        leveldbDir
+            }
+        }
+    }
+    preBuild.dependsOn gitCheckOutLevelDb
+}

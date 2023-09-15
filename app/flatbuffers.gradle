@@ -1,0 +1,128 @@
+afterEvaluate {
+    // Define a Task that will add a Flatbuffers dependency, downloading
+    // the source from GitHub if needed.
+    println "projectDir:"+projectDir;
+    println "rootDir:"+rootDir;
+    println "buildDir:"+buildDir;
+    task generateFlatbufferFiles {
+        // Locate or download flatbuffers.
+        def flatbuffersDir = "$rootDir/third_party/flatbuffers"
+        def flatbuffersFolder = new File(flatbuffersDir)
+        if (!flatbuffersFolder.exists()) {
+            exec {
+                executable 'git'
+                args 'clone',
+                        '--branch',
+                        'v23.5.26',
+                        '--depth',
+                        '1',
+                        'https://github.com/google/flatbuffers.git',
+                        flatbuffersDir
+            }
+        }
+
+        // Locate or build flatc.
+        String flatcDirPath = "$flatbuffersDir/flatc_build"
+        def flatcDir = new File(flatcDirPath)
+        flatcDir.mkdir()
+
+        String flatcExecDirPath = flatcDirPath
+        String flatcFilename = "flatc"
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+            flatcFilename += ".exe"
+            flatcExecDirPath = "$flatcDirPath/Debug"
+        }
+
+        def flatcExecDir = new File(flatcExecDirPath)
+
+        def flatcExec = new File(flatcExecDir, flatcFilename)
+        if (!flatcExec.exists()) {
+            exec {
+                executable 'cmake'
+                args '..'
+                workingDir "${flatcDir.getPath()}"
+            }
+            // brew install cmak
+            // Cannot run program "cmake"
+            exec {
+                executable 'cmake'
+                args '--build',
+                        '.',
+                        '--target',
+                        'flatc'
+                workingDir "${flatcDir.getPath()}"
+            }
+        }
+
+        // Generate the java files from the schema files.
+        /*def schemaFile = new File("$rootDir/app/src/main/schemas/messaging.fbs")
+        exec {
+            executable "${flatcExec.getPath()}"
+            args '--java',
+                    '-o',
+                    "$buildDir/flatbuffer_generated",
+                    "${schemaFile.getPath()}"
+        }*/
+    }
+
+    task generateFbsCpp(type: Exec) {
+        def flatbuffersExeDir = "$rootDir/third_party/flatbuffers/flatc_build"
+        def inputDir = file("$projectDir/src/main/fbs")
+        def outputCppDir = file("$projectDir/src/main/cpp/generated/")
+        def fbsFiles = layout.files { file(inputDir).listFiles() }.filter { File f -> f.name.endsWith(".fbs") }.toList()
+        ignoreExitValue(true)
+
+        standardOutput = new ByteArrayOutputStream()
+        errorOutput = new ByteArrayOutputStream()
+        def commandLineArgs = [flatbuffersExeDir + "/flatc", '-o', outputCppDir, '--cpp']
+        fbsFiles.forEach{
+            commandLineArgs.add(it.path)
+        }
+
+        commandLine commandLineArgs
+
+        doFirst {
+            delete "$outputCppDir/"
+            mkdir "$outputCppDir/"
+        }
+
+        doLast {
+            if (executionResult.get().exitValue != 0) {
+                throw new GradleException("flatc failed with: ${executionResult.get().toString()}")
+            }
+        }
+    }
+
+    task generateFbsKotlin(type: Exec) {
+        def flatbuffersExeDir = "$rootDir/third_party/flatbuffers/flatc_build"
+        def inputDir = file("$projectDir/src/main/fbs")
+        def outputKotlinDir = file("$projectDir/src/main/java/generated/")
+        def fbsFiles = layout.files { file(inputDir).listFiles() }.filter { File f -> f.name.endsWith(".fbs") }.toList()
+        ignoreExitValue(true)
+
+        standardOutput = new ByteArrayOutputStream()
+        errorOutput = new ByteArrayOutputStream()
+
+        setErrorOutput(errorOutput)
+        setStandardOutput(standardOutput)
+
+        def commandLineArgs = [flatbuffersExeDir + "/flatc", '-o', outputKotlinDir, '--kotlin']
+        fbsFiles.forEach{
+            commandLineArgs.add(it.path)
+        }
+        commandLine commandLineArgs
+
+        doFirst {
+            delete "$outputKotlinDir/"
+            mkdir "$outputKotlinDir/"
+        }
+        doLast {
+            if (executionResult.get().exitValue != 0) {
+                throw new GradleException("flatc failed with: ${executionResult.get().toString()}")
+            }
+        }
+    }
+    preBuild.dependsOn generateFlatbufferFiles
+    preBuild.dependsOn generateFbsKotlin
+    preBuild.dependsOn generateFbsCpp
+}

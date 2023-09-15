@@ -10,27 +10,27 @@ class MainViewModel : QtNativeViewModel() {
     }
 
     override fun bindSetPropDispatcher() {
-        setPropDispatcherByInterface[Property.SHOWTOAST] = object : ViewModelHandleProp {
+        setPropDispatcherByInterface[Property.SHOW_TOAST] = object : ViewModelHandleProp {
             override fun setPropDispatcher(viewModel: QtNativeViewModel?, value: String?) {
                 showToast(value)
             }
         }
-        setPropDispatcherByFunction[Property.SHOWEMPTY] = Consumer<String> { t -> showEmpty(t) }
-        setPropDispatcherByFunction[Property.UIDATA] = Consumer<String> { params -> setUIData(params) }
-        setPropDispatcherByFunction[Property.SHOWERROR] = Consumer<String> { params -> showError(params) }
+        setPropDispatcherByFunction[Property.SHOW_EMPTY] = Consumer<String> { t -> showEmpty(t) }
+        setPropDispatcherByFunction[Property.UI_DATA] = Consumer<String> { params -> setUIData(params) }
+        setPropDispatcherByFunction[Property.SHOW_ERROR] = Consumer<String> { params -> showError(params) }
     }
 
-    @BindNativeSetPropFunctionAnnotation(functionId = Property.UIDATA)
+    @BindNativeSetPropFunctionAnnotation(functionId = Property.UI_DATA)
     private fun setUIData(params: String) {
         Timber.e(params)
     }
 
-    @BindNativeSetPropFunctionAnnotation(functionId = Property.SHOWEMPTY)
+    @BindNativeSetPropFunctionAnnotation(functionId = Property.SHOW_EMPTY)
     private fun showEmpty(params: String) {
         Timber.e(params)
     }
 
-    @BindNativeSetPropFunctionAnnotation(functionId = Property.SHOWERROR)
+    @BindNativeSetPropFunctionAnnotation(functionId = Property.SHOW_ERROR)
     private fun showError(params: String) {
         Timber.e(params)
     }
