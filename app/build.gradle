@@ -6,6 +6,7 @@ plugins {
 
 apply from: "../config/git-version.gradle"
 apply from: "flatbuffers.gradle"
+apply from: "double-conversion.gradle"
 android {
     compileSdk 32
 

@@ -1,0 +1,25 @@
+afterEvaluate {
+    // Define a Task that will add a leveldb dependency, downloading
+    // the source from GitHub if needed.
+    println "projectDir:"+projectDir;
+    println "rootDir:"+rootDir;
+    println "buildDir:"+buildDir;
+    task gitCheckOutLevelDb {
+        // Locate or download leveldb.
+        def leveldbDir = "$rootDir/third_party/double-conversion"
+        def leveldbFolder = new File(leveldbDir)
+        if (!leveldbFolder.exists()) {
+            exec {
+                executable 'git'
+                args 'clone',
+                        '--branch',
+                        'v3.3.0',
+                        '--depth',
+                        '1',
+                        'https://github.com/google/double-conversion.git',
+                        leveldbDir
+            }
+        }
+    }
+    preBuild.dependsOn gitCheckOutLevelDb
+}
