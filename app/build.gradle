@@ -77,48 +77,11 @@ android {
     }
     namespace 'com.mgg.environmentcheck'
 
-    /*flavorDimensions "stl-variant"
-    productFlavors {
-        gnustl {
-            dimension "stl-variant"
-            applicationIdSuffix ".gnustl"
-            versionNameSuffix "-gnustl"
-            externalNativeBuild {
-                ndkBuild {
-                    arguments "APP_STL=gnustl_static"
-                }
-            }
-        }
-        libcpp {
-            dimension "stl-variant"
-            applicationIdSuffix ".libcpp"
-            versionNameSuffix "-libcpp"
-            externalNativeBuild {
-                ndkBuild {
-                    arguments "APP_STL=c++_static"
-                }
-            }
-        }
-    }*/
-    viewBinding {
-        enabled true
+    buildFeatures {
+        prefab true
     }
 }
-/*configurations.all {
-    exclude(group = "androidx.appcompat", module = "appcompat")
-    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk7")
-    exclude("org.jetbrains.kotlin", "kotlin-stdlib-jdk8")
-}*/
-/*configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        def requested = details.requested
-        if (requested.group == 'com.android.support') {
-            if (!requested.name.startsWith("multidex")) {
-                details.useVersion '26.1.0'
-            }
-        }
-    }
-}*/
+
 dependencies {
     def lifecycle_version = "2.5.1"
     compileOnly project(':hidden-api')
