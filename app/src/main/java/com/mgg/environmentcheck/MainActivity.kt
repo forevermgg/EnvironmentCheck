@@ -67,7 +67,8 @@ class MainActivity : ComponentActivity() {
         binding.checkRoot.text = "CheckRoot:" + CheckEnv.isRoot()
         binding.checkVpn.text = "CheckVpn:" + isUsingVpn()
         binding.checkNetwork.text = "CheckNetwork:" + CheckEnv.getNetWorkInfo()
-        binding.checkRom.text = "CheckRom:" + RomUtils.getRomInfo().toString() + File.separator + isGoogleRom
+        binding.checkRom.text =
+            "CheckRom:" + RomUtils.getRomInfo().toString() + File.separator + isGoogleRom
         binding.sampleText.text = binding.sampleText.text.toString() +
                 ShellUtils.execCmd("getprop", false).toString()
         binding.checkSign.text =
@@ -138,24 +139,6 @@ class MainActivity : ComponentActivity() {
         }
         Timber.e("Main thread id = " + Thread.currentThread().id)
 
-        val inputString = "abcddcbe"
-        val inputStringSize = inputString.length
-        val list = mutableListOf<String>()
-        for (i in 0 until inputStringSize + 1) {
-            // 获取子串
-            for (j in 1 until inputStringSize + 1) {
-                if (j > i) {
-                    val substring = inputString.substring(i, j)
-                    Timber.e("substring:$substring")
-                    //  判断是否是回文
-                    if (isHuiwen(substring)) {
-                        list.add(substring)
-                    }
-                }
-            }
-        }
-        Timber.e("list: $list")
-
         val test = Test()
         test.handle(1, "mgg")
         val routerMap = ClassUtils.getFileNameByPackageName(this, "com.mgg.environmentcheck")
@@ -170,21 +153,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    fun isHuiwen(inputString: String): Boolean {
-        var i = 0
-        var j = inputString.length - 1
-
-        while (i < j) {
-            if (inputString[i] != inputString[j]) {
-                return false
-            }
-            i++
-            j--
-            return true
-        }
-        return false
     }
 
     private fun hook(a: Int, b: Int): Int {
