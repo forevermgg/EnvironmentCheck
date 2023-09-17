@@ -82,9 +82,9 @@ fun Job.asAutoDisposable(view: View) = AutoDisposableJob(view, this)
 
 class AutoDisposableJob(private val view: View, private val wrapped: Job) : Job by wrapped,
     View.OnAttachStateChangeListener {
-    override fun onViewAttachedToWindow(v: View?) = Unit
+    override fun onViewAttachedToWindow(v: View) = Unit
 
-    override fun onViewDetachedFromWindow(v: View?) {
+    override fun onViewDetachedFromWindow(v: View) {
         // 当 View 被移除的时候，取消协程
         cancel()
         view.removeOnAttachStateChangeListener(this)

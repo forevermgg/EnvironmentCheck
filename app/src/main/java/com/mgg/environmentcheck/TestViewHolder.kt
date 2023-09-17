@@ -16,12 +16,12 @@ class TestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     init {
         itemView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
             // View onDetached 的时候回调 onDestroy()
-            override fun onViewDetachedFromWindow(v: View?) {
+            override fun onViewDetachedFromWindow(v: View) {
                 // Timber.e("onViewDetachedFromWindow")
             }
 
             // View onAttached 的时候回调 onCreate()
-            override fun onViewAttachedToWindow(v: View?) {
+            override fun onViewAttachedToWindow(v: View) {
                 // Timber.e("onViewAttachedToWindow")
             }
         })
