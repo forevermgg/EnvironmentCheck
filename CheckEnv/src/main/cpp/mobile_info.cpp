@@ -13,6 +13,7 @@
 using std::string;
 
 string getBootId() {
+  // 这个ID重启或者刷机以后发生变化，很多大厂会读取这个值，这个值类似一个UUID，SVC读取这个值，然后将这个值保存到私有目录。
   string bootId = FOREVER::COMMON::readFile("/proc/sys/kernel/random/boot_id");
   if (strlen(bootId.c_str()) == 0) {
     bootId =

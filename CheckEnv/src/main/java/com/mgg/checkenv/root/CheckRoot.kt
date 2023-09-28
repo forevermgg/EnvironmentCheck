@@ -2,9 +2,11 @@ package com.mgg.checkenv.root
 
 import android.util.Log
 import com.mgg.checkenv.utils.ShellUtils
+import java.io.BufferedReader
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.*
 
 /**
@@ -20,7 +22,11 @@ object CheckRoot {
     external fun nativeCheckIsRoot(): Boolean
 
     fun mobileRoot(): Boolean {
-        return existingRWPaths().isNotEmpty() || existingDangerousProperties().isNotEmpty() || existingRootFiles().isNotEmpty()
+        return existingRWPaths().isNotEmpty() ||
+                existingDangerousProperties().isNotEmpty() ||
+                existingRootFiles().isNotEmpty() ||
+                checkWhichSu() ||
+                checkBuildTag()
     }
 
     private val SU_PATHS = arrayOf(
@@ -160,5 +166,23 @@ object CheckRoot {
             Log.i(TAG, e.toString())
         }
         return allPaths.split("\n").toTypedArray()
+    }
+
+    fun checkWhichSu(): Boolean {
+        var process: Process? = null
+        return try {
+            process = Runtime.getRuntime().exec(arrayOf("/system/xbin/which", "su"))
+            val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
+            bufferedReader.readLine() != null
+        } catch (t: Throwable) {
+            false
+        } finally {
+            process?.destroy()
+        }
+    }
+
+    fun checkBuildTag(): Boolean {
+        val buildTags = android.os.Build.TAGS
+        return buildTags != null && buildTags.contains("test-keys")
     }
 }

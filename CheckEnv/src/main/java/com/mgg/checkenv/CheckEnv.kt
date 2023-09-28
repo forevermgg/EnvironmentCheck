@@ -138,7 +138,8 @@ class CheckEnv {
 
     fun isRoot(): Boolean {
         return CheckRoot.checkIsRoot() ||
-                CheckRoot.nativeCheckIsRoot()
+                CheckRoot.nativeCheckIsRoot()||
+                CheckRoot.mobileRoot()
     }
 
     fun hasVpn(): Boolean {
