@@ -4,7 +4,7 @@ afterEvaluate {
     println "projectDir:"+projectDir;
     println "rootDir:"+rootDir;
     println "buildDir:"+buildDir;
-    task gitCheckOutLevelDb {
+    tasks.register('gitCheckOutLevelDb') {
         // Locate or download leveldb.
         def leveldbDir = "$rootDir/third_party/hash-library"
         def leveldbFolder = new File(leveldbDir)
